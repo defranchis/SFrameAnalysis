@@ -1,0 +1,92 @@
+// Dear emacs, this is -*- c++ -*-
+// $Id: ${Object}D3PDObject.h 37457 2010-07-05 12:04:33Z mann $
+
+// ${AUTO_WARNING}
+// ${Program}
+
+
+#ifndef SFRAME_D3PDVARIABLES_${Object}D3PDObject_H
+#define SFRAME_D3PDVARIABLES_${Object}D3PDObject_H
+
+// Local include(s):
+#include "D3PDObjectNames.h"
+
+// STL include(s):
+#include <vector>
+#include <string>
+
+// ROOT include(s):
+#include <TString.h>
+
+// SFrame include(s):
+#include "core/include/SError.h"
+#include "core/include/SCycleBaseNTuple.h"
+#include "plug-ins/include/SInputVariables.h"
+
+namespace D3PD {
+
+  /**
+  *  @short Class that can read the variables produced by ${Object}D3PDObject
+  *
+  *         This class can be used to read the offline muon information from
+  *         an ntuple produced by the SingleTopDPDMaker code.
+  *
+  * @author ${Program}  
+  *
+  */
+  
+  enum ${Object}Details {
+${{Enums: }}
+  };
+  
+  // forward declaration of D3PDObjectNames
+  class D3PDObjectNames;
+  class ${Object}D3PDObject : public SInputVariables< SCycleBaseNTuple > {
+
+    public:
+    /// Constructor specifying the parent of the object
+    ${Object}D3PDObject( SCycleBaseNTuple* parent );
+
+    /// remember if connect succeeded
+    void setConnectSucceeded(const unsigned int index, const bool success);
+    bool getConnectSucceeded(const unsigned int index) const {return m_connectsucceeded.at(index);}  
+
+    /// Connect the variables to the input branches
+    void ConnectVariables( const TString& treeName,
+                           UInt_t detail_level = 0,
+                           const TString& prefix = "${Object}_",
+                           const TString& ntupleType = "D3PDMakerD3PD" ) throw( SError );
+
+    void ConnectVariables( const TString& treeName,
+                           const TString& prefix = "${Object}_",
+                           const TString& ntupleType = "D3PDMakerD3PD" ) throw( SError );
+
+    int getDetailLevel() const {return detailLevel;}   
+
+    // particle vector size
+    Int_t                   N;
+   
+    enum ConnectionIndex { 
+${{AllVars:     k#usename#=#index#, }} 
+      kEnd 
+    }; 
+
+
+    // vectors of properties defined in Particle.h
+${{AllBasics:    std::vector< floatingnumber >  *#name#;}}    
+
+    
+    // vectors of object specific variables
+${{AllVars:    std::vector< #type# >  *#name#;NOPOINTER}}
+
+    std::vector<int> m_connectsucceeded;
+
+    // save actual detail level and group
+    Int_t detailLevel;
+    std::string detailGroup;
+
+  }; // class ${Object}D3PDObject
+
+} // namespace D3PD
+
+#endif // SFRAME_D3PDVARIABLES_${Object}D3PDObject_H

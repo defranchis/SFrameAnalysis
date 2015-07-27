@@ -1,0 +1,33 @@
+# Variable definition file for jets
+#
+# expected format:
+# detail_level  C++_type  name  [default]
+#
+# Do not add variables here which are defined in Particle.h.
+#
+
+Basic	int*	flavour
+
+Analysis	bool	IDLoose
+Analysis	floatingnumber*	jec
+Analysis	floatingnumber*	muf
+Analysis	floatingnumber*	phf
+Analysis	floatingnumber*	emf
+Analysis	floatingnumber*	nhf
+Analysis	floatingnumber*	chf
+Analysis	floatingnumber*	area
+Analysis	int*	cm
+Analysis	int*	nm
+Analysis	floatingnumber*	che
+Analysis	floatingnumber*	ne
+Analysis	int*	charge
+
+Substructure	floatingnumber*	tau1
+Substructure	floatingnumber*	tau2
+Substructure	floatingnumber*	tau3
+Substructure	floatingnumber*	pruned_mass
+Substructure	floatingnumber*	pruned_massCorr
+Substructure	floatingnumber*	softdrop_mass
+Substructure	floatingnumber*	softdrop_massCorr
+Substructure	floatingnumber*	pruned_jec
+Substructure	floatingnumber*	softdrop_jec
