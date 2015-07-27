@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+
+# SFrame dictionaries
+*.pcm
+*_Dict.cxx

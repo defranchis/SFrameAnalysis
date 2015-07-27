@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd">
+<JobConfiguration JobName="ExoVVAnalysisJob" OutputLevel="INFO">
+	<Library Name="libD3PDVariables" />
+  <Library Name="libExoVV" />
+  <!-- <Package Name="D3PDVariables.par" /> -->
+  <!-- <Package Name="ExoVV.par" /> -->
+  <Cycle Name="ExoVVAnalysis" OutputDirectory="./" PostFix="" ProofServer="lite" ProofWorkDir="" RunMode="LOCAL" TargetLumi="1.0">
+		
+    <InputData Lumi="0.0" NEventsMax="-1" Type="7_4_6" Version="patch1">
+      <In FileName="/shome/clange/ExoVVRun2_746patch1/CMSSW_7_4_6_patch1/src/EXOVVNtuplizerRunII/Ntuplizer/flatTuple.root" Lumi="1.0"/>
+      <InputTree Name="ntuplizer/tree" />
+		</InputData>
+    
+		<InputData Lumi="0.0" NEventsMax="-1" Type="7_5_0" Version="pre6">
+      <In FileName="/shome/clange/ExoVVRun2_750pre6/CMSSW_7_5_0_pre6/src/EXOVVNtuplizerRunII/Ntuplizer/flatTuple.root" Lumi="1.0"/>
+      <InputTree Name="ntuplizer/tree" />
+		</InputData>
+    
+		<UserConfig>
+			<Item Name="RecoTreeName" Value="tree"/>
+      <Item Name="JetPtLowCut" Value="200."/>
+      <Item Name="JetPtHighCut" Value="500."/>
+		</UserConfig>
+	</Cycle>
+</JobConfiguration>
