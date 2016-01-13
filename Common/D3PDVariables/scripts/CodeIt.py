@@ -265,7 +265,11 @@ class Templater:
       if vars['type'].find("vector") >= 0:
         result += "  try{"
       for key in vars.keys():
-        line = line.replace("#%s#" % key, vars[key])
+        if (key == "name") and (vars['type'].find("map<") >= 0):
+          line = line.replace("#%s#" % key, vars[key],1)
+          line = line.replace("rhs.#%s#()" % key, "\" s a map \"" )
+        else:
+          line = line.replace("#%s#" % key, vars[key])
       #result = result + "\n" + line 
       result = result + line 
       if vars['type'].find("vector") >= 0:
@@ -331,17 +335,17 @@ use_dl    = True
 # define additional substitutions here
 objects = {
   'Jet'           : {},
-  # 'Muon'          : {},
-  # 'Electron'      : {},
+  'Muon'          : {},
+  'Electron'      : {},
   # 'Tau'           : {},
   # 'Vertex'        : {'NoBasics': ''},
   # 'TrackParticle' : {'NoBasics': ''},
   # 'TruthJet'      : {},
-  # 'TruthParticle' : {'NoBasics': ''},
+  'GenParticle'   : {},
   # 'Cluster'       : {'NoBasics': ''},
   # 'TrigEFMuon'    : {'NoBasics': ''},
   # 'TrigEFElectron': {'NoBasics': ''},
-  #'MissingEt': {'NoBasics': ''},
+  'MissingEt'     : {'NoBasics': ''},
   #'BeamSpot': {'NoBasics': ''},
 }
 

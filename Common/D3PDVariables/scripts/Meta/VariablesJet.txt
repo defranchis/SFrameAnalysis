@@ -6,10 +6,16 @@
 # Do not add variables here which are defined in Particle.h.
 #
 
-Basic	int*	flavour
+Basic	int*	nbHadrons
+Basic	int*	ncHadrons
+Basic	floatingnumber*	csv
+Basic	int*	charge
 
 Analysis	bool	IDLoose
+Analysis	bool	IDTight
 Analysis	floatingnumber*	jec
+Analysis	floatingnumber*	jecUp
+Analysis	floatingnumber*	jecDown
 Analysis	floatingnumber*	muf
 Analysis	floatingnumber*	phf
 Analysis	floatingnumber*	emf
@@ -20,7 +26,14 @@ Analysis	int*	cm
 Analysis	int*	nm
 Analysis	floatingnumber*	che
 Analysis	floatingnumber*	ne
-Analysis	int*	charge
+Analysis	floatingnumber*	hf_hf
+Analysis	floatingnumber*	hf_emf
+Analysis	floatingnumber*	hof
+Analysis	int*	chm
+Analysis	int*	neHadMult
+Analysis	int*	phoMult
+Analysis	floatingnumber*	nemf
+Analysis	floatingnumber*	cemf
 
 Substructure	floatingnumber*	tau1
 Substructure	floatingnumber*	tau2
@@ -30,4 +43,12 @@ Substructure	floatingnumber*	pruned_massCorr
 Substructure	floatingnumber*	softdrop_mass
 Substructure	floatingnumber*	softdrop_massCorr
 Substructure	floatingnumber*	pruned_jec
+Substructure	floatingnumber*	pruned_jecUp
+Substructure	floatingnumber*	pruned_jecDown
 Substructure	floatingnumber*	softdrop_jec
+# Substructure	floatingnumber*	softdrop_jecUp
+# Substructure	floatingnumber*	softdrop_jecDown
+
+Truth	int*	partonFlavour
+Truth	int*	hadronFlavour
+Truth	int*	genParton_pdgID

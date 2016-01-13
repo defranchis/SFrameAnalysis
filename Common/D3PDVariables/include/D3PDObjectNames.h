@@ -34,7 +34,7 @@ namespace D3PD {
 
     public:
       /// Constructor
-      D3PDObjectNames( const TString& ntupleType = "NTUP_TOP_p1400" );
+      D3PDObjectNames( const TString& ntupleType = "UZHCMSNtuple" );
       
       /// Return names saved in map 
       TString getName( const TString& name );
@@ -47,15 +47,6 @@ namespace D3PD {
       void FillMap ( TString ntupleType ) throw( SError );
       
       /// functions filling the name maps
-      //void FillD3PDMakerD3PD();
-      void Fill_NTUP_COMMON();
-      void Fill_NTUP_TOP_p1400();
-      void Fill_NTUP_TOP_p1562();
-      void Fill_NTUP_TOP_p1562_clusters();
-			void Fill_NTUP_TOP_OLD();
-      void FillGroomedJetsD3PD();
-      void FillChargedHiggsTRCNtuple();
-      void FillOld();
       void FillUZHCMSNtuple();
 
       //

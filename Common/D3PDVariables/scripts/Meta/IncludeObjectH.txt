@@ -63,9 +63,10 @@ ${{Enums: }}
 
     int getDetailLevel() const {return detailLevel;}   
 
+${{Only:Muon,Electron,Jet,TruthJet,GenParticle:
     // particle vector size
     Int_t                   N;
-   
+}}   
     enum ConnectionIndex { 
 ${{AllVars:     k#usename#=#index#, }} 
       kEnd 

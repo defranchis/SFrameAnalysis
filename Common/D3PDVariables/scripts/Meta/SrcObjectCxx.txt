@@ -33,10 +33,10 @@ namespace D3PD {
     // get instance of D3PDObjectNames
     D3PDObjectNames m_objectNames(ntupleType);
     
-
+${{Only:Muon,Electron,Jet,TruthJet,GenParticle:
     // particle vector size
     ConnectVariable( treeName, prefix + m_objectNames.getName("N"), N );
-    
+}}    
     // connect variables that are defined in Particle.cxx
 ${{AllBasics:    ConnectVariable( treeName, prefix + m_objectNames.getName("#name#"), #name# );}}        
     

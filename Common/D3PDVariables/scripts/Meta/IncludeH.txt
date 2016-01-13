@@ -32,7 +32,7 @@ namespace DESY {
    */
 
   class ${Object} : public Basic 
-${{Only:Jet,Muon,Electron,Tau,TruthJet: , public Particle }}
+${{Only:Jet,Muon,Electron,Tau,TruthJet,GenParticle: , public Particle }}
   {
   public:
 
@@ -43,30 +43,15 @@ ${{Only:Jet,Muon,Electron,Tau,TruthJet: , public Particle }}
     
     /// c'tor with index
     ${Object}( const D3PD::${Object}D3PDObject* ana, const Int_t idx );
-${{Only:Muon,Electron,Jet,TruthParticle,TruthJet:
+${{Only:Muon,Electron,Jet,TruthJet,GenParticle:
     TLorentzVector* getTLV() const;
     TLorentzVector tlv() const;
 }}
-${{Only:TruthParticle:
-    floatingnumber DeltaR(const TruthParticle& p) const;
-}}
-${{Only:Electron:
-    TLorentzVector* getEgammaTLV() const;
-    TLorentzVector  tlv_egamma() const;
-}}
-${{Only:Muon:
-    TLorentzVector* getIDTLV() const;
-    TLorentzVector* getMETLV() const;
-    TLorentzVector* getMSTLV() const;
-    TLorentzVector* getTrackTLV() const;
+${{Only:GenParticle:
+    floatingnumber DeltaR(const ${Object}& p) const;
 }}
     
     // variable definitions
-${{Only:Muon:
-          floatingnumber* m_ptMC;
-            //floatingnumber m_ptMS;  ///< store MS pt here, calculated from qoverp and theta
-            //floatingnumber m_ptID;  ///< store ID pt here, calculated from qoverp and theta
-}}
 
 ${{Only:Jet,TruthJet:
     bool            m_isTagged; ///< user-level flag to indicate b-tag
@@ -78,20 +63,10 @@ ${{AllVars:    #type# m_#name#;}}
 
 ${{Only:Electron:
     /// delta(R) function using the cluster eta/phi position of the electrons
-    floatingnumber DeltaRcluster( const Particle* p ) const;
+    // floatingnumber DeltaRcluster( const Particle* p ) const;
 
     /// delta(R) function using the track eta/phi position of the electrons
-    floatingnumber DeltaRtrack( const Particle* p ) const;
-}}
-${{Only:Muon:
-      /// smear muon pt
-      void correctMCpt();
-      
-      /// official Muon CP smearing function
-      double smearingFunction(double pt,double eta,std::string DetType);
-      
-      /// official Muon CP smearing combining function
-      double combineMomentaSmear(double smearMS,double smearID,double pt, double eta);
+    // floatingnumber DeltaRtrack( const Particle* p ) const;
 }}
 
 ${{Only:Jet,TruthJet:
@@ -107,20 +82,6 @@ ${{Only:Jet:
 ${{AllVars:    #type# #name#() const { /*if(!m_ana->getConnectSucceeded(D3PD::${Object}D3PDObject::k#name#)) std::cout<<"#name# not connected!"<<std::endl;*/ return *(m_#name#);NOPOINTER } }}    
 ${{AllVars:    void #name#( const #type#& val){ *(m_#name#)=val;NOPOINTER } }}    
 
-${{Only:Muon:
-      //floatingnumber ptMS() const { return m_ptMS; }
-      //floatingnumber ptID() const { return m_ptID; }
-      //floatingnumber ptMS() const { return (me_qoverp()!=0)  ?  ( 1./std::fabs(me_qoverp()) * std::sin(me_theta()) ) : 0; }
-      floatingnumber ptME() const { return (me_qoverp()!=0)  ?  ( 1./std::fabs(me_qoverp()) * std::sin(me_theta()) ) : 0; }
-      floatingnumber ptID() const { return (id_qoverp()!=0)  ?  ( 1./std::fabs(id_qoverp()) * std::sin(id_theta()) ) : 0; } 
-
-      //void SetptMS(const floatingnumber ms_pt) { m_ptMS = ms_pt; }
-      //void SetptID(const floatingnumber id_pt) { m_ptID = id_pt; }
-    private:
-      floatingnumber m_ptMC_value;
-      static TRandom* sm_random;
-      static constexpr double muMass = 105.66; // in MeV
-}}
   private:
     const D3PD::${Object}D3PDObject* m_ana;
   }; // class ${Object}
