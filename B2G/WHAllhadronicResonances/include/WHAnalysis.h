@@ -19,6 +19,7 @@
 #include "../../Common/D3PDVariables/include/GenParticleD3PDObject.h"
 #include "../../Common/D3PDVariables/include/GenParticle.h"
 #include "../../GoodRunsLists/include/TGoodRunsList.h"
+#include "../../Common/PileupReweightingTool/include/PileupReweightingTool.h"
 
 class TH1D;
 class TH2D;
@@ -68,6 +69,9 @@ public:
    
    /// Function to check for trigger pass
    virtual bool passTrigger();
+   
+   /// Function to clear/reset all output branches
+   virtual void clearBranches();
 
 private:
    //
@@ -90,6 +94,7 @@ private:
   // Further objects
   //
   Root::TGoodRunsList m_grl;
+  PileupReweightingTool m_pileupReweightingTool;
   
   //
   // XML settings for WHAnalysis
@@ -145,6 +150,11 @@ private:
   
   // other variables needed
   std::vector<std::string> m_triggerNames;
+  
+  ///
+  /// branches
+  ///
+  double b_weight;
 
    // Macro adding the functions for dictionary generation
    ClassDef( WHAnalysis, 0 );

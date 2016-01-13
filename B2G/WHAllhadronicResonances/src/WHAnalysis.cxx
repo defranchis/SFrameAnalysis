@@ -19,6 +19,7 @@ WHAnalysis::WHAnalysis()
    , m_muon( this )
    , m_missingEt( this )
    , m_genParticle( this )
+   , m_pileupReweightingTool( this )
 {
 
    m_logger << INFO << "Hello!" << SLogger::endmsg;
@@ -127,7 +128,7 @@ void WHAnalysis::EndCycle() throw( SError ) {
 
 }
 
-void WHAnalysis::BeginInputData( const SInputData& ) throw( SError ) {
+void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
 
   m_logger << INFO << "RecoTreeName:         " <<             m_recoTreeName << SLogger::endmsg;
   m_logger << INFO << "OutputTreeName:       " <<             m_outputTreeName << SLogger::endmsg;
@@ -168,7 +169,7 @@ void WHAnalysis::BeginInputData( const SInputData& ) throw( SError ) {
   m_logger << INFO << "PileupProfileData:           " <<        m_pileupProfileData << SLogger::endmsg;
   m_logger << INFO << "JSONName:           " <<                 m_jsonName << SLogger::endmsg;
   
-  
+  if (!m_isData) m_pileupReweightingTool.BeginInputData( id );
   
   if (m_isData) {
     TObject* grl;
@@ -178,6 +179,10 @@ void WHAnalysis::BeginInputData( const SInputData& ) throw( SError ) {
     }
     m_grl = *( dynamic_cast< Root::TGoodRunsList* >( grl ) );
   }
+  
+  // output branches
+  DeclareVariable(b_weight              , "weight"                 );
+  
   
    return;
 
@@ -215,7 +220,23 @@ void WHAnalysis::BeginInputFile( const SInputData& ) throw( SError ) {
 
 void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
 
+  clearBranches();
+  
   if (passTrigger()) m_logger << VERBOSE << "Trigger pass" << SLogger::endmsg;
+  
+  double weight = 1.;
+  double puWeight = 1.;
+  
+  if (!m_isData) {
+    for( unsigned int v = 0; v < (m_eventInfo.actualIntPerXing)->size(); ++v ){
+      if ( (*m_eventInfo.bunchCrossing)[v] == 0 ) {
+        puWeight = m_pileupReweightingTool.getPileUpweight( (*m_eventInfo.actualIntPerXing)[v] );
+        m_logger << VERBOSE << "Weight: " << puWeight << " for true: " << (*m_eventInfo.actualIntPerXing)[v] << SLogger::endmsg;
+        break;
+      }
+    }
+    weight *= puWeight;
+  }
   
   std::vector<DESY::Jet> goodJetsAK4;
   for ( int i = 0; i < (m_jetAK4.N); ++i ) {
@@ -327,4 +348,12 @@ bool WHAnalysis::passTrigger() {
   return passTrigger;
   
 }
+
+void WHAnalysis::clearBranches() {
+  
+  b_weight = 1.;
+  
+}
+
+
 

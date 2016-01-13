@@ -49,7 +49,7 @@ namespace D3PD {
     m_names["RunNumber"] = "EVENT_run";
     m_names["EventNumber"] = "EVENT_event";
     m_names["LumiBlock"] = "EVENT_lumiBlock";
-    m_names["bX"] = "bX";
+    m_names["bunchCrossing"] = "bX";
     m_names["trigDecision"] = "HLT_isFired";
     m_names["averageIntPerXing"] = "nPuVtx";
     m_names["actualIntPerXing"] = "nPuVtxTrue";
