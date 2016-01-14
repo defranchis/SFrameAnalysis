@@ -46,14 +46,14 @@ namespace D3PD {
     m_names["charge"] = "charge";
     
     // event info
-    m_names["RunNumber"] = "EVENT_run";
-    m_names["EventNumber"] = "EVENT_event";
-    m_names["LumiBlock"] = "EVENT_lumiBlock";
+    m_names["runNumber"] = "EVENT_run";
+    m_names["eventNumber"] = "EVENT_event";
+    m_names["lumiBlock"] = "EVENT_lumiBlock";
     m_names["bunchCrossing"] = "bX";
     m_names["trigDecision"] = "HLT_isFired";
     m_names["averageIntPerXing"] = "nPuVtx";
     m_names["actualIntPerXing"] = "nPuVtxTrue";
-    m_names["GenEventWeight"] = "genWeight";
+    m_names["genEventWeight"] = "genWeight";
     m_names["pdf_id"] = "PDF_id";
     m_names["pdf_x"] = "PDF_x";
     m_names["pdf_xPDF"] = "PDF_xPDF";

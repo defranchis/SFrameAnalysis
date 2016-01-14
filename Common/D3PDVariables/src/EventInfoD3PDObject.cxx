@@ -19,9 +19,9 @@ namespace D3PD {
     //
     // variables to be connected:
     //
-    ConnectVariable( treeName, m_objectNames.getName("RunNumber"), runNumber );
-    ConnectVariable( treeName, m_objectNames.getName("EventNumber"), eventNumber );
-    ConnectVariable( treeName, m_objectNames.getName("LumiBlock"  ), lumiBlock            );
+    ConnectVariable( treeName, m_objectNames.getName("runNumber"), runNumber );
+    ConnectVariable( treeName, m_objectNames.getName("eventNumber"), eventNumber );
+    ConnectVariable( treeName, m_objectNames.getName("lumiBlock"  ), lumiBlock            );
 
     if( ( (detail_level & D3PD::EventInfoBasic) == D3PD::EventInfoBasic) ) {
       ConnectVariable( treeName, m_objectNames.getName("averageIntPerXing"    ), averageIntPerXing    );
@@ -32,7 +32,7 @@ namespace D3PD {
       ConnectVariable( treeName, m_objectNames.getName("trigDecision"), trigDecision  );
     }
     if( (detail_level & D3PD::EventInfoTruth) == D3PD::EventInfoTruth ) {
-      ConnectVariable( treeName, m_objectNames.getName("GenEventWeight"   ), genEventWeight     );
+      ConnectVariable( treeName, m_objectNames.getName("genEventWeight"   ), genEventWeight     );
     }
     if( (detail_level & D3PD::EventInfoPDF) == D3PD::EventInfoPDF  ) {
       ConnectVariable( treeName, m_objectNames.getName("pdf_id"), pdf_id );
