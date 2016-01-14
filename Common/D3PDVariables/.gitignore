@@ -1,0 +1,47 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# SFrame dictionaries
+*.pcm
+*_Dict.cxx
+
+# files that are created by script, but not the manually created ones
+src/*.cxx
+src/Basic.cxx
+src/ContainerBase.cxx
+src/D3PDObjectNames.cxx
+src/EventInfoD3PDObject.cxx
+src/Particle.cxx
+include/*.h
+include/Basic.h
+include/ContainerBase.h
+include/D3PDObjectNames.h
+include/EventInfoD3PDObject.h
+include/Particle.h
+include/D3PDVariables_LinkDef.h
