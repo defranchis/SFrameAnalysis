@@ -6,6 +6,9 @@
 // SFrame include(s):
 #include "core/include/SCycleBase.h"
 
+// ROOT include(s):
+#include <TBits.h>
+
 // External include(s):
 #include "../../Common/D3PDVariables/include/JetD3PDObject.h"
 #include "../../Common/D3PDVariables/include/Jet.h"
@@ -24,6 +27,7 @@
 class TH1D;
 class TH2D;
 class TRandom3;
+class TBits;
 namespace DESY {
   class Jet;
   class Electron;
@@ -43,6 +47,27 @@ namespace DESY {
 class WHAnalysis : public SCycleBase {
 
 public:
+  
+  /// Enumeration of all cut flags
+  typedef enum {
+    kBeforeCuts,            // C0
+    kJSON,                  // C1
+    kTrigger,               // C2
+    kMetFilters,            // C3
+    kTwoFatJets,            // C4
+    kFatJetsDeltaEta,       // C5
+    kDijetMass,             // C6
+    kTau21HP,               // C7
+    kVWindow,               // C8
+    kHiggsWindow,           // C9
+    kSubjetSingleTag,       // C10
+    kSubjetDoubleTag,       // C11
+    kNumCuts                // last!
+  } SelectionCuts;
+  
+  /// static array of all cut names
+  static const std::string kCutName[ kNumCuts ];
+  
    /// Default constructor
    WHAnalysis();
    /// Default destructor
@@ -70,8 +95,17 @@ public:
    /// Function to check for trigger pass
    virtual bool passTrigger();
    
+   /// Function to check for MET filters pass
+   virtual bool passMETFilters();
+   
+   /// Function to obtain event weights for MC
+   virtual double getEventWeight();
+   
    /// Function to clear/reset all output branches
    virtual void clearBranches();
+   
+   /// Function to fill cut flow
+   virtual void fillCutflow( const std::string histName, const TBits& cutmap, const Double_t weight );
 
 private:
    //
@@ -117,9 +151,9 @@ private:
   // cuts
   // jets
   double      m_jetPtCut;         ///< cut on jet pT
-  double      m_jetEtaCut;             ///< cut on jet eta
-  double      m_mjjCut;
-  double      m_jetDeltaEtaCut;
+  double      m_jetEtaCut;        ///< cut on jet eta
+  double      m_mjjCut;           ///< cut on dijet mass
+  double      m_jetDeltaEtaCut;   ///< cut on DeltaEta between selected jets
   // substructure cuts
   double      m_tau21HPCut;
   double      m_tau21LPCut;
@@ -145,7 +179,6 @@ private:
   double         m_metCut;
    
   // further settings
-  std::string m_pileupProfileData;
   std::string m_jsonName;
   
   // other variables needed
@@ -155,6 +188,27 @@ private:
   /// branches
   ///
   double b_weight;
+  double b_weightGen;
+  double b_weightPU;
+  
+  std::vector<Double_t>   b_ak8jets_pt;
+  std::vector<Double_t>   b_ak8jets_phi;
+  std::vector<Double_t>   b_ak8jets_eta;
+  std::vector<Double_t>   b_ak8jets_e;
+  std::vector<Double_t>   b_ak8jets_tau21;
+  std::vector<Double_t>   b_ak8jets_m;
+  std::vector<Double_t>   b_ak8jets_mpruned;
+  std::vector<Double_t>   b_ak8jets_csv;
+  std::vector<Double_t>   b_ak8jets_subjets_dr;
+  std::vector<Double_t>   b_ak8jets_subjets_deta;
+  std::vector<Double_t>   b_ak8jets_subjets_dphi;
+  std::vector<Double_t>   b_ak8jets_subjet1_pt;
+  std::vector<Double_t>   b_ak8jets_subjet2_pt;
+  std::vector<Double_t>   b_ak8jets_subjet1_csv;
+  std::vector<Double_t>   b_ak8jets_subjet2_csv;
+  
+  Int_t      b_selection_bits;
+  Int_t      b_selection_lastcut;
 
    // Macro adding the functions for dictionary generation
    ClassDef( WHAnalysis, 0 );
