@@ -75,7 +75,7 @@ namespace D3PD {
     std::map<std::string,bool>* trigDecision;
 
     // EventInfoTruth
-    std::vector<std::vector<double> > *genEventWeight;
+    Float_t genEventWeight;
     
     // EventInfoPDF
     std::vector< int >* pdf_id;
@@ -99,6 +99,7 @@ namespace D3PD {
     bool	passFilter_TrkPOG_toomanystrip;
     bool	passFilter_TrkPOG_logError;
     bool	passFilter_METFilters;
+    bool  PV_filter;
 
     // save actual detail_level
     Int_t detailLevel;

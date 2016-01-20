@@ -56,6 +56,7 @@ namespace D3PD {
       ConnectVariable( treeName, m_objectNames.getName("passFilter_TrkPOG_toomanystrip"), passFilter_TrkPOG_toomanystrip );
       ConnectVariable( treeName, m_objectNames.getName("passFilter_TrkPOG_logError"), passFilter_TrkPOG_logError );
       ConnectVariable( treeName, m_objectNames.getName("passFilter_METFilters"), passFilter_METFilters );
+      ConnectVariable( treeName, m_objectNames.getName("PV_filter"), PV_filter );
     }
     
     return;

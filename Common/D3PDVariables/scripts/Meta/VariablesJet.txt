@@ -6,8 +6,6 @@
 # Do not add variables here which are defined in Particle.h.
 #
 
-Basic	int*	nbHadrons
-Basic	int*	ncHadrons
 Basic	floatingnumber*	csv
 Basic	int*	charge
 
@@ -52,3 +50,35 @@ Substructure	floatingnumber*	softdrop_jec
 Truth	int*	partonFlavour
 Truth	int*	hadronFlavour
 Truth	int*	genParton_pdgID
+Truth	int*	nbHadrons
+Truth	int*	ncHadrons
+
+PrunedSubjets	int*	subjet_pruned_N
+PrunedSubjets	std::vector<floatingnumber>*	subjet_pruned_pt
+PrunedSubjets	std::vector<floatingnumber>*	subjet_pruned_eta
+PrunedSubjets	std::vector<floatingnumber>*	subjet_pruned_phi
+PrunedSubjets	std::vector<floatingnumber>*	subjet_pruned_e
+PrunedSubjets	std::vector<floatingnumber>*	subjet_pruned_m
+PrunedSubjets	std::vector<floatingnumber>*	subjet_pruned_csv
+PrunedSubjets	std::vector<int>*	subjet_pruned_charge
+
+PrunedSubjetsTruth	std::vector<int>*	subjet_pruned_partonFlavour
+PrunedSubjetsTruth	std::vector<int>*	subjet_pruned_hadronFlavour
+PrunedSubjetsTruth	std::vector<int>*	subjet_pruned_genParton_pdgID
+PrunedSubjetsTruth	std::vector<int>*	subjet_pruned_nbHadrons
+PrunedSubjetsTruth	std::vector<int>*	subjet_pruned_ncHadrons
+
+SoftdropSubjets	int*	subjet_softdrop_N
+SoftdropSubjets	std::vector<floatingnumber>*	subjet_softdrop_pt
+SoftdropSubjets	std::vector<floatingnumber>*	subjet_softdrop_eta
+SoftdropSubjets	std::vector<floatingnumber>*	subjet_softdrop_phi
+SoftdropSubjets	std::vector<floatingnumber>*	subjet_softdrop_e
+SoftdropSubjets	std::vector<floatingnumber>*	subjet_softdrop_m
+SoftdropSubjets	std::vector<floatingnumber>*	subjet_softdrop_csv
+SoftdropSubjets	std::vector<int>*	subjet_softdrop_charge
+
+SoftdropSubjetsTruth	std::vector<int>*	subjet_softdrop_partonFlavour
+SoftdropSubjetsTruth	std::vector<int>*	subjet_softdrop_hadronFlavour
+SoftdropSubjetsTruth	std::vector<int>*	subjet_softdrop_genParton_pdgID
+SoftdropSubjetsTruth	std::vector<int>*	subjet_softdrop_nbHadrons
+SoftdropSubjetsTruth	std::vector<int>*	subjet_softdrop_ncHadrons

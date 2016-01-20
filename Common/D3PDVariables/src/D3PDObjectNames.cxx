@@ -73,6 +73,7 @@ namespace D3PD {
     m_names["passFilter_TrkPOG_toomanystrip"] = "passFilter_TrkPOG_toomanystrip";
     m_names["passFilter_TrkPOG_logError"] = "passFilter_TrkPOG_logError";
     m_names["passFilter_METFilters"] = "passFilter_METFilters";
+    m_names["PV_filter"] = "PV_filter";
     
     // gen particles
     m_names["pdgId"] = "pdgId";
@@ -98,6 +99,7 @@ namespace D3PD {
     m_names["hadronFlavour"] = "hadronFlavour";
     m_names["nbHadrons"] = "nbHadrons";
     m_names["ncHadrons"] = "ncHadrons";
+    m_names["genParton_pdgID"] = "genParton_pdgID";
     
     // ID
     m_names["IDLoose"] = "IDLoose";
@@ -138,6 +140,38 @@ namespace D3PD {
     m_names["softdrop_jec"] = "softdrop_jec";
     m_names["softdrop_jecUp"] = "softdrop_jecUp";
     m_names["softdrop_jecDown"] = "softdrop_jecDown";
+    
+    // pruned subjets
+    m_names["subjet_pruned_N"] = "subjet_pruned_N";
+    m_names["subjet_pruned_e"] = "subjet_pruned_e";
+    m_names["subjet_pruned_pt"] = "subjet_pruned_pt";
+    m_names["subjet_pruned_m"] = "subjet_pruned_mass";
+    m_names["subjet_pruned_eta"] = "subjet_pruned_eta";
+    m_names["subjet_pruned_phi"] = "subjet_pruned_phi";
+    m_names["subjet_pruned_charge"] = "subjet_pruned_charge";
+    m_names["subjet_pruned_csv"] = "subjet_pruned_csv";
+    // pruned subjets flavour truth
+    m_names["subjet_pruned_partonFlavour"] = "subjet_pruned_partonFlavour";
+    m_names["subjet_pruned_hadronFlavour"] = "subjet_pruned_hadronFlavour";
+    m_names["subjet_pruned_nbHadrons"] = "subjet_pruned_nbHadrons";
+    m_names["subjet_pruned_ncHadrons"] = "subjet_pruned_ncHadrons";
+    m_names["subjet_pruned_genParton_pdgID"] = "subjet_pruned_genParton_pdgID";
+    
+    // softdrop subjets
+    m_names["subjet_softdrop_N"] = "subjet_softdrop_N";
+    m_names["subjet_softdrop_e"] = "subjet_softdrop_e";
+    m_names["subjet_softdrop_pt"] = "subjet_softdrop_pt";
+    m_names["subjet_softdrop_m"] = "subjet_softdrop_mass";
+    m_names["subjet_softdrop_eta"] = "subjet_softdrop_eta";
+    m_names["subjet_softdrop_phi"] = "subjet_softdrop_phi";
+    m_names["subjet_softdrop_charge"] = "subjet_softdrop_charge";
+    m_names["subjet_softdrop_csv"] = "subjet_softdrop_csv";
+    // softdrop subjets flavour truth
+    m_names["subjet_softdrop_partonFlavour"] = "subjet_softdrop_partonFlavour";
+    m_names["subjet_softdrop_hadronFlavour"] = "subjet_softdrop_hadronFlavour";
+    m_names["subjet_softdrop_nbHadrons"] = "subjet_softdrop_nbHadrons";
+    m_names["subjet_softdrop_ncHadrons"] = "subjet_softdrop_ncHadrons";
+    m_names["subjet_softdrop_genParton_pdgID"] = "subjet_softdrop_genParton_pdgID";
 
     // leptons
     m_names["trackIso"] = "trackIso";
