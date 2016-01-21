@@ -46,6 +46,7 @@ WHAnalysis::WHAnalysis()
    // (defaults agree with July 2010 acceptance challenge)
    DeclareProperty( "RecoTreeName",             m_recoTreeName             = "physics" );
    DeclareProperty( "OutputTreeName",           m_outputTreeName           = "analysis" );
+   DeclareProperty( "NtupleLevel",              m_ntupleLevel              = kTwoFatJets );
    DeclareProperty( "JetAK4Name",               m_jetAK4Name               = "jetAK4" );
    DeclareProperty( "JetAK8Name",               m_jetAK8Name               = "jetAK8" );
    DeclareProperty( "ElectronName",             m_electronName             = "el" );
@@ -134,6 +135,21 @@ void WHAnalysis::BeginCycle() throw( SError ) {
   m_triggerNames.push_back("PFHT650_WideJetMJJ900DEtaJJ1p5") ;
   m_triggerNames.push_back("PFHT800_v") ;
   
+  // set names for various selections
+  m_catNames.clear();
+  m_catNames.push_back("VWindow_NoTau21_SubjetPreTag");
+  m_catNames.push_back("VWindow_NoTau21_SubjetSingleTag");
+  m_catNames.push_back("VWindow_NoTau21_SubjetDoubleTag");
+  m_catNames.push_back("VWindow_SubjetPreTag");
+  m_catNames.push_back("VWindow_SubjetSingleTag");
+  m_catNames.push_back("VWindow_SubjetDoubleTag");
+  m_catNames.push_back("WWindow_SubjetPreTag");
+  m_catNames.push_back("WWindow_SubjetSingleTag");
+  m_catNames.push_back("WWindow_SubjetDoubleTag");
+  m_catNames.push_back("ZWindow_SubjetPreTag");
+  m_catNames.push_back("ZWindow_SubjetSingleTag");
+  m_catNames.push_back("ZWindow_SubjetDoubleTag");
+  
    return;
 
 }
@@ -148,6 +164,7 @@ void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
 
   m_logger << INFO << "RecoTreeName:         " <<             m_recoTreeName << SLogger::endmsg;
   m_logger << INFO << "OutputTreeName:       " <<             m_outputTreeName << SLogger::endmsg;
+  m_logger << INFO << "NtupleLevel:          " <<             m_ntupleLevel << SLogger::endmsg;
   m_logger << INFO << "JetAK4Name:           " <<             m_jetAK4Name << SLogger::endmsg;
   m_logger << INFO << "JetAK8Name:           " <<             m_jetAK8Name << SLogger::endmsg;
   m_logger << INFO << "ElectronName:         " <<             m_electronName << SLogger::endmsg;
@@ -202,32 +219,98 @@ void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
   DeclareVariable(b_weightGen           , "weightGen"              );
   DeclareVariable(b_weightPU            , "weightPU"               );
   
-  DeclareVariable(b_weightPU            , "weightPU"               );
+  DeclareVariable( b_ak8jet0_pt,           "b_ak8jet0_pt"          );
+  DeclareVariable( b_ak8jet0_phi,          "b_ak8jet0_phi"         );
+  DeclareVariable( b_ak8jet0_eta,          "b_ak8jet0_eta"         );
+  DeclareVariable( b_ak8jet0_e,            "b_ak8jet0_e"           );
+  DeclareVariable( b_ak8jet0_tau21,        "b_ak8jet0_tau21"       );
+  DeclareVariable( b_ak8jet0_m,            "b_ak8jet0_m"           );
+  DeclareVariable( b_ak8jet0_mpruned,      "b_ak8jet0_mpruned"     );
+  DeclareVariable( b_ak8jet0_csv,          "b_ak8jet0_csv"         );
+  DeclareVariable( b_ak8jet1_pt,           "b_ak8jet1_pt"          );
+  DeclareVariable( b_ak8jet1_phi,          "b_ak8jet1_phi"         );
+  DeclareVariable( b_ak8jet1_eta,          "b_ak8jet1_eta"         );
+  DeclareVariable( b_ak8jet1_e,            "b_ak8jet1_e"           );
+  DeclareVariable( b_ak8jet1_tau21,        "b_ak8jet1_tau21"       );
+  DeclareVariable( b_ak8jet1_m,            "b_ak8jet1_m"           );
+  DeclareVariable( b_ak8jet1_mpruned,      "b_ak8jet1_mpruned"     );
+  DeclareVariable( b_ak8jet1_csv,          "b_ak8jet1_csv"         );
+  DeclareVariable( b_ak8jet0_subjet01_dr,   "b_ak8jet0_subjet01_dr"  );
+  DeclareVariable( b_ak8jet0_subjet01_deta, "b_ak8jet0_subjet01_deta");
+  DeclareVariable( b_ak8jet0_subjet01_dphi, "b_ak8jet0_subjet01_dphi");
+  DeclareVariable( b_ak8jet0_subjet0_pt,   "b_ak8jet0_subjet0_pt"  );
+  DeclareVariable( b_ak8jet0_subjet1_pt,   "b_ak8jet0_subjet1_pt"  );
+  DeclareVariable( b_ak8jet0_subjet0_csv,  "b_ak8jet0_subjet0_csv" );
+  DeclareVariable( b_ak8jet0_subjet1_csv,  "b_ak8jet0_subjet1_csv" );
+  DeclareVariable( b_ak8jet1_subjet01_dr,   "b_ak8jet1_subjet01_dr"  );
+  DeclareVariable( b_ak8jet1_subjet01_deta, "b_ak8jet1_subjet01_deta");
+  DeclareVariable( b_ak8jet1_subjet01_dphi, "b_ak8jet1_subjet01_dphi");
+  DeclareVariable( b_ak8jet1_subjet0_pt,   "b_ak8jet1_subjet0_pt"  );
+  DeclareVariable( b_ak8jet1_subjet1_pt,   "b_ak8jet1_subjet1_pt"  );
+  DeclareVariable( b_ak8jet1_subjet0_csv,  "b_ak8jet1_subjet0_csv" );
+  DeclareVariable( b_ak8jet1_subjet1_csv,  "b_ak8jet1_subjet1_csv" );
   
-  DeclareVariable( b_ak8jets_pt,           "b_ak8jets_pt"          );
-  DeclareVariable( b_ak8jets_phi,          "b_ak8jets_phi"         );
-  DeclareVariable( b_ak8jets_eta,          "b_ak8jets_eta"         );
-  DeclareVariable( b_ak8jets_e,            "b_ak8jets_e"           );
-  DeclareVariable( b_ak8jets_tau21,        "b_ak8jets_tau21"       );
-  DeclareVariable( b_ak8jets_m,            "b_ak8jets_m"           );
-  DeclareVariable( b_ak8jets_mpruned,      "b_ak8jets_mpruned"     );
-  DeclareVariable( b_ak8jets_csv,          "b_ak8jets_csv"         );
-  DeclareVariable( b_ak8jets_subjets_dr,   "b_ak8jets_subjets_dr"  );
-  DeclareVariable( b_ak8jets_subjets_deta, "b_ak8jets_subjets_deta");
-  DeclareVariable( b_ak8jets_subjets_dphi, "b_ak8jets_subjets_dphi");
-  DeclareVariable( b_ak8jets_subjet1_pt,   "b_ak8jets_subjet1_pt"  );
-  DeclareVariable( b_ak8jets_subjet2_pt,   "b_ak8jets_subjet2_pt"  );
-  DeclareVariable( b_ak8jets_subjet1_csv,  "b_ak8jets_subjet1_csv" );
-  DeclareVariable( b_ak8jets_subjet2_csv,  "b_ak8jets_subjet2_csv" );
-  
-  DeclareVariable(b_selection_bits            , "selection_bits"   );
-  DeclareVariable(b_selection_lastcut         , "selection_lastcut");
+  b_selection_bits.resize( m_catNames.size() );
+  b_selection_lastcut.resize( m_catNames.size() );
+  for (unsigned int s=0;s<m_catNames.size();++s) {
+    DeclareVariable(b_selection_bits[s]    , Form("selection_bits_%s", m_catNames[s].c_str())    );
+    DeclareVariable(b_selection_lastcut[s] , Form("selection_lastcut_%s", m_catNames[s].c_str()) );
+  }
   
   //
   // Declare the output histograms:
   //
-  Book( TH1F( "cutflow", "cutflow", 20, 0.5, 20.5 ));
+  Book( TH1F( "Events", "Events;weight", 10, -.5, 9.5 ) );
+  Book( TH1F( "SumEvents", "SumEvents;weight", 10, -.5, 9.5 ) );
   Book( TH1F( "METFilters", "METFilters", 20, 0.5, 20.5 ));
+
+  for (unsigned int s=0;s<m_catNames.size();++s) {
+    TString directory = m_catNames[s].c_str();
+    // cutflow
+    Book( TH1F( "cutflow", "cutflow", 20, 0.5, 20.5 ), directory );  
+    // kinematics histograms
+    Book( TH1F( "vjet_pt", "Vjet p_{T};Vjet p_{T} [GeV]", 100, 0, 1000 ), directory ); 
+    Book( TH1F( "vjet_eta", "Vjet #eta;Vjet #eta", 50, -2.5, 2.5 ), directory ); 
+    Book( TH1F( "vjet_phi", "Vjet #phi;Vjet #phi", 50, -3.15, 3.15 ), directory ); 
+    Book( TH1F( "vjet_m", "Vjet m;Vjet m [GeV]", 40, 0, 200 ), directory ); 
+    Book( TH1F( "vjet_mpruned", "Vjet pruned m;Vjet pruned m [GeV]", 40, 0, 200 ), directory ); 
+    Book( TH1F( "vjet_tau1", "Vjet #tau_{1};Vjet #tau_{1}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "vjet_tau2", "Vjet #tau_{2};Vjet #tau_{2}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "vjet_tau3", "Vjet #tau_{3};Vjet #tau_{3}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "vjet_tau21", "Vjet #tau_{21};Vjet #tau_{21}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "vjet_tau31", "Vjet #tau_{31};Vjet #tau_{31}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "vjet_tau32", "Vjet #tau_{32};Vjet #tau_{32}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "vjet_nSubjets", "Vjet N subjets;Vjet N subjets", 10, -.5, 9.5 ), directory ); 
+    Book( TH1F( "vjet_nTaggedSubjets", "Vjet N tagged subjets;Vjet N tagged subjets", 10, -.5, 9.5 ), directory ); 
+    Book( TH1F( "vjet_subjet0_csv", "Vjet subjet 0 CSV;Vjet subjet0 CSV", 100, -1, 1 ), directory ); 
+    Book( TH1F( "vjet_subjet1_csv", "Vjet subjet 1 CSV;Vjet subjet1 CSV", 100, -1, 1 ), directory ); 
+
+    Book( TH1F( "hjet_pt", "Hjet p_{T};Hjet p_{T} [GeV]", 100, 0, 1000 ), directory ); 
+    Book( TH1F( "hjet_eta", "Hjet #eta;Hjet #eta", 50, -2.5, 2.5 ), directory ); 
+    Book( TH1F( "hjet_phi", "Hjet #phi;Hjet #phi", 50, -3.15, 3.15 ), directory ); 
+    Book( TH1F( "hjet_m", "Hjet m;Hjet m [GeV]", 40, 0, 200 ), directory ); 
+    Book( TH1F( "hjet_mpruned", "Hjet pruned m;Hjet pruned m [GeV]", 40, 0, 200 ), directory ); 
+    Book( TH1F( "hjet_tau1", "Hjet #tau_{1};Hjet #tau_{1}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "hjet_tau2", "Hjet #tau_{2};Hjet #tau_{2}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "hjet_tau3", "Hjet #tau_{3};Hjet #tau_{3}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "hjet_tau21", "Hjet #tau_{21};Hjet #tau_{21}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "hjet_tau31", "Hjet #tau_{31};Hjet #tau_{31}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "hjet_tau32", "Hjet #tau_{32};Hjet #tau_{32}", 50, 0, 1 ), directory ); 
+    Book( TH1F( "hjet_nSubjets", "Hjet N subjets;Hjet N subjets", 10, -.5, 9.5 ), directory ); 
+    Book( TH1F( "hjet_nTaggedSubjets", "Hjet N tagged subjets;Hjet N tagged subjets", 10, -.5, 9.5 ), directory ); 
+    Book( TH1F( "hjet_subjet0_csv", "Hjet subjet 0 CSV;Hjet subjet0 CSV", 100, -1, 1 ), directory ); 
+    Book( TH1F( "hjet_subjet1_csv", "Hjet subjet 1 CSV;Hjet subjet1 CSV", 100, -1, 1 ), directory ); 
+
+    Book( TH1F( "jets_deta", "jets #Delta #eta;jets #Delta #eta", 50, -5, 5 ), directory ); 
+    Book( TH1F( "jets_dphi", "jets #Delta #phi;jets #Delta #phi", 50, -6.3, 6.3 ), directory ); 
+    Book( TH1F( "jets_dr", "jets #Delta R;jets #Delta R", 50, -5, 5 ), directory ); 
+  
+    Book( TH1F( "dijet_pt", "dijet p_{T};dijet p_{T} [GeV]", 100, 0, 1000 ), directory ); 
+    Book( TH1F( "dijet_eta", "dijet #eta;dijet #eta", 50, -2.5, 2.5 ), directory ); 
+    Book( TH1F( "dijet_phi", "dijet #phi;Vdijet #phi", 50, -3.15, 3.15 ), directory ); 
+    Book( TH1F( "dijet_m", "dijet m;dijet m [GeV]", 300, 0, 3000 ), directory );
+    Book( TH1F( "dijet_template_m", "dijet m;dijet m [GeV]", 7000, 0, 7000 ), directory ); 
+  }
   
    return;
 
@@ -239,15 +322,16 @@ void WHAnalysis::EndInputData( const SInputData& ) throw( SError ) {
   // Final analysis of cut flow
   //
   
+  TString defaultCutflow = "VWindow_SubjetDoubleTag";
   m_logger << INFO << "cut flow:" << SLogger::endmsg;
   m_logger << INFO << Form( "Cut\t%25.25s\tEvents\tRelEff\tAbsEff", "Name" ) << SLogger::endmsg;
   
-  Double_t ntot = Hist( "cutflow" )->GetBinContent( 1 );
+  Double_t ntot = Hist( "cutflow", defaultCutflow )->GetBinContent( 1 );
   m_logger << INFO << Form( "\t%25.25s\t%6.0f", "start", ntot ) << SLogger::endmsg;
   for( Int_t ibin = 2; ibin <= kNumCuts; ++ibin ) {
     Int_t    icut    = ibin - 1;
-    Double_t nevents = Hist( "cutflow" )->GetBinContent( ibin );
-    Double_t releff  = 100. * nevents / Hist( "cutflow" )->GetBinContent( ibin-1 );
+    Double_t nevents = Hist( "cutflow", defaultCutflow )->GetBinContent( ibin );
+    Double_t releff  = 100. * nevents / Hist( "cutflow", defaultCutflow )->GetBinContent( ibin-1 );
     Double_t abseff  = 100. * nevents / ntot;
     m_logger << INFO  << Form( "C%d\t%25.25s\t%6.0f\t%6.2f\t%6.2f", icut-1, kCutName[icut].c_str(), nevents, releff, abseff ) << SLogger::endmsg;
   }
@@ -284,30 +368,40 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
   m_logger << VERBOSE << "ExecuteEvent" << SLogger::endmsg;
   
   clearBranches();
-  TBits selectionBits(kNumCuts);
-  selectionBits.SetBitNumber( kBeforeCuts );
+  std::vector<TBits> selectionBits(m_catNames.size(), TBits(kNumCuts));
+  for (unsigned int s=0;s<m_catNames.size();++s) {
+    selectionBits[s].SetBitNumber( kBeforeCuts );
+  }
   bool moveOn = true;
   
   // Cut 1: check for data if run/lumiblock in JSON
   if (m_isData) {
     if (isGoodEvent(m_eventInfo.runNumber, m_eventInfo.lumiBlock)) {
-      selectionBits.SetBitNumber( kJSON );
+      for (unsigned int s=0;s<m_catNames.size();++s) {
+        selectionBits[s].SetBitNumber( kJSON );
+      }
     }
   }
   else {
-    selectionBits.SetBitNumber( kJSON );
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      selectionBits[s].SetBitNumber( kJSON );
+    }
   }
   
   // Cut 2: pass trigger
   if (passTrigger()) {
     m_logger << VERBOSE << "Trigger pass" << SLogger::endmsg;
-    selectionBits.SetBitNumber( kTrigger );
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      selectionBits[s].SetBitNumber( kTrigger );
+    }
   }
   
   // Cut 3: pass MET filters
   if (passMETFilters()) {
     m_logger << VERBOSE << "passMETFilters" << SLogger::endmsg;
-    selectionBits.SetBitNumber( kMetFilters );
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      selectionBits[s].SetBitNumber( kMetFilters );
+    }
   }
   
   // Cut 4: select two fat jets
@@ -318,12 +412,68 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
       if (fabs(myjet.eta()) < m_jetEtaCut) {
         if (myjet.IDTight()) {
           goodFatJets.push_back(myjet);
+          
+          // fill output variables
+          if (goodFatJets.size() == 1) {
+            b_ak8jet0_pt = myjet.pt();
+            b_ak8jet0_phi = myjet.phi();
+            b_ak8jet0_eta = myjet.eta();
+            b_ak8jet0_e = myjet.e();
+            double tau21 = -1;
+            if (myjet.tau1() != 0) {
+              tau21 = myjet.tau2() / myjet.tau1();
+            }
+            b_ak8jet0_tau21 = tau21;
+            b_ak8jet0_m = myjet.m();
+            b_ak8jet0_mpruned = myjet.pruned_massCorr();
+            b_ak8jet0_csv = myjet.csv();
+            if (myjet.subjet_pruned_N() >= 2) {
+              double deta = fabs(myjet.subjet_pruned_eta()[0] - myjet.subjet_pruned_eta()[1]);
+              double dphi = fabs(myjet.subjet_pruned_phi()[0] - myjet.subjet_pruned_phi()[1]);
+              double dr = sqrt(deta*deta + dphi*dphi);
+              b_ak8jet0_subjet01_dr = dr;
+              b_ak8jet0_subjet01_deta = deta;
+              b_ak8jet0_subjet01_dphi = dphi;
+              b_ak8jet0_subjet0_pt = myjet.subjet_pruned_pt()[0];
+              b_ak8jet0_subjet1_pt = myjet.subjet_pruned_pt()[1];
+              b_ak8jet0_subjet0_csv = myjet.subjet_pruned_csv()[0];
+              b_ak8jet0_subjet1_csv = myjet.subjet_pruned_csv()[1];
+            }
+          }
+          else if (goodFatJets.size() == 2) {
+            b_ak8jet1_pt = myjet.pt();
+            b_ak8jet1_phi = myjet.phi();
+            b_ak8jet1_eta = myjet.eta();
+            b_ak8jet1_e = myjet.e();
+            double tau21 = -1;
+            if (myjet.tau1() != 0) {
+              tau21 = myjet.tau2() / myjet.tau1();
+            }
+            b_ak8jet1_tau21 = tau21;
+            b_ak8jet1_m = myjet.m();
+            b_ak8jet1_mpruned = myjet.pruned_massCorr();
+            b_ak8jet1_csv = myjet.csv();
+            if (myjet.subjet_pruned_N() >= 2) {
+              double deta = fabs(myjet.subjet_pruned_eta()[0] - myjet.subjet_pruned_eta()[1]);
+              double dphi = fabs(myjet.subjet_pruned_phi()[0] - myjet.subjet_pruned_phi()[1]);
+              double dr = sqrt(deta*deta + dphi*dphi);
+              b_ak8jet1_subjet01_dr = dr;
+              b_ak8jet1_subjet01_deta = deta;
+              b_ak8jet1_subjet01_dphi = dphi;
+              b_ak8jet1_subjet0_pt = myjet.subjet_pruned_pt()[0];
+              b_ak8jet1_subjet1_pt = myjet.subjet_pruned_pt()[1];
+              b_ak8jet1_subjet0_csv = myjet.subjet_pruned_csv()[0];
+              b_ak8jet1_subjet1_csv = myjet.subjet_pruned_csv()[1];
+            }
+          }
         }
       }
     }
   }
   if (goodFatJets.size() >= 2) {
-    selectionBits.SetBitNumber( kTwoFatJets );
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      selectionBits[s].SetBitNumber( kTwoFatJets );
+    }
   }
   else {
     // can only continue with at least two selected fat jets
@@ -339,7 +489,9 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     for (unsigned int i = 0; i < goodFatJets.size()-1; ++i) {
       for (unsigned int j = i+1; j < goodFatJets.size(); ++j) {
         if (fabs(goodFatJets[i].eta() - goodFatJets[j].eta()) < m_jetDeltaEtaCut) {
-          selectionBits.SetBitNumber( kFatJetsDeltaEta );
+          for (unsigned int s=0;s<m_catNames.size();++s) {
+            selectionBits[s].SetBitNumber( kFatJetsDeltaEta );
+          }
           goodFatJet1Index = i;
           goodFatJet2Index = j;
         }
@@ -347,19 +499,25 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
       }
       if (goodFatJet1Index != -1) break;
     }
-    if (!(selectionBits.TestBitNumber( kFatJetsDeltaEta ))) {
+    if (!(selectionBits[0].TestBitNumber( kFatJetsDeltaEta ))) {
+      // need to have selected the two candidate jets
       moveOn = false;
     }
   }
+  
+  DESY::Jet vectorJet;
+  DESY::Jet higgsJet;
   
   if (moveOn) {
   
     // Cut 6: require dijet system to pass mass threshold
     TLorentzVector dijet = goodFatJets[goodFatJet1Index].tlv() + goodFatJets[goodFatJet2Index].tlv();
     if (dijet.M() > m_mjjCut) {
-      selectionBits.SetBitNumber( kDijetMass );
+      for (unsigned int s=0;s<m_catNames.size();++s) {
+        selectionBits[s].SetBitNumber( kDijetMass );
+      }
     }
-  
+
     // Cut 7: pass tau21 for both jets
     bool jet1PassTau21 = false;
     bool jet2PassTau21 = false;
@@ -374,29 +532,51 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
         jet2PassTau21 = true;
       }
     }
-    if (jet1PassTau21 && jet2PassTau21) {
-      selectionBits.SetBitNumber( kTau21HP );
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      if ((jet1PassTau21 && jet2PassTau21) || (m_catNames[s].find("NoTau21") != std::string::npos)) {
+        selectionBits[s].SetBitNumber( kTau21HP );
+      }
     }
   
     // Cut 8: require one of the jets to be in the V-boson mass window
     // Should later use V/Z categorisation
     // make other selected jet the Higgs jet
-    DESY::Jet vectorJet;
-    DESY::Jet higgsJet;
     if ((goodFatJets[goodFatJet1Index].pruned_massCorr() > m_mWLowerCut) && (goodFatJets[goodFatJet1Index].pruned_massCorr() <= m_mZUpperCut)) {
       vectorJet = goodFatJets[goodFatJet1Index];
       higgsJet = goodFatJets[goodFatJet2Index];
-      selectionBits.SetBitNumber( kVWindow );
+      for (unsigned int s=0;s<m_catNames.size();++s) {
+        if (m_catNames[s].find("VWindow") != std::string::npos) {
+          selectionBits[s].SetBitNumber( kVWindow );
+        }
+        if ((m_catNames[s].find("WWindow") != std::string::npos) && (vectorJet.pruned_massCorr() <= m_mWUpperCut)) {
+          selectionBits[s].SetBitNumber( kVWindow );
+        }
+        if ((m_catNames[s].find("ZWindow") != std::string::npos) && (vectorJet.pruned_massCorr() > m_mZLowerCut)) {
+          selectionBits[s].SetBitNumber( kVWindow );
+        }
+      }
     }
     else if ((goodFatJets[goodFatJet2Index].pruned_massCorr() > m_mWLowerCut) && (goodFatJets[goodFatJet2Index].pruned_massCorr() <= m_mZUpperCut)) {
       vectorJet = goodFatJets[goodFatJet2Index];
       higgsJet = goodFatJets[goodFatJet1Index];
-      selectionBits.SetBitNumber( kVWindow );
+      for (unsigned int s=0;s<m_catNames.size();++s) {
+        if (m_catNames[s].find("VWindow") != std::string::npos) {
+          selectionBits[s].SetBitNumber( kVWindow );
+        }
+        if ((m_catNames[s].find("WWindow") != std::string::npos) && (vectorJet.pruned_massCorr() <= m_mWUpperCut)) {
+          selectionBits[s].SetBitNumber( kVWindow );
+        }
+        if ((m_catNames[s].find("ZWindow") != std::string::npos) && (vectorJet.pruned_massCorr() > m_mZLowerCut)) {
+          selectionBits[s].SetBitNumber( kVWindow );
+        }
+      }
     }
 
     // Cut 9: check if Higgs candidate jet is in Higgs mass window
     if ((higgsJet.pruned_massCorr() > m_mHLowerCut) && (higgsJet.pruned_massCorr() <= m_mHUpperCut)) {
-      selectionBits.SetBitNumber( kHiggsWindow );
+      for (unsigned int s=0;s<m_catNames.size();++s) {
+        selectionBits[s].SetBitNumber( kHiggsWindow );
+      }
     }
 
     // Cut 10: require at least one of the subjets from the Higgs jet to be b-tagged
@@ -407,13 +587,17 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
         ++nTaggedSubjets;
       }
     }
-    if (nTaggedSubjets >= 1) {
-      selectionBits.SetBitNumber( kSubjetSingleTag );
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      if ((nTaggedSubjets >= 1) || (m_catNames[s].find("PreTag") != std::string::npos)) {
+        selectionBits[s].SetBitNumber( kSubjetSingleTag );
+      }
     }
   
     // Cut 11: require two subjets from the Higgs jet to be b-tagged
-    if (nTaggedSubjets >= 2) {
-      selectionBits.SetBitNumber( kSubjetDoubleTag );
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      if ((nTaggedSubjets >= 2) || (m_catNames[s].find("PreTag") != std::string::npos) || (m_catNames[s].find("SingleTag") != std::string::npos)) {
+        selectionBits[s].SetBitNumber( kSubjetDoubleTag );
+      }
     }
   
     if (!m_isData) {
@@ -491,22 +675,162 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     //   }
     // }
   
-    // fill final analysis histograms and cut info for ntuple
-    bool passed_all = true;
-    for( UInt_t icut = 0; icut < kNumCuts; ++icut ) {
-      if( selectionBits.TestBitNumber( icut ) != kTRUE ){
-        passed_all = false;
-      }
-      else{
-        if (icut) b_selection_bits|=1<<icut; 
-        if (icut-1==(unsigned)b_selection_lastcut)
-          b_selection_lastcut++;
-      }
-    }//cut loop
-  
   } // two fat jets
   
-  fillCutflow("cutflow", selectionBits, b_weight);
+  // book-keeping
+  Hist( "Events" )->Fill( 0., b_weightGen        ); // event with MC weight
+  Hist( "Events" )->Fill( 1,  b_weight           ); // event total weight
+  Hist( "Events" )->Fill( 2,  b_weightPU         ); // event pileup weight
+  // Hist( "Events" )->Fill( 3,  b_weight_elScale   ); // event electron SF weight
+  // Hist( "Events" )->Fill( 4,  b_weight_muScale   ); // event muon SF weight
+  // Hist( "Events" )->Fill( 5,  b_weight_btagScale ); // event b-tag SF weight
+  Hist( "Events" )->Fill( 9,  1                  ); // event without MC weight
+  Hist( "SumEvents" )->Fill( 0., fabs(b_weightGen)       ); // event with MC weight
+  Hist( "SumEvents" )->Fill( 1,  fabs(b_weight)          ); // event total weight
+  Hist( "SumEvents" )->Fill( 2,  fabs(b_weightPU)       ); // event pileup weight
+  // Hist( "SumEvents" )->Fill( 3,  fabs(b_weight_elScale)  ); // event electron SF weight
+  // Hist( "SumEvents" )->Fill( 4,  fabs(b_weight_muScale)  ); // event muon SF weight
+  // Hist( "SumEvents" )->Fill( 5,  fabs(b_weight_btagScale)); // event b-tag SF weight
+  // Hist( "SumEvents" )->Fill( 6,  fabs(b_weight_jvfScale));  // event JVF SF weight
+  Hist( "SumEvents" )->Fill( 9,  1                       ); // event without MC weight
+  
+  // fill cut info for ntuple
+  std::vector<bool> passed_all(m_catNames.size(), true);
+  for (unsigned int s=0;s<m_catNames.size();++s) {
+    for( UInt_t icut = 0; icut < kNumCuts; ++icut ) {
+      if( selectionBits[s].TestBitNumber( icut ) != kTRUE ){
+        passed_all[s] = false;
+      }
+      else{
+        if (icut) b_selection_bits[s]|=1<<icut; 
+        if (icut-1==(unsigned)b_selection_lastcut[s])
+          b_selection_lastcut[s]++;
+      }
+    }//cut loop
+  }//category loop
+  
+  for (unsigned int s=0;s<m_catNames.size();++s) {
+    fillCutflow("cutflow", m_catNames[s], selectionBits[s], b_weight);
+  }
+  
+  bool fillHistograms = false;
+  // need vectorJet and higgsJet to be defined
+  for (unsigned int s=0;s<m_catNames.size();++s) {
+    if (selectionBits[s].TestBitNumber( kVWindow )) {
+      fillHistograms = true;
+    }
+  }
+  
+  if (fillHistograms) {
+    // calculate a few variables before filling histograms
+    double vJet_tau21 = -1;
+    double vJet_tau31 = -1;
+    double vJet_tau32 = -1;
+    if (vectorJet.tau1() != 0) {
+      vJet_tau21 = vectorJet.tau2()/vectorJet.tau1();
+      vJet_tau31 = vectorJet.tau3()/vectorJet.tau1();
+    }
+    if (vectorJet.tau2() != 0) {
+      vJet_tau32 = vectorJet.tau3()/vectorJet.tau2();
+    }
+    int vJet_nTaggedSubjets = 0;
+    double vJet_subjet0_csv = -99;
+    double vJet_subjet1_csv = -99;
+    for (int i = 0; i < vectorJet.subjet_pruned_N(); ++i) {
+      switch(i) {
+        case 0:
+          vJet_subjet0_csv = vectorJet.subjet_pruned_csv()[i];
+          break;
+        case 1:
+          vJet_subjet1_csv = vectorJet.subjet_pruned_csv()[i];
+          break;
+      }
+      if (vectorJet.subjet_pruned_csv()[i] > m_csvMin) {
+        ++vJet_nTaggedSubjets;
+      }
+    }
+
+    double hJet_tau21 = -1;
+    double hJet_tau31 = -1;
+    double hJet_tau32 = -1;
+    if (higgsJet.tau1() != 0) {
+      hJet_tau21 = higgsJet.tau2()/higgsJet.tau1();
+      hJet_tau31 = higgsJet.tau3()/higgsJet.tau1();
+    }
+    if (higgsJet.tau2() != 0) {
+      hJet_tau32 = higgsJet.tau3()/higgsJet.tau2();
+    }
+    int hJet_nTaggedSubjets = 0;
+    double hJet_subjet0_csv = -99;
+    double hJet_subjet1_csv = -99;
+    for (int i = 0; i < higgsJet.subjet_pruned_N(); ++i) {
+      switch(i) {
+        case 0:
+          hJet_subjet0_csv = higgsJet.subjet_pruned_csv()[i];
+          break;
+        case 1:
+          hJet_subjet1_csv = higgsJet.subjet_pruned_csv()[i];
+          break;
+      }
+      if (higgsJet.subjet_pruned_csv()[i] > m_csvMin) {
+        ++hJet_nTaggedSubjets;
+      }
+    }
+
+    double deta = fabs(vectorJet.eta() - higgsJet.eta());
+    double dphi = fabs(vectorJet.phi() - higgsJet.phi());
+    double dr = sqrt(deta*deta + dphi*dphi);
+    TLorentzVector diJet = vectorJet.tlv() + higgsJet.tlv();
+
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      if (passed_all[s]) {
+        TString directory = m_catNames[s].c_str();
+        // fill all histograms
+        Hist( "vjet_pt", directory )->Fill( vectorJet.pt() , b_weight);
+        Hist( "vjet_eta", directory )->Fill( vectorJet.eta() , b_weight);
+        Hist( "vjet_phi", directory )->Fill( vectorJet.phi() , b_weight);
+        Hist( "vjet_m", directory )->Fill( vectorJet.m() , b_weight);
+        Hist( "vjet_mpruned", directory )->Fill( vectorJet.pruned_massCorr() , b_weight);
+        Hist( "vjet_tau1", directory )->Fill( vectorJet.tau1() , b_weight);
+        Hist( "vjet_tau2", directory )->Fill( vectorJet.tau2() , b_weight);
+        Hist( "vjet_tau3", directory )->Fill( vectorJet.tau3() , b_weight);
+        Hist( "vjet_tau21", directory )->Fill( vJet_tau21 , b_weight);
+        Hist( "vjet_tau31", directory )->Fill( vJet_tau31 , b_weight);
+        Hist( "vjet_tau32", directory )->Fill( vJet_tau32 , b_weight);
+        Hist( "vjet_nSubjets", directory )->Fill( vectorJet.subjet_pruned_N() , b_weight);
+        Hist( "vjet_nTaggedSubjets", directory )->Fill( vJet_nTaggedSubjets , b_weight);
+        Hist( "vjet_subjet0_csv", directory )->Fill( vJet_subjet0_csv , b_weight);
+        Hist( "vjet_subjet1_csv", directory )->Fill( vJet_subjet1_csv , b_weight);
+
+        Hist( "hjet_pt", directory )->Fill( higgsJet.pt() , b_weight);
+        Hist( "hjet_eta", directory )->Fill( higgsJet.eta() , b_weight);
+        Hist( "hjet_phi", directory )->Fill( higgsJet.phi() , b_weight);
+        Hist( "hjet_m", directory )->Fill( higgsJet.m() , b_weight);
+        Hist( "hjet_mpruned", directory )->Fill( higgsJet.pruned_massCorr() , b_weight);
+        Hist( "hjet_tau1", directory )->Fill( higgsJet.tau1() , b_weight);
+        Hist( "hjet_tau2", directory )->Fill( higgsJet.tau2() , b_weight);
+        Hist( "hjet_tau3", directory )->Fill( higgsJet.tau3() , b_weight);
+        Hist( "hjet_tau21", directory )->Fill( hJet_tau21 , b_weight);
+        Hist( "hjet_tau31", directory )->Fill( hJet_tau31 , b_weight);
+        Hist( "hjet_tau32", directory )->Fill( hJet_tau32 , b_weight);
+        Hist( "hjet_nSubjets", directory )->Fill( higgsJet.subjet_pruned_N() , b_weight);
+        Hist( "hjet_nTaggedSubjets", directory )->Fill( hJet_nTaggedSubjets , b_weight);
+        Hist( "hjet_subjet0_csv", directory )->Fill( hJet_subjet0_csv , b_weight);
+        Hist( "hjet_subjet1_csv", directory )->Fill( hJet_subjet1_csv , b_weight);
+
+        Hist( "jets_deta", directory )->Fill( deta , b_weight);
+        Hist( "jets_dphi", directory )->Fill( dphi , b_weight);
+        Hist( "jets_dr", directory )->Fill( dr , b_weight);
+
+        Hist( "dijet_pt", directory )->Fill( diJet.Pt() , b_weight);
+        Hist( "dijet_eta", directory )->Fill( diJet.Eta() , b_weight);
+        Hist( "dijet_phi", directory )->Fill( diJet.Phi() , b_weight);
+        Hist( "dijet_m", directory )->Fill( diJet.M() , b_weight);
+        Hist( "dijet_template_m", directory )->Fill( diJet.M() , b_weight);
+      }
+    }
+  }
+  
   
    return;
 
@@ -609,36 +933,58 @@ void WHAnalysis::clearBranches() {
   b_weightGen = 1.;
   b_weightPU = 1.;
   
-  b_ak8jets_pt.clear();
-  b_ak8jets_phi.clear();
-  b_ak8jets_eta.clear();
-  b_ak8jets_e.clear();
-  b_ak8jets_tau21.clear();
-  b_ak8jets_m.clear();
-  b_ak8jets_mpruned.clear();
-  b_ak8jets_csv.clear();
-  b_ak8jets_subjets_dr.clear();
-  b_ak8jets_subjets_deta.clear();
-  b_ak8jets_subjets_dphi.clear();
-  b_ak8jets_subjet1_pt.clear();
-  b_ak8jets_subjet2_pt.clear();
-  b_ak8jets_subjet1_csv.clear();
-  b_ak8jets_subjet2_csv.clear();
+  b_ak8jet0_pt = -99;
+  b_ak8jet0_phi = -99;
+  b_ak8jet0_eta = -99;
+  b_ak8jet0_e = -99;
+  b_ak8jet0_tau21 = -99;
+  b_ak8jet0_m = -99;
+  b_ak8jet0_mpruned = -99;
+  b_ak8jet0_csv = -99;
+  b_ak8jet1_pt = -99;
+  b_ak8jet1_phi = -99;
+  b_ak8jet1_eta = -99;
+  b_ak8jet1_e = -99;
+  b_ak8jet1_tau21 = -99;
+  b_ak8jet1_m = -99;
+  b_ak8jet1_mpruned = -99;
+  b_ak8jet1_csv = -99;
+  b_ak8jet0_subjet01_dr = -99;
+  b_ak8jet0_subjet01_deta = -99;
+  b_ak8jet0_subjet01_dphi = -99;
+  b_ak8jet0_subjet0_pt = -99;
+  b_ak8jet0_subjet1_pt = -99;
+  b_ak8jet0_subjet0_csv = -99;
+  b_ak8jet0_subjet1_csv = -99;
+  b_ak8jet1_subjet01_dr = -99;
+  b_ak8jet1_subjet01_deta = -99;
+  b_ak8jet1_subjet01_dphi = -99;
+  b_ak8jet1_subjet0_pt = -99;
+  b_ak8jet1_subjet1_pt = -99;
+  b_ak8jet1_subjet0_csv = -99;
+  b_ak8jet1_subjet1_csv = -99;
   
-  b_selection_bits = 0;
-  b_selection_lastcut = 0;
+  b_selection_bits.clear();
+  b_selection_lastcut.clear();
   
 }
 
-void WHAnalysis::fillCutflow( const std::string histName, const TBits& cutmap, const Double_t weight ) {
+void WHAnalysis::fillCutflow( const std::string histName, const std::string dirName, const TBits& cutmap, const Double_t weight ) {
 
+  bool writeNtuple = false;
   // sequential cut flow -> stop at first failed cut
   for( UInt_t i = 0; i < cutmap.GetNbits(); ++i ) {
     if( cutmap.TestBitNumber( i ) ) {
-      Hist( "cutflow" )->Fill( i+1, weight );
+      Hist( histName.c_str(), dirName.c_str() )->Fill( i+1, weight );
+      if (i == (unsigned int) m_ntupleLevel) {
+        writeNtuple = true;
+      }
     } else {
       break;
     }
+  }
+  if (!writeNtuple) {
+    throw SError( SError::SkipEvent );
   }
 }
 

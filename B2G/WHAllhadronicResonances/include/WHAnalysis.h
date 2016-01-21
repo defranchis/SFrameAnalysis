@@ -105,7 +105,7 @@ public:
    virtual void clearBranches();
    
    /// Function to fill cut flow
-   virtual void fillCutflow( const std::string histName, const TBits& cutmap, const Double_t weight );
+   virtual void fillCutflow( const std::string histName, const std::string dirName, const TBits& cutmap, const Double_t weight );
 
 private:
    //
@@ -136,6 +136,7 @@ private:
   // naming
   std::string m_recoTreeName;       ///< name of tree with reconstructed objects in ntuple
   std::string m_outputTreeName;    ///< name of output tree
+  int m_ntupleLevel;               ///< cut at which branches for ntuple are written out
   std::string m_jetAK4Name;            ///< name of AK4 jet collection in tree with reconstructed objects
   std::string m_jetAK8Name;       ///< name of AK8 jet collection in tree with reconstructed objects
   std::string m_electronName;       ///< name of electron collection in tree with reconstructed objects
@@ -183,6 +184,7 @@ private:
   
   // other variables needed
   std::vector<std::string> m_triggerNames;
+  std::vector<std::string> m_catNames;
   
   ///
   /// branches
@@ -191,24 +193,40 @@ private:
   double b_weightGen;
   double b_weightPU;
   
-  std::vector<Double_t>   b_ak8jets_pt;
-  std::vector<Double_t>   b_ak8jets_phi;
-  std::vector<Double_t>   b_ak8jets_eta;
-  std::vector<Double_t>   b_ak8jets_e;
-  std::vector<Double_t>   b_ak8jets_tau21;
-  std::vector<Double_t>   b_ak8jets_m;
-  std::vector<Double_t>   b_ak8jets_mpruned;
-  std::vector<Double_t>   b_ak8jets_csv;
-  std::vector<Double_t>   b_ak8jets_subjets_dr;
-  std::vector<Double_t>   b_ak8jets_subjets_deta;
-  std::vector<Double_t>   b_ak8jets_subjets_dphi;
-  std::vector<Double_t>   b_ak8jets_subjet1_pt;
-  std::vector<Double_t>   b_ak8jets_subjet2_pt;
-  std::vector<Double_t>   b_ak8jets_subjet1_csv;
-  std::vector<Double_t>   b_ak8jets_subjet2_csv;
+  // use flat variables for direct input in TMVA
+  Double_t   b_ak8jet0_pt;
+  Double_t   b_ak8jet0_phi;
+  Double_t   b_ak8jet0_eta;
+  Double_t   b_ak8jet0_e;
+  Double_t   b_ak8jet0_tau21;
+  Double_t   b_ak8jet0_m;
+  Double_t   b_ak8jet0_mpruned;
+  Double_t   b_ak8jet0_csv;
+  Double_t   b_ak8jet1_pt;
+  Double_t   b_ak8jet1_phi;
+  Double_t   b_ak8jet1_eta;
+  Double_t   b_ak8jet1_e;
+  Double_t   b_ak8jet1_tau21;
+  Double_t   b_ak8jet1_m;
+  Double_t   b_ak8jet1_mpruned;
+  Double_t   b_ak8jet1_csv;
+  Double_t   b_ak8jet0_subjet01_dr;
+  Double_t   b_ak8jet0_subjet01_deta;
+  Double_t   b_ak8jet0_subjet01_dphi;
+  Double_t   b_ak8jet0_subjet0_pt;
+  Double_t   b_ak8jet0_subjet1_pt;
+  Double_t   b_ak8jet0_subjet0_csv;
+  Double_t   b_ak8jet0_subjet1_csv;
+  Double_t   b_ak8jet1_subjet01_dr;
+  Double_t   b_ak8jet1_subjet01_deta;
+  Double_t   b_ak8jet1_subjet01_dphi;
+  Double_t   b_ak8jet1_subjet0_pt;
+  Double_t   b_ak8jet1_subjet1_pt;
+  Double_t   b_ak8jet1_subjet0_csv;
+  Double_t   b_ak8jet1_subjet1_csv;
   
-  Int_t      b_selection_bits;
-  Int_t      b_selection_lastcut;
+  std::vector<Int_t>      b_selection_bits;
+  std::vector<Int_t>      b_selection_lastcut;
 
    // Macro adding the functions for dictionary generation
    ClassDef( WHAnalysis, 0 );
