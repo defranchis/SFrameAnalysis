@@ -11,6 +11,11 @@
       <InputTree Name="ntuplizer/tree" />
 			<OutputTree Name="analysis" />
 		</InputData>
+    <InputData Lumi="0.0" NEventsMax="-1" Type="WHqqbb" Version="3000">
+      <In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/t3groups/uniz-higgs/Spring15/WprimeToWhToWhadhbb_narrow_M-3000_13TeV-madgraph/EXOVVTree_WprimeToWhToWhadhbb_narrow_M-3000_13TeV-madgraph_1.root" Lumi="1.0"/>
+      <InputTree Name="ntuplizer/tree" />
+			<OutputTree Name="analysis" />
+		</InputData>
 		<UserConfig>
 			<Item Name="RecoTreeName" Value="tree"/>
       <Item Name="JetPtCut" Value="200."/>
