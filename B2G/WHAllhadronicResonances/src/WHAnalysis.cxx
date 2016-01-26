@@ -20,9 +20,9 @@ const std::string WHAnalysis::kCutName[ WHAnalysis::kNumCuts ] = {
   "TwoFatJets",            // C4
   "FatJetsDeltaEta",       // C5
   "DijetMass",             // C6
-  "Tau21HP",               // C7
-  "VWindow",               // C8
-  "HiggsWindow",           // C9
+  "VWindow",               // C7
+  "HiggsWindow",           // C8
+  "Tau21",                 // C9
   "SubjetSingleTag",       // C10
   "SubjetDoubleTag"        // C11
 };
@@ -72,7 +72,7 @@ WHAnalysis::WHAnalysis()
    DeclareProperty( "MHLowerCut",                m_mHLowerCut             = 105 );
    DeclareProperty( "MHUpperCut",                m_mHUpperCut             = 135 );
    
-   DeclareProperty( "CSVMin",                m_csvMin             = 0.3 );
+   DeclareProperty( "CSVMin",                m_csvMin             = 0.605 );
    
    DeclareProperty( "ElectronPtCut",                 m_electronPtCut              = 200. );
    DeclareProperty( "ElectronEtaCut",                m_electronEtaCut             = 2.4 );
@@ -138,17 +138,42 @@ void WHAnalysis::BeginCycle() throw( SError ) {
   // set names for various selections
   m_catNames.clear();
   m_catNames.push_back("VWindow_NoTau21_SubjetPreTag");
-  m_catNames.push_back("VWindow_NoTau21_SubjetSingleTag");
+  m_catNames.push_back("VWindow_NoTau21_SubjetNoTag");
+  m_catNames.push_back("VWindow_NoTau21_SubjetSingleTagIncl");
+  m_catNames.push_back("VWindow_NoTau21_SubjetSingleTagExcl");
   m_catNames.push_back("VWindow_NoTau21_SubjetDoubleTag");
-  m_catNames.push_back("VWindow_SubjetPreTag");
-  m_catNames.push_back("VWindow_SubjetSingleTag");
-  m_catNames.push_back("VWindow_SubjetDoubleTag");
-  m_catNames.push_back("WWindow_SubjetPreTag");
-  m_catNames.push_back("WWindow_SubjetSingleTag");
-  m_catNames.push_back("WWindow_SubjetDoubleTag");
-  m_catNames.push_back("ZWindow_SubjetPreTag");
-  m_catNames.push_back("ZWindow_SubjetSingleTag");
-  m_catNames.push_back("ZWindow_SubjetDoubleTag");
+  
+  m_catNames.push_back("VWindow_Tau21LP_SubjetPreTag");
+  m_catNames.push_back("VWindow_Tau21LP_SubjetNoTag");
+  m_catNames.push_back("VWindow_Tau21LP_SubjetSingleTagIncl");
+  m_catNames.push_back("VWindow_Tau21LP_SubjetSingleTagExcl");
+  m_catNames.push_back("VWindow_Tau21LP_SubjetDoubleTag");
+  m_catNames.push_back("WWindow_Tau21LP_SubjetPreTag");
+  m_catNames.push_back("WWindow_Tau21LP_SubjetNoTag");
+  m_catNames.push_back("WWindow_Tau21LP_SubjetSingleTagIncl");
+  m_catNames.push_back("WWindow_Tau21LP_SubjetSingleTagExcl");
+  m_catNames.push_back("WWindow_Tau21LP_SubjetDoubleTag");
+  m_catNames.push_back("ZWindow_Tau21LP_SubjetPreTag");
+  m_catNames.push_back("ZWindow_Tau21LP_SubjetNoTag");
+  m_catNames.push_back("ZWindow_Tau21LP_SubjetSingleTagIncl");
+  m_catNames.push_back("ZWindow_Tau21LP_SubjetSingleTagExcl");
+  m_catNames.push_back("ZWindow_Tau21LP_SubjetDoubleTag");
+  
+  m_catNames.push_back("VWindow_Tau21HP_SubjetPreTag");
+  m_catNames.push_back("VWindow_Tau21HP_SubjetNoTag");
+  m_catNames.push_back("VWindow_Tau21HP_SubjetSingleTagIncl");
+  m_catNames.push_back("VWindow_Tau21HP_SubjetSingleTagExcl");
+  m_catNames.push_back("VWindow_Tau21HP_SubjetDoubleTag");
+  m_catNames.push_back("WWindow_Tau21HP_SubjetPreTag");
+  m_catNames.push_back("WWindow_Tau21HP_SubjetNoTag");
+  m_catNames.push_back("WWindow_Tau21HP_SubjetSingleTagIncl");
+  m_catNames.push_back("WWindow_Tau21HP_SubjetSingleTagExcl");
+  m_catNames.push_back("WWindow_Tau21HP_SubjetDoubleTag");
+  m_catNames.push_back("ZWindow_Tau21HP_SubjetPreTag");
+  m_catNames.push_back("ZWindow_Tau21HP_SubjetNoTag");
+  m_catNames.push_back("ZWindow_Tau21HP_SubjetSingleTagIncl");
+  m_catNames.push_back("ZWindow_Tau21HP_SubjetSingleTagExcl");
+  m_catNames.push_back("ZWindow_Tau21HP_SubjetDoubleTag");
   
    return;
 
@@ -269,7 +294,7 @@ void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
     // cutflow
     Book( TH1F( "cutflow", "cutflow", 20, 0.5, 20.5 ), directory );  
     // kinematics histograms
-    Book( TH1F( "vjet_pt", "Vjet p_{T};Vjet p_{T} [GeV]", 100, 0, 1000 ), directory ); 
+    Book( TH1F( "vjet_pt", "Vjet p_{T};Vjet p_{T} [GeV]", 200, 0, 2000 ), directory ); 
     Book( TH1F( "vjet_eta", "Vjet #eta;Vjet #eta", 50, -2.5, 2.5 ), directory ); 
     Book( TH1F( "vjet_phi", "Vjet #phi;Vjet #phi", 50, -3.15, 3.15 ), directory ); 
     Book( TH1F( "vjet_m", "Vjet m;Vjet m [GeV]", 40, 0, 200 ), directory ); 
@@ -282,10 +307,10 @@ void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
     Book( TH1F( "vjet_tau32", "Vjet #tau_{32};Vjet #tau_{32}", 50, 0, 1 ), directory ); 
     Book( TH1F( "vjet_nSubjets", "Vjet N subjets;Vjet N subjets", 10, -.5, 9.5 ), directory ); 
     Book( TH1F( "vjet_nTaggedSubjets", "Vjet N tagged subjets;Vjet N tagged subjets", 10, -.5, 9.5 ), directory ); 
-    Book( TH1F( "vjet_subjet0_csv", "Vjet subjet 0 CSV;Vjet subjet0 CSV", 100, -1, 1 ), directory ); 
-    Book( TH1F( "vjet_subjet1_csv", "Vjet subjet 1 CSV;Vjet subjet1 CSV", 100, -1, 1 ), directory ); 
+    Book( TH1F( "vjet_subjet0_csv", "Vjet subjet 0 CSV;Vjet subjet0 CSV", 50, 0, 1 ), directory ); 
+    Book( TH1F( "vjet_subjet1_csv", "Vjet subjet 1 CSV;Vjet subjet1 CSV", 50, 0, 1 ), directory ); 
 
-    Book( TH1F( "hjet_pt", "Hjet p_{T};Hjet p_{T} [GeV]", 100, 0, 1000 ), directory ); 
+    Book( TH1F( "hjet_pt", "Hjet p_{T};Hjet p_{T} [GeV]", 200, 0, 2000 ), directory ); 
     Book( TH1F( "hjet_eta", "Hjet #eta;Hjet #eta", 50, -2.5, 2.5 ), directory ); 
     Book( TH1F( "hjet_phi", "Hjet #phi;Hjet #phi", 50, -3.15, 3.15 ), directory ); 
     Book( TH1F( "hjet_m", "Hjet m;Hjet m [GeV]", 40, 0, 200 ), directory ); 
@@ -308,7 +333,7 @@ void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
     Book( TH1F( "dijet_pt", "dijet p_{T};dijet p_{T} [GeV]", 100, 0, 1000 ), directory ); 
     Book( TH1F( "dijet_eta", "dijet #eta;dijet #eta", 50, -2.5, 2.5 ), directory ); 
     Book( TH1F( "dijet_phi", "dijet #phi;Vdijet #phi", 50, -3.15, 3.15 ), directory ); 
-    Book( TH1F( "dijet_m", "dijet m;dijet m [GeV]", 300, 0, 3000 ), directory );
+    Book( TH1F( "dijet_m", "dijet m;dijet m [GeV]", 400, 0, 4000 ), directory );
     Book( TH1F( "dijet_template_m", "dijet m;dijet m [GeV]", 7000, 0, 7000 ), directory ); 
   }
   
@@ -322,7 +347,7 @@ void WHAnalysis::EndInputData( const SInputData& ) throw( SError ) {
   // Final analysis of cut flow
   //
   
-  TString defaultCutflow = "VWindow_SubjetDoubleTag";
+  TString defaultCutflow = "VWindow_Tau21HP_SubjetDoubleTag";
   m_logger << INFO << "cut flow:" << SLogger::endmsg;
   m_logger << INFO << Form( "Cut\t%25.25s\tEvents\tRelEff\tAbsEff", "Name" ) << SLogger::endmsg;
   
@@ -480,6 +505,8 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     moveOn = false;
   }
   
+  m_logger << VERBOSE << "kTwoFatJets" << SLogger::endmsg;
+  
   int goodFatJet1Index = -1;
   int goodFatJet2Index = -1;
   
@@ -508,7 +535,11 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
   DESY::Jet vectorJet;
   DESY::Jet higgsJet;
   
-  if (moveOn) {
+  m_logger << VERBOSE << "kFatJetsDeltaEta" << SLogger::endmsg;
+  
+  if (moveOn) { // need to have selected the two candidate jets
+    
+    moveOn = false;
   
     // Cut 6: require dijet system to pass mass threshold
     TLorentzVector dijet = goodFatJets[goodFatJet1Index].tlv() + goodFatJets[goodFatJet2Index].tlv();
@@ -517,33 +548,15 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
         selectionBits[s].SetBitNumber( kDijetMass );
       }
     }
+    
+    m_logger << VERBOSE << "kDijetMass" << SLogger::endmsg;
 
-    // Cut 7: pass tau21 for both jets
-    bool jet1PassTau21 = false;
-    bool jet2PassTau21 = false;
-  
-    if (goodFatJets[goodFatJet1Index].tau1() != 0) {
-      if ((goodFatJets[goodFatJet1Index].tau2() / goodFatJets[goodFatJet1Index].tau1()) < m_tau21HPCut) {
-        jet1PassTau21 = true;
-      }
-    }
-    if (goodFatJets[goodFatJet2Index].tau1() != 0) {
-      if ((goodFatJets[goodFatJet2Index].tau2() / goodFatJets[goodFatJet2Index].tau1()) < m_tau21HPCut) {
-        jet2PassTau21 = true;
-      }
-    }
-    for (unsigned int s=0;s<m_catNames.size();++s) {
-      if ((jet1PassTau21 && jet2PassTau21) || (m_catNames[s].find("NoTau21") != std::string::npos)) {
-        selectionBits[s].SetBitNumber( kTau21HP );
-      }
-    }
-  
-    // Cut 8: require one of the jets to be in the V-boson mass window
-    // Should later use V/Z categorisation
+    // Cut 7: require one of the jets to be in the V-boson mass window
     // make other selected jet the Higgs jet
     if ((goodFatJets[goodFatJet1Index].pruned_massCorr() > m_mWLowerCut) && (goodFatJets[goodFatJet1Index].pruned_massCorr() <= m_mZUpperCut)) {
       vectorJet = goodFatJets[goodFatJet1Index];
       higgsJet = goodFatJets[goodFatJet2Index];
+      moveOn = true;
       for (unsigned int s=0;s<m_catNames.size();++s) {
         if (m_catNames[s].find("VWindow") != std::string::npos) {
           selectionBits[s].SetBitNumber( kVWindow );
@@ -559,6 +572,7 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     else if ((goodFatJets[goodFatJet2Index].pruned_massCorr() > m_mWLowerCut) && (goodFatJets[goodFatJet2Index].pruned_massCorr() <= m_mZUpperCut)) {
       vectorJet = goodFatJets[goodFatJet2Index];
       higgsJet = goodFatJets[goodFatJet1Index];
+      moveOn = true;
       for (unsigned int s=0;s<m_catNames.size();++s) {
         if (m_catNames[s].find("VWindow") != std::string::npos) {
           selectionBits[s].SetBitNumber( kVWindow );
@@ -571,15 +585,56 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
         }
       }
     }
+  }
+  
+  if (moveOn) { // move on only if V- and H-jets identified
+    
+    m_logger << VERBOSE << "kVWindow" << SLogger::endmsg;
+    
+    m_logger << VERBOSE << higgsJet << SLogger::endmsg;    
 
-    // Cut 9: check if Higgs candidate jet is in Higgs mass window
+    // Cut 8: check if Higgs candidate jet is in Higgs mass window
     if ((higgsJet.pruned_massCorr() > m_mHLowerCut) && (higgsJet.pruned_massCorr() <= m_mHUpperCut)) {
       for (unsigned int s=0;s<m_catNames.size();++s) {
         selectionBits[s].SetBitNumber( kHiggsWindow );
       }
     }
+    
+    m_logger << VERBOSE << "kHiggsWindow" << SLogger::endmsg;
 
+    m_logger << VERBOSE << vectorJet << SLogger::endmsg;    
+
+    // Cut 9: pass tau21 for V-candidate jet
+    if (vectorJet.tau1() != 0) {
+      double tau21 = vectorJet.tau2() / vectorJet.tau1();
+      m_logger << VERBOSE << tau21 << SLogger::endmsg;
+      if (tau21 < m_tau21HPCut) {
+        for (unsigned int s=0;s<m_catNames.size();++s) {
+          if ((m_catNames[s].find("Tau21HP") != std::string::npos)) {
+            m_logger << VERBOSE << m_catNames[s] << SLogger::endmsg;
+            selectionBits[s].SetBitNumber( kTau21 );
+          }
+        }
+      }
+      else if ((tau21 >= m_tau21HPCut) && (tau21 < m_tau21LPCut)) {
+        for (unsigned int s=0;s<m_catNames.size();++s) {
+          if ((m_catNames[s].find("Tau21LP") != std::string::npos)) {
+            m_logger << VERBOSE << m_catNames[s] << SLogger::endmsg;
+            selectionBits[s].SetBitNumber( kTau21 );
+          }
+        }
+      }
+    }
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+      if (m_catNames[s].find("NoTau21") != std::string::npos) {
+        selectionBits[s].SetBitNumber( kTau21 );
+      }
+    }
+    
+    m_logger << VERBOSE << "kTau21" << SLogger::endmsg;
+    
     // Cut 10: require at least one of the subjets from the Higgs jet to be b-tagged
+    // Cut 11: require two subjets from the Higgs jet to be b-tagged
     // count number of b-tagged subjets
     int nTaggedSubjets = 0;
     for (int i = 0; i < higgsJet.subjet_pruned_N(); ++i) {
@@ -588,18 +643,40 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
       }
     }
     for (unsigned int s=0;s<m_catNames.size();++s) {
-      if ((nTaggedSubjets >= 1) || (m_catNames[s].find("PreTag") != std::string::npos)) {
-        selectionBits[s].SetBitNumber( kSubjetSingleTag );
+      if (m_catNames[s].find("NoTag") != std::string::npos) {
+        if (nTaggedSubjets == 0) {
+          selectionBits[s].SetBitNumber( kSubjetSingleTag );
+          selectionBits[s].SetBitNumber( kSubjetDoubleTag );
+        }
       }
-    }
-  
-    // Cut 11: require two subjets from the Higgs jet to be b-tagged
-    for (unsigned int s=0;s<m_catNames.size();++s) {
-      if ((nTaggedSubjets >= 2) || (m_catNames[s].find("PreTag") != std::string::npos) || (m_catNames[s].find("SingleTag") != std::string::npos)) {
+      else if (m_catNames[s].find("Pretag") != std::string::npos) {
+        selectionBits[s].SetBitNumber( kSubjetSingleTag );
         selectionBits[s].SetBitNumber( kSubjetDoubleTag );
       }
+      else if (m_catNames[s].find("SingleTagExcl") != std::string::npos) {
+        if (nTaggedSubjets == 1) {
+          selectionBits[s].SetBitNumber( kSubjetSingleTag );
+          selectionBits[s].SetBitNumber( kSubjetDoubleTag );
+        }
+      }
+      else if (m_catNames[s].find("SingleTagIncl") != std::string::npos) {
+        if (nTaggedSubjets >= 1) {
+          selectionBits[s].SetBitNumber( kSubjetSingleTag );
+          selectionBits[s].SetBitNumber( kSubjetDoubleTag );
+        }
+      }
+      else if (nTaggedSubjets >= 1) {
+        // these will all be DoubleTag
+        selectionBits[s].SetBitNumber( kSubjetSingleTag );
+        if (nTaggedSubjets >= 2) {
+          selectionBits[s].SetBitNumber( kSubjetDoubleTag );
+        }
+      }
     }
+    
   
+    // selection done
+    m_logger << VERBOSE << "selection done" << SLogger::endmsg;
     if (!m_isData) {
       b_weight = getEventWeight();
     }
@@ -721,6 +798,8 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     }
   }
   
+  m_logger << VERBOSE << "before fillHistograms" << SLogger::endmsg;
+  
   if (fillHistograms) {
     // calculate a few variables before filling histograms
     double vJet_tau21 = -1;
@@ -781,9 +860,12 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     double dphi = fabs(vectorJet.phi() - higgsJet.phi());
     double dr = sqrt(deta*deta + dphi*dphi);
     TLorentzVector diJet = vectorJet.tlv() + higgsJet.tlv();
+    
+    m_logger << VERBOSE << "category loopfillHistograms" << SLogger::endmsg;
 
     for (unsigned int s=0;s<m_catNames.size();++s) {
       if (passed_all[s]) {
+        m_logger << VERBOSE << m_catNames[s] << SLogger::endmsg;
         TString directory = m_catNames[s].c_str();
         // fill all histograms
         Hist( "vjet_pt", directory )->Fill( vectorJet.pt() , b_weight);
@@ -830,7 +912,7 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
       }
     }
   }
-  
+  m_logger << VERBOSE << "return" << SLogger::endmsg;
   
    return;
 

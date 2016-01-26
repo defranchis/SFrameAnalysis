@@ -57,9 +57,9 @@ public:
     kTwoFatJets,            // C4
     kFatJetsDeltaEta,       // C5
     kDijetMass,             // C6
-    kTau21HP,               // C7
-    kVWindow,               // C8
-    kHiggsWindow,           // C9
+    kVWindow,               // C7
+    kHiggsWindow,           // C8
+    kTau21,                 // C9
     kSubjetSingleTag,       // C10
     kSubjetDoubleTag,       // C11
     kNumCuts                // last!
