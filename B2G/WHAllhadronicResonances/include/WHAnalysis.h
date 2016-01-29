@@ -106,6 +106,12 @@ public:
    
    /// Function to fill cut flow
    virtual void fillCutflow( const std::string histName, const std::string dirName, const TBits& cutmap, const Double_t weight );
+   
+   /// Function to book histograms
+   virtual void bookHistograms( const TString& directory );
+   
+   /// Function to fill histograms
+   virtual void fillHistograms( const TString& directory, const DESY::Jet& vectorJet, const DESY::Jet& higgsJet, const TLorentzVector& diJet, const double& vJet_tau21, const double& vJet_tau31, const double& vJet_tau32, const int& vJet_nTaggedSubjets, const double& vJet_subjet0_csv, const double& vJet_subjet1_csv, const double& hJet_tau21, const double& hJet_tau31, const double& hJet_tau32, const int& hJet_nTaggedSubjets, const double& hJet_subjet0_csv, const double& hJet_subjet1_csv, const double& deta, const double& dphi, const double& dr );
 
 private:
    //
@@ -158,6 +164,7 @@ private:
   // substructure cuts
   double      m_tau21HPCut;
   double      m_tau21LPCut;
+  double      m_mVLowSidebandCut;
   double      m_mWLowerCut;
   double      m_mWUpperCut;
   double      m_mZLowerCut;
@@ -192,6 +199,12 @@ private:
   double b_weight;
   double b_weightGen;
   double b_weightPU;
+  double b_weightBtag;
+  
+  // event variables
+  int b_runNumber;
+  int b_eventNumber;
+  int b_lumiBlock;
   
   // use flat variables for direct input in TMVA
   Double_t   b_ak8jet0_pt;

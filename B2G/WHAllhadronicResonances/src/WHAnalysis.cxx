@@ -65,6 +65,7 @@ WHAnalysis::WHAnalysis()
 
    DeclareProperty( "Tau21HPCut",                m_tau21HPCut             = 0.45 );
    DeclareProperty( "Tau21LPCut",                m_tau21LPCut             = 0.75 );
+   DeclareProperty( "MVLowSidebandCut",          m_mVLowSidebandCut       = 40 );
    DeclareProperty( "MWLowerCut",                m_mWLowerCut             = 65 );
    DeclareProperty( "MWUpperCut",                m_mWUpperCut             = 85 );
    DeclareProperty( "MZLowerCut",                m_mZLowerCut             = 85 );
@@ -175,6 +176,44 @@ void WHAnalysis::BeginCycle() throw( SError ) {
   m_catNames.push_back("ZWindow_Tau21HP_SubjetSingleTagExcl");
   m_catNames.push_back("ZWindow_Tau21HP_SubjetDoubleTag");
   
+  // low sideband for vector boson
+  m_catNames.push_back("VLowSB_NoTau21_SubjetPreTag");
+  m_catNames.push_back("VLowSB_NoTau21_SubjetNoTag");
+  m_catNames.push_back("VLowSB_NoTau21_SubjetSingleTagIncl");
+  m_catNames.push_back("VLowSB_NoTau21_SubjetSingleTagExcl");
+  m_catNames.push_back("VLowSB_NoTau21_SubjetDoubleTag");
+  
+  m_catNames.push_back("VLowSB_Tau21LP_SubjetPreTag");
+  m_catNames.push_back("VLowSB_Tau21LP_SubjetNoTag");
+  m_catNames.push_back("VLowSB_Tau21LP_SubjetSingleTagIncl");
+  m_catNames.push_back("VLowSB_Tau21LP_SubjetSingleTagExcl");
+  m_catNames.push_back("VLowSB_Tau21LP_SubjetDoubleTag");
+  
+  m_catNames.push_back("VLowSB_Tau21HP_SubjetPreTag");
+  m_catNames.push_back("VLowSB_Tau21HP_SubjetNoTag");
+  m_catNames.push_back("VLowSB_Tau21HP_SubjetSingleTagIncl");
+  m_catNames.push_back("VLowSB_Tau21HP_SubjetSingleTagExcl");
+  m_catNames.push_back("VLowSB_Tau21HP_SubjetDoubleTag");
+  
+  // low sideband for Higgs boson
+  m_catNames.push_back("VWindow_HLowSB_NoTau21_SubjetPreTag");
+  m_catNames.push_back("VWindow_HLowSB_NoTau21_SubjetNoTag");
+  m_catNames.push_back("VWindow_HLowSB_NoTau21_SubjetSingleTagIncl");
+  m_catNames.push_back("VWindow_HLowSB_NoTau21_SubjetSingleTagExcl");
+  m_catNames.push_back("VWindow_HLowSB_NoTau21_SubjetDoubleTag");
+  
+  m_catNames.push_back("WWindow_HLowSB_Tau21LP_SubjetPreTag");
+  m_catNames.push_back("WWindow_HLowSB_Tau21LP_SubjetNoTag");
+  m_catNames.push_back("WWindow_HLowSB_Tau21LP_SubjetSingleTagIncl");
+  m_catNames.push_back("WWindow_HLowSB_Tau21LP_SubjetSingleTagExcl");
+  m_catNames.push_back("WWindow_HLowSB_Tau21LP_SubjetDoubleTag");
+  
+  m_catNames.push_back("ZWindow_HLowSB_Tau21HP_SubjetPreTag");
+  m_catNames.push_back("ZWindow_HLowSB_Tau21HP_SubjetNoTag");
+  m_catNames.push_back("ZWindow_HLowSB_Tau21HP_SubjetSingleTagIncl");
+  m_catNames.push_back("ZWindow_HLowSB_Tau21HP_SubjetSingleTagExcl");
+  m_catNames.push_back("ZWindow_HLowSB_Tau21HP_SubjetDoubleTag");
+  
    return;
 
 }
@@ -207,6 +246,8 @@ void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
 
   m_logger << INFO << "Tau21HPCut:           " <<                m_tau21HPCut << SLogger::endmsg;
   m_logger << INFO << "Tau21LPCut:           " <<                m_tau21LPCut << SLogger::endmsg;
+  
+  m_logger << INFO << "MVLowSidebandCut:     " <<                m_mVLowSidebandCut << SLogger::endmsg;
   m_logger << INFO << "MWLowerCut:           " <<                m_mWLowerCut << SLogger::endmsg;
   m_logger << INFO << "MWUpperCut:           " <<                m_mWUpperCut << SLogger::endmsg;
   m_logger << INFO << "MZLowerCut:           " <<                m_mZLowerCut << SLogger::endmsg;
@@ -243,6 +284,11 @@ void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
   DeclareVariable(b_weight              , "weight"                 );
   DeclareVariable(b_weightGen           , "weightGen"              );
   DeclareVariable(b_weightPU            , "weightPU"               );
+  DeclareVariable(b_weightBtag          , "weightBtag"             );
+  
+  DeclareVariable( b_runNumber,           "b_runNumber"            );
+  DeclareVariable( b_eventNumber,         "b_eventNumber"          );
+  DeclareVariable( b_lumiBlock,           "b_lumiBlock"            );
   
   DeclareVariable( b_ak8jet0_pt,           "b_ak8jet0_pt"          );
   DeclareVariable( b_ak8jet0_phi,          "b_ak8jet0_phi"         );
@@ -293,48 +339,7 @@ void WHAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
     TString directory = m_catNames[s].c_str();
     // cutflow
     Book( TH1F( "cutflow", "cutflow", 20, 0.5, 20.5 ), directory );  
-    // kinematics histograms
-    Book( TH1F( "vjet_pt", "Vjet p_{T};Vjet p_{T} [GeV]", 200, 0, 2000 ), directory ); 
-    Book( TH1F( "vjet_eta", "Vjet #eta;Vjet #eta", 50, -2.5, 2.5 ), directory ); 
-    Book( TH1F( "vjet_phi", "Vjet #phi;Vjet #phi", 50, -3.15, 3.15 ), directory ); 
-    Book( TH1F( "vjet_m", "Vjet m;Vjet m [GeV]", 40, 0, 200 ), directory ); 
-    Book( TH1F( "vjet_mpruned", "Vjet pruned m;Vjet pruned m [GeV]", 40, 0, 200 ), directory ); 
-    Book( TH1F( "vjet_tau1", "Vjet #tau_{1};Vjet #tau_{1}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "vjet_tau2", "Vjet #tau_{2};Vjet #tau_{2}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "vjet_tau3", "Vjet #tau_{3};Vjet #tau_{3}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "vjet_tau21", "Vjet #tau_{21};Vjet #tau_{21}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "vjet_tau31", "Vjet #tau_{31};Vjet #tau_{31}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "vjet_tau32", "Vjet #tau_{32};Vjet #tau_{32}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "vjet_nSubjets", "Vjet N subjets;Vjet N subjets", 10, -.5, 9.5 ), directory ); 
-    Book( TH1F( "vjet_nTaggedSubjets", "Vjet N tagged subjets;Vjet N tagged subjets", 10, -.5, 9.5 ), directory ); 
-    Book( TH1F( "vjet_subjet0_csv", "Vjet subjet 0 CSV;Vjet subjet0 CSV", 50, 0, 1 ), directory ); 
-    Book( TH1F( "vjet_subjet1_csv", "Vjet subjet 1 CSV;Vjet subjet1 CSV", 50, 0, 1 ), directory ); 
-
-    Book( TH1F( "hjet_pt", "Hjet p_{T};Hjet p_{T} [GeV]", 200, 0, 2000 ), directory ); 
-    Book( TH1F( "hjet_eta", "Hjet #eta;Hjet #eta", 50, -2.5, 2.5 ), directory ); 
-    Book( TH1F( "hjet_phi", "Hjet #phi;Hjet #phi", 50, -3.15, 3.15 ), directory ); 
-    Book( TH1F( "hjet_m", "Hjet m;Hjet m [GeV]", 40, 0, 200 ), directory ); 
-    Book( TH1F( "hjet_mpruned", "Hjet pruned m;Hjet pruned m [GeV]", 40, 0, 200 ), directory ); 
-    Book( TH1F( "hjet_tau1", "Hjet #tau_{1};Hjet #tau_{1}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "hjet_tau2", "Hjet #tau_{2};Hjet #tau_{2}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "hjet_tau3", "Hjet #tau_{3};Hjet #tau_{3}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "hjet_tau21", "Hjet #tau_{21};Hjet #tau_{21}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "hjet_tau31", "Hjet #tau_{31};Hjet #tau_{31}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "hjet_tau32", "Hjet #tau_{32};Hjet #tau_{32}", 50, 0, 1 ), directory ); 
-    Book( TH1F( "hjet_nSubjets", "Hjet N subjets;Hjet N subjets", 10, -.5, 9.5 ), directory ); 
-    Book( TH1F( "hjet_nTaggedSubjets", "Hjet N tagged subjets;Hjet N tagged subjets", 10, -.5, 9.5 ), directory ); 
-    Book( TH1F( "hjet_subjet0_csv", "Hjet subjet 0 CSV;Hjet subjet0 CSV", 100, -1, 1 ), directory ); 
-    Book( TH1F( "hjet_subjet1_csv", "Hjet subjet 1 CSV;Hjet subjet1 CSV", 100, -1, 1 ), directory ); 
-
-    Book( TH1F( "jets_deta", "jets #Delta #eta;jets #Delta #eta", 50, -5, 5 ), directory ); 
-    Book( TH1F( "jets_dphi", "jets #Delta #phi;jets #Delta #phi", 50, -6.3, 6.3 ), directory ); 
-    Book( TH1F( "jets_dr", "jets #Delta R;jets #Delta R", 50, -5, 5 ), directory ); 
-  
-    Book( TH1F( "dijet_pt", "dijet p_{T};dijet p_{T} [GeV]", 100, 0, 1000 ), directory ); 
-    Book( TH1F( "dijet_eta", "dijet #eta;dijet #eta", 50, -2.5, 2.5 ), directory ); 
-    Book( TH1F( "dijet_phi", "dijet #phi;Vdijet #phi", 50, -3.15, 3.15 ), directory ); 
-    Book( TH1F( "dijet_m", "dijet m;dijet m [GeV]", 400, 0, 4000 ), directory );
-    Book( TH1F( "dijet_template_m", "dijet m;dijet m [GeV]", 7000, 0, 7000 ), directory ); 
+    bookHistograms(directory);
   }
   
    return;
@@ -347,8 +352,8 @@ void WHAnalysis::EndInputData( const SInputData& ) throw( SError ) {
   // Final analysis of cut flow
   //
   
-  TString defaultCutflow = "VWindow_Tau21HP_SubjetDoubleTag";
-  m_logger << INFO << "cut flow:" << SLogger::endmsg;
+  TString defaultCutflow = m_catNames[m_catNames.size()-1]; //"VWindow_Tau21HP_SubjetDoubleTag";
+  m_logger << INFO << "cut flow for " << defaultCutflow << SLogger::endmsg;
   m_logger << INFO << Form( "Cut\t%25.25s\tEvents\tRelEff\tAbsEff", "Name" ) << SLogger::endmsg;
   
   Double_t ntot = Hist( "cutflow", defaultCutflow )->GetBinContent( 1 );
@@ -377,11 +382,12 @@ void WHAnalysis::BeginInputFile( const SInputData& ) throw( SError ) {
     // m_jetAK4.ConnectVariables(       m_recoTreeName.c_str(), D3PD::JetBasic|D3PD::JetAnalysis|D3PD::JetTruth, (m_jetAK4Name + "_").c_str() );
     m_jetAK8.ConnectVariables(       m_recoTreeName.c_str(), D3PD::JetBasic|D3PD::JetAnalysis|D3PD::JetSubstructure|D3PD::JetTruth|D3PD::JetPrunedSubjets|D3PD::JetPrunedSubjetsTruth, (m_jetAK8Name + "_").c_str() );
     m_eventInfo.ConnectVariables(    m_recoTreeName.c_str(), D3PD::EventInfoBasic|D3PD::EventInfoTrigger|D3PD::EventInfoMETFilters|D3PD::EventInfoTruth, "" );
+    m_genParticle.ConnectVariables(  m_recoTreeName.c_str(), D3PD::GenParticleBasic, (m_genParticleName + "_").c_str() );
   }
   // m_electron.ConnectVariables(     m_recoTreeName.c_str(), D3PD::ElectronBasic|D3PD::ElectronID, (m_electronName + "_").c_str() );
   // m_muon.ConnectVariables(         m_recoTreeName.c_str(), D3PD::MuonBasic|D3PD::MuonID|D3PD::MuonIsolation, (m_muonName + "_").c_str() );
   // m_missingEt.ConnectVariables(    m_recoTreeName.c_str(), D3PD::MissingEtBasic, (m_missingEtName + "_").c_str() );
-  m_genParticle.ConnectVariables(  m_recoTreeName.c_str(), D3PD::GenParticleBasic, (m_genParticleName + "_").c_str() );
+  
   m_logger << INFO << "Connecting input variables completed" << SLogger::endmsg;
 
    return;
@@ -393,6 +399,11 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
   m_logger << VERBOSE << "ExecuteEvent" << SLogger::endmsg;
   
   clearBranches();
+  
+  b_eventNumber = m_eventInfo.eventNumber;
+  b_runNumber = m_eventInfo.runNumber;
+  b_lumiBlock = m_eventInfo.lumiBlock;
+  
   std::vector<TBits> selectionBits(m_catNames.size(), TBits(kNumCuts));
   for (unsigned int s=0;s<m_catNames.size();++s) {
     selectionBits[s].SetBitNumber( kBeforeCuts );
@@ -419,7 +430,14 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     for (unsigned int s=0;s<m_catNames.size();++s) {
       selectionBits[s].SetBitNumber( kTrigger );
     }
+    // m_logger << INFO << "pass: " << selectionBits[0].TestBitNumber( kTrigger ) << SLogger::endmsg;
   }
+  // else {
+  //   m_logger << WARNING << "Trigger fail:" << selectionBits[0].TestBitNumber( kTrigger ) << SLogger::endmsg;
+  //   for (unsigned int s=0;s<m_catNames.size();++s) {
+  //     m_logger << WARNING << selectionBits[s].TestBitNumber( kTrigger ) << SLogger::endmsg;
+  //   }
+  // }
   
   // Cut 3: pass MET filters
   if (passMETFilters()) {
@@ -557,22 +575,13 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
       vectorJet = goodFatJets[goodFatJet1Index];
       higgsJet = goodFatJets[goodFatJet2Index];
       moveOn = true;
-      for (unsigned int s=0;s<m_catNames.size();++s) {
-        if (m_catNames[s].find("VWindow") != std::string::npos) {
-          selectionBits[s].SetBitNumber( kVWindow );
-        }
-        if ((m_catNames[s].find("WWindow") != std::string::npos) && (vectorJet.pruned_massCorr() <= m_mWUpperCut)) {
-          selectionBits[s].SetBitNumber( kVWindow );
-        }
-        if ((m_catNames[s].find("ZWindow") != std::string::npos) && (vectorJet.pruned_massCorr() > m_mZLowerCut)) {
-          selectionBits[s].SetBitNumber( kVWindow );
-        }
-      }
     }
     else if ((goodFatJets[goodFatJet2Index].pruned_massCorr() > m_mWLowerCut) && (goodFatJets[goodFatJet2Index].pruned_massCorr() <= m_mZUpperCut)) {
       vectorJet = goodFatJets[goodFatJet2Index];
       higgsJet = goodFatJets[goodFatJet1Index];
       moveOn = true;
+    }
+    if (moveOn) {
       for (unsigned int s=0;s<m_catNames.size();++s) {
         if (m_catNames[s].find("VWindow") != std::string::npos) {
           selectionBits[s].SetBitNumber( kVWindow );
@@ -585,7 +594,26 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
         }
       }
     }
-  }
+    else { // this means we're not in the signal region of the pruned mass
+      if ((goodFatJets[goodFatJet1Index].pruned_massCorr() > m_mVLowSidebandCut) && (goodFatJets[goodFatJet1Index].pruned_massCorr() <= m_mWLowerCut)) {
+        vectorJet = goodFatJets[goodFatJet1Index];
+        higgsJet = goodFatJets[goodFatJet2Index];
+        moveOn = true;
+      }
+      else if ((goodFatJets[goodFatJet2Index].pruned_massCorr() > m_mVLowSidebandCut) && (goodFatJets[goodFatJet2Index].pruned_massCorr() <= m_mWLowerCut)) {
+        vectorJet = goodFatJets[goodFatJet2Index];
+        higgsJet = goodFatJets[goodFatJet1Index];
+        moveOn = true;
+      }
+      if (moveOn) {
+        for (unsigned int s=0;s<m_catNames.size();++s) {
+          if (m_catNames[s].find("VLowSB") != std::string::npos) {
+            selectionBits[s].SetBitNumber( kVWindow );
+          }
+        }      
+      }
+    }
+  } // moveOn after having selected two candidate jets
   
   if (moveOn) { // move on only if V- and H-jets identified
     
@@ -596,7 +624,16 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     // Cut 8: check if Higgs candidate jet is in Higgs mass window
     if ((higgsJet.pruned_massCorr() > m_mHLowerCut) && (higgsJet.pruned_massCorr() <= m_mHUpperCut)) {
       for (unsigned int s=0;s<m_catNames.size();++s) {
-        selectionBits[s].SetBitNumber( kHiggsWindow );
+        if (m_catNames[s].find("HLowSB") == std::string::npos) { // not HLowSB category
+          selectionBits[s].SetBitNumber( kHiggsWindow );
+        }
+      }
+    }
+    else if ((higgsJet.pruned_massCorr() > m_mVLowSidebandCut) && (higgsJet.pruned_massCorr() <= m_mWLowerCut)) {
+      for (unsigned int s=0;s<m_catNames.size();++s) {
+        if (m_catNames[s].find("HLowSB") != std::string::npos) { // HLowSB category
+          selectionBits[s].SetBitNumber( kHiggsWindow );
+        }
       }
     }
     
@@ -649,7 +686,7 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
           selectionBits[s].SetBitNumber( kSubjetDoubleTag );
         }
       }
-      else if (m_catNames[s].find("Pretag") != std::string::npos) {
+      else if (m_catNames[s].find("PreTag") != std::string::npos) {
         selectionBits[s].SetBitNumber( kSubjetSingleTag );
         selectionBits[s].SetBitNumber( kSubjetDoubleTag );
       }
@@ -787,20 +824,21 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
   }//category loop
   
   for (unsigned int s=0;s<m_catNames.size();++s) {
+    // m_logger << INFO << selectionBits[s].TestBitNumber( kTrigger ) << SLogger::endmsg;
     fillCutflow("cutflow", m_catNames[s], selectionBits[s], b_weight);
   }
   
-  bool fillHistograms = false;
+  bool doHistograms = false;
   // need vectorJet and higgsJet to be defined
   for (unsigned int s=0;s<m_catNames.size();++s) {
     if (selectionBits[s].TestBitNumber( kVWindow )) {
-      fillHistograms = true;
+      doHistograms = true;
     }
   }
   
-  m_logger << VERBOSE << "before fillHistograms" << SLogger::endmsg;
+  m_logger << VERBOSE << "before doHistograms" << SLogger::endmsg;
   
-  if (fillHistograms) {
+  if (doHistograms) {
     // calculate a few variables before filling histograms
     double vJet_tau21 = -1;
     double vJet_tau31 = -1;
@@ -866,49 +904,7 @@ void WHAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) {
     for (unsigned int s=0;s<m_catNames.size();++s) {
       if (passed_all[s]) {
         m_logger << VERBOSE << m_catNames[s] << SLogger::endmsg;
-        TString directory = m_catNames[s].c_str();
-        // fill all histograms
-        Hist( "vjet_pt", directory )->Fill( vectorJet.pt() , b_weight);
-        Hist( "vjet_eta", directory )->Fill( vectorJet.eta() , b_weight);
-        Hist( "vjet_phi", directory )->Fill( vectorJet.phi() , b_weight);
-        Hist( "vjet_m", directory )->Fill( vectorJet.m() , b_weight);
-        Hist( "vjet_mpruned", directory )->Fill( vectorJet.pruned_massCorr() , b_weight);
-        Hist( "vjet_tau1", directory )->Fill( vectorJet.tau1() , b_weight);
-        Hist( "vjet_tau2", directory )->Fill( vectorJet.tau2() , b_weight);
-        Hist( "vjet_tau3", directory )->Fill( vectorJet.tau3() , b_weight);
-        Hist( "vjet_tau21", directory )->Fill( vJet_tau21 , b_weight);
-        Hist( "vjet_tau31", directory )->Fill( vJet_tau31 , b_weight);
-        Hist( "vjet_tau32", directory )->Fill( vJet_tau32 , b_weight);
-        Hist( "vjet_nSubjets", directory )->Fill( vectorJet.subjet_pruned_N() , b_weight);
-        Hist( "vjet_nTaggedSubjets", directory )->Fill( vJet_nTaggedSubjets , b_weight);
-        Hist( "vjet_subjet0_csv", directory )->Fill( vJet_subjet0_csv , b_weight);
-        Hist( "vjet_subjet1_csv", directory )->Fill( vJet_subjet1_csv , b_weight);
-
-        Hist( "hjet_pt", directory )->Fill( higgsJet.pt() , b_weight);
-        Hist( "hjet_eta", directory )->Fill( higgsJet.eta() , b_weight);
-        Hist( "hjet_phi", directory )->Fill( higgsJet.phi() , b_weight);
-        Hist( "hjet_m", directory )->Fill( higgsJet.m() , b_weight);
-        Hist( "hjet_mpruned", directory )->Fill( higgsJet.pruned_massCorr() , b_weight);
-        Hist( "hjet_tau1", directory )->Fill( higgsJet.tau1() , b_weight);
-        Hist( "hjet_tau2", directory )->Fill( higgsJet.tau2() , b_weight);
-        Hist( "hjet_tau3", directory )->Fill( higgsJet.tau3() , b_weight);
-        Hist( "hjet_tau21", directory )->Fill( hJet_tau21 , b_weight);
-        Hist( "hjet_tau31", directory )->Fill( hJet_tau31 , b_weight);
-        Hist( "hjet_tau32", directory )->Fill( hJet_tau32 , b_weight);
-        Hist( "hjet_nSubjets", directory )->Fill( higgsJet.subjet_pruned_N() , b_weight);
-        Hist( "hjet_nTaggedSubjets", directory )->Fill( hJet_nTaggedSubjets , b_weight);
-        Hist( "hjet_subjet0_csv", directory )->Fill( hJet_subjet0_csv , b_weight);
-        Hist( "hjet_subjet1_csv", directory )->Fill( hJet_subjet1_csv , b_weight);
-
-        Hist( "jets_deta", directory )->Fill( deta , b_weight);
-        Hist( "jets_dphi", directory )->Fill( dphi , b_weight);
-        Hist( "jets_dr", directory )->Fill( dr , b_weight);
-
-        Hist( "dijet_pt", directory )->Fill( diJet.Pt() , b_weight);
-        Hist( "dijet_eta", directory )->Fill( diJet.Eta() , b_weight);
-        Hist( "dijet_phi", directory )->Fill( diJet.Phi() , b_weight);
-        Hist( "dijet_m", directory )->Fill( diJet.M() , b_weight);
-        Hist( "dijet_template_m", directory )->Fill( diJet.M() , b_weight);
+        fillHistograms(m_catNames[s], vectorJet, higgsJet, diJet, vJet_tau21, vJet_tau31, vJet_tau32, vJet_nTaggedSubjets, vJet_subjet0_csv, vJet_subjet1_csv, hJet_tau21, hJet_tau31, hJet_tau32, hJet_nTaggedSubjets, hJet_subjet0_csv, hJet_subjet1_csv, deta, dphi, dr );
       }
     }
   }
@@ -927,7 +923,7 @@ bool WHAnalysis::isGoodEvent(int runNumber, int lumiSection) {
       m_logger << WARNING << "Bad event! Run: " << runNumber <<  " - Lumi Section: " << lumiSection << SLogger::endmsg;
       // throw SError( SError::SkipEvent );
     }
-    else m_logger << INFO << "Good event! Run: " << runNumber <<  " - Lumi Section: " << lumiSection << SLogger::endmsg;
+    else m_logger << VERBOSE << "Good event! Run: " << runNumber <<  " - Lumi Section: " << lumiSection << SLogger::endmsg;
   }
   return isGood;
   
@@ -939,16 +935,16 @@ bool WHAnalysis::passTrigger() {
   bool passTrigger = false;
   
   for (std::map<std::string,bool>::iterator it = (m_eventInfo.trigDecision)->begin(); it != (m_eventInfo.trigDecision)->end(); ++it){
-      for (unsigned int t = 0; t < m_triggerNames.size(); ++t ){
-        if ((it->first).find(m_triggerNames[t]) != std::string::npos) {
-          if (it->second == true) {
-            m_logger << VERBOSE << "Trigger pass: " << (it->first) << SLogger::endmsg;
-            passTrigger = true;
-            return passTrigger;
-          }
+    for (unsigned int t = 0; t < m_triggerNames.size(); ++t ){
+      if ((it->first).find(m_triggerNames[t]) != std::string::npos) {
+        if (it->second == true) {
+          m_logger << VERBOSE << "Trigger pass: " << (it->first) << SLogger::endmsg;
+          passTrigger = true;
+          return passTrigger;
         }
       }
     }
+  }
   
   return passTrigger;
   
@@ -1014,6 +1010,11 @@ void WHAnalysis::clearBranches() {
   b_weight = 1.;
   b_weightGen = 1.;
   b_weightPU = 1.;
+  b_weightBtag = 1.;
+  
+  b_runNumber = -99;;
+  b_eventNumber = -99;
+  b_lumiBlock = -99;
   
   b_ak8jet0_pt = -99;
   b_ak8jet0_phi = -99;
@@ -1053,20 +1054,120 @@ void WHAnalysis::clearBranches() {
 
 void WHAnalysis::fillCutflow( const std::string histName, const std::string dirName, const TBits& cutmap, const Double_t weight ) {
 
-  bool writeNtuple = false;
+  // bool writeNtuple = false;
   // sequential cut flow -> stop at first failed cut
+  // m_logger << INFO << histName << "\t" << dirName << SLogger::endmsg;
   for( UInt_t i = 0; i < cutmap.GetNbits(); ++i ) {
+    // m_logger << INFO << i << ":\t" << cutmap.TestBitNumber( i ) << SLogger::endmsg;
     if( cutmap.TestBitNumber( i ) ) {
       Hist( histName.c_str(), dirName.c_str() )->Fill( i+1, weight );
-      if (i == (unsigned int) m_ntupleLevel) {
-        writeNtuple = true;
-      }
+      // if (i == (unsigned int) m_ntupleLevel) {
+      //   writeNtuple = true;
+      // }
     } else {
       break;
     }
   }
-  if (!writeNtuple) {
-    throw SError( SError::SkipEvent );
-  }
+  // if (!writeNtuple) {
+  // // this does something really bad...
+  //   throw SError( SError::SkipEvent );
+  // }
 }
+
+void WHAnalysis::bookHistograms( const TString& directory ) {
+  
+  // kinematics histograms
+  Book( TH1F( "vjet_pt", "Vjet p_{T};Vjet p_{T} [GeV]", 200, 0, 2000 ), directory ); 
+  Book( TH1F( "vjet_eta", "Vjet #eta;Vjet #eta", 50, -2.5, 2.5 ), directory ); 
+  Book( TH1F( "vjet_phi", "Vjet #phi;Vjet #phi", 50, -3.15, 3.15 ), directory ); 
+  Book( TH1F( "vjet_m", "Vjet m;Vjet m [GeV]", 40, 0, 200 ), directory ); 
+  Book( TH1F( "vjet_mpruned", "Vjet pruned m;Vjet pruned m [GeV]", 40, 0, 200 ), directory ); 
+  Book( TH1F( "vjet_tau1", "Vjet #tau_{1};Vjet #tau_{1}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "vjet_tau2", "Vjet #tau_{2};Vjet #tau_{2}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "vjet_tau3", "Vjet #tau_{3};Vjet #tau_{3}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "vjet_tau21", "Vjet #tau_{21};Vjet #tau_{21}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "vjet_tau31", "Vjet #tau_{31};Vjet #tau_{31}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "vjet_tau32", "Vjet #tau_{32};Vjet #tau_{32}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "vjet_nSubjets", "Vjet N subjets;Vjet N subjets", 10, -.5, 9.5 ), directory ); 
+  Book( TH1F( "vjet_nTaggedSubjets", "Vjet N tagged subjets;Vjet N tagged subjets", 10, -.5, 9.5 ), directory ); 
+  Book( TH1F( "vjet_subjet0_csv", "Vjet subjet 0 CSV;Vjet subjet0 CSV", 50, 0, 1 ), directory ); 
+  Book( TH1F( "vjet_subjet1_csv", "Vjet subjet 1 CSV;Vjet subjet1 CSV", 50, 0, 1 ), directory ); 
+
+  Book( TH1F( "hjet_pt", "Hjet p_{T};Hjet p_{T} [GeV]", 200, 0, 2000 ), directory ); 
+  Book( TH1F( "hjet_eta", "Hjet #eta;Hjet #eta", 50, -2.5, 2.5 ), directory ); 
+  Book( TH1F( "hjet_phi", "Hjet #phi;Hjet #phi", 50, -3.15, 3.15 ), directory ); 
+  Book( TH1F( "hjet_m", "Hjet m;Hjet m [GeV]", 40, 0, 200 ), directory ); 
+  Book( TH1F( "hjet_mpruned", "Hjet pruned m;Hjet pruned m [GeV]", 40, 0, 200 ), directory ); 
+  Book( TH1F( "hjet_tau1", "Hjet #tau_{1};Hjet #tau_{1}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "hjet_tau2", "Hjet #tau_{2};Hjet #tau_{2}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "hjet_tau3", "Hjet #tau_{3};Hjet #tau_{3}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "hjet_tau21", "Hjet #tau_{21};Hjet #tau_{21}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "hjet_tau31", "Hjet #tau_{31};Hjet #tau_{31}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "hjet_tau32", "Hjet #tau_{32};Hjet #tau_{32}", 50, 0, 1 ), directory ); 
+  Book( TH1F( "hjet_nSubjets", "Hjet N subjets;Hjet N subjets", 10, -.5, 9.5 ), directory ); 
+  Book( TH1F( "hjet_nTaggedSubjets", "Hjet N tagged subjets;Hjet N tagged subjets", 10, -.5, 9.5 ), directory ); 
+  Book( TH1F( "hjet_subjet0_csv", "Hjet subjet 0 CSV;Hjet subjet0 CSV", 100, -1, 1 ), directory ); 
+  Book( TH1F( "hjet_subjet1_csv", "Hjet subjet 1 CSV;Hjet subjet1 CSV", 100, -1, 1 ), directory ); 
+
+  Book( TH1F( "jets_deta", "jets #Delta #eta;jets #Delta #eta", 50, 0, 5 ), directory ); 
+  Book( TH1F( "jets_dphi", "jets #Delta #phi;jets #Delta #phi", 50, 0, 6.3 ), directory ); 
+  Book( TH1F( "jets_dr", "jets #Delta R;jets #Delta R", 50, 0, 5 ), directory ); 
+
+  Book( TH1F( "dijet_pt", "dijet p_{T};dijet p_{T} [GeV]", 100, 0, 1000 ), directory ); 
+  Book( TH1F( "dijet_eta", "dijet #eta;dijet #eta", 50, -2.5, 2.5 ), directory ); 
+  Book( TH1F( "dijet_phi", "dijet #phi;Vdijet #phi", 50, -3.15, 3.15 ), directory ); 
+  Book( TH1F( "dijet_m", "dijet m;dijet m [GeV]", 400, 0, 4000 ), directory );
+  Book( TH1F( "dijet_template_m", "dijet m;dijet m [GeV]", 7000, 0, 7000 ), directory ); 
+  
+}
+
+
+
+void WHAnalysis::fillHistograms( const TString& directory, const DESY::Jet& vectorJet, const DESY::Jet& higgsJet, const TLorentzVector& diJet, const double& vJet_tau21, const double& vJet_tau31, const double& vJet_tau32, const int& vJet_nTaggedSubjets, const double& vJet_subjet0_csv, const double& vJet_subjet1_csv, const double& hJet_tau21, const double& hJet_tau31, const double& hJet_tau32, const int& hJet_nTaggedSubjets, const double& hJet_subjet0_csv, const double& hJet_subjet1_csv, const double& deta, const double& dphi, const double& dr ) {
+  
+  // fill all histograms
+  Hist( "vjet_pt", directory )->Fill( vectorJet.pt() , b_weight);
+  Hist( "vjet_eta", directory )->Fill( vectorJet.eta() , b_weight);
+  Hist( "vjet_phi", directory )->Fill( vectorJet.phi() , b_weight);
+  Hist( "vjet_m", directory )->Fill( vectorJet.m() , b_weight);
+  Hist( "vjet_mpruned", directory )->Fill( vectorJet.pruned_massCorr() , b_weight);
+  Hist( "vjet_tau1", directory )->Fill( vectorJet.tau1() , b_weight);
+  Hist( "vjet_tau2", directory )->Fill( vectorJet.tau2() , b_weight);
+  Hist( "vjet_tau3", directory )->Fill( vectorJet.tau3() , b_weight);
+  Hist( "vjet_tau21", directory )->Fill( vJet_tau21 , b_weight);
+  Hist( "vjet_tau31", directory )->Fill( vJet_tau31 , b_weight);
+  Hist( "vjet_tau32", directory )->Fill( vJet_tau32 , b_weight);
+  Hist( "vjet_nSubjets", directory )->Fill( vectorJet.subjet_pruned_N() , b_weight);
+  Hist( "vjet_nTaggedSubjets", directory )->Fill( vJet_nTaggedSubjets , b_weight);
+  Hist( "vjet_subjet0_csv", directory )->Fill( vJet_subjet0_csv , b_weight);
+  Hist( "vjet_subjet1_csv", directory )->Fill( vJet_subjet1_csv , b_weight);
+
+  Hist( "hjet_pt", directory )->Fill( higgsJet.pt() , b_weight);
+  Hist( "hjet_eta", directory )->Fill( higgsJet.eta() , b_weight);
+  Hist( "hjet_phi", directory )->Fill( higgsJet.phi() , b_weight);
+  Hist( "hjet_m", directory )->Fill( higgsJet.m() , b_weight);
+  Hist( "hjet_mpruned", directory )->Fill( higgsJet.pruned_massCorr() , b_weight);
+  Hist( "hjet_tau1", directory )->Fill( higgsJet.tau1() , b_weight);
+  Hist( "hjet_tau2", directory )->Fill( higgsJet.tau2() , b_weight);
+  Hist( "hjet_tau3", directory )->Fill( higgsJet.tau3() , b_weight);
+  Hist( "hjet_tau21", directory )->Fill( hJet_tau21 , b_weight);
+  Hist( "hjet_tau31", directory )->Fill( hJet_tau31 , b_weight);
+  Hist( "hjet_tau32", directory )->Fill( hJet_tau32 , b_weight);
+  Hist( "hjet_nSubjets", directory )->Fill( higgsJet.subjet_pruned_N() , b_weight);
+  Hist( "hjet_nTaggedSubjets", directory )->Fill( hJet_nTaggedSubjets , b_weight);
+  Hist( "hjet_subjet0_csv", directory )->Fill( hJet_subjet0_csv , b_weight);
+  Hist( "hjet_subjet1_csv", directory )->Fill( hJet_subjet1_csv , b_weight);
+
+  Hist( "jets_deta", directory )->Fill( deta , b_weight);
+  Hist( "jets_dphi", directory )->Fill( dphi , b_weight);
+  Hist( "jets_dr", directory )->Fill( dr , b_weight);
+
+  Hist( "dijet_pt", directory )->Fill( diJet.Pt() , b_weight);
+  Hist( "dijet_eta", directory )->Fill( diJet.Eta() , b_weight);
+  Hist( "dijet_phi", directory )->Fill( diJet.Phi() , b_weight);
+  Hist( "dijet_m", directory )->Fill( diJet.M() , b_weight);
+  Hist( "dijet_template_m", directory )->Fill( diJet.M() , b_weight);
+  
+}
+
 
