@@ -7,3 +7,9 @@
 [submodule "BTaggingTools"]
 	path = BTaggingTools
 	url = git@github.com:UZHCMS/BTaggingTools.git
+[submodule "GoodRunsLists"]
+	path = GoodRunsLists
+	url = git@github.com:UZHCMS/GoodRunsLists.git
+[submodule "VHAllhadronicResonances"]
+	path = VHAllhadronicResonances
+	url = git@github.com:clelange/VHAllhadronicResonances.git
