@@ -29,4 +29,14 @@ make
 cd ..
 ```
 
-Then go into each of the other subdirectories and type ```make```
+## Compilation
+
+To compile all submodules:
+```
+source make.sh
+```
+To ```make distclean``` for all submodules:
+```
+source makedistclean.sh
+```
+Mind that SFrame itself and any other directory, which is not a submodule, will not be touched.
