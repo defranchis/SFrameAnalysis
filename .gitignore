@@ -31,3 +31,6 @@ obj/
 # SFrame dictionaries
 *.pcm
 *_Dict.cxx
+
+#SFrame itself
+/SFrame/

@@ -1,0 +1,3 @@
+[submodule "NtupleVariables"]
+	path = NtupleVariables
+	url = git@github.com:clelange/NtupleVariables.git
