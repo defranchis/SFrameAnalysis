@@ -40,3 +40,7 @@ To ```make distclean``` for all submodules:
 source makedistclean.sh
 ```
 Mind that SFrame itself and any other directory, which is not a submodule, will not be touched.
+
+## Further documentation
+
+Please read https://git-scm.com/book/en/v2/Git-Tools-Submodules for information on how to work with submodules.
