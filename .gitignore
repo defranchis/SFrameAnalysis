@@ -32,5 +32,8 @@ obj/
 *.pcm
 *_Dict.cxx
 
-#SFrame itself
+# SFrame itself
 /SFrame/
+
+# Python binaries
+*.pyc
