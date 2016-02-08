@@ -4,8 +4,8 @@
 path2xml="$SFRAME_DIR/../BatchSubmission/xmls"
 path2tmp="$SFRAME_DIR/../AnalysisTemp"
 outDir="$SFRAME_DIR/../AnalysisOutput"
-jobName="b2gWHJob"
-cycleName="WHAnalysis"
+jobName="b2gVHJob"
+cycleName="VHAnalysis"
 nEventsMax=-1
 nProcesses=2
 nFiles=5
