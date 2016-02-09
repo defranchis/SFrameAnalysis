@@ -3,7 +3,7 @@ loadLibs=[
 	"libNtupleVariables",
   "libGoodRunsLists",
 	"libPileupReweightingTool",
-  "libBTagTools",
+  "libBTaggingTools",
   "libVHAllhadronicResonances"
   ]
 
