@@ -3,6 +3,7 @@ loadLibs=[
 	"libNtupleVariables",
   "libGoodRunsLists",
 	"libPileupReweightingTool",
+  "libBTagTools",
   "libVHAllhadronicResonances"
   ]
 
@@ -12,14 +13,16 @@ loadPacks=[
    	"NtupleVariables.par",
     "GoodRunsLists.par",
    	"PileupReweightingTool.par",
+    "BTaggingTools.par",
     "VHAllhadronicResonances.par"
 	   ]
 
 compilePacks=[
   "../NtupleVariables",
-  "../PileupReweightingTool",
   "../GoodRunsLists",
-  "../B2G/VHAllhadronicResonances"
+  "../PileupReweightingTool",
+  "../BTaggingTools",
+  "../VHAllhadronicResonances"
   ]
 
 AddUserItems = [
