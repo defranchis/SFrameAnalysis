@@ -18,7 +18,7 @@ dataSets=[
   ["ZH-1200", ["ZprimeToZhToZhadhbb_narrow_M-1200_13TeV-madgraph_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2-v1"]],
   ["ZH-1400", ["ZprimeToZhToZhadhbb_narrow_M-1400_13TeV-madgraph_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2-v1"]],
   ["ZH-1600", ["ZprimeToZhToZhadhbb_narrow_M-1600_13TeV-madgraph_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2-v1"]],
-  ["ZH-1800", ["ZprimeToZhToZhadhbb_narrow_M-1800_13TeV-madgraph_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2-v1"]],
+  ["ZH-1800", ["ZprimeToZhToZhadhbb_narrow_M-1800_13TeV-madgraph_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2-v2"]],
   ["ZH-2000", ["ZprimeToZhToZhadhbb_narrow_M-2000_13TeV-madgraph_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2-v1"]],
   ["ZH-2500", ["ZprimeToZhToZhadhbb_narrow_M-2500_13TeV-madgraph_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2-v1"]],
   ["ZH-3000", ["ZprimeToZhToZhadhbb_narrow_M-3000_13TeV-madgraph_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2-v1"]],
