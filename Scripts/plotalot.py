@@ -959,9 +959,9 @@ def MakeMatrixPlots(MatrixHistograms, Samples, inputSamples, files, xsecs, targe
 
   return
 
-def main():
-
-  LoadAtlasStyle()
+# def main():
+#
+#   LoadAtlasStyle()
 
 def main():
 

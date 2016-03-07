@@ -1,9 +1,10 @@
-import os, array
+import os
+# import array
 from ROOT import *
 import random
 import sys
 import datetime
-from math import pow,exp,sqrt
+# from math import pow,exp,sqrt
 topSamples = ["MCATNLO", "ALPGEN", "POWHEGJIMMY", "POWHEGPYTHIA", "ACERMC", "ALPGENPYTHIA"] #already defined in RootStyle.py!
 
 ChargeAsymmetryScaleFactors = []
