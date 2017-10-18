@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd">
+<JobConfiguration JobName="VHTausAnalysisJob" OutputLevel="INFO">
+
+  <Library Name="libNtupleVariables" />
+  <Library Name="libGoodRunsLists" />
+  <Library Name="libPileupReweightingTool" />
+  <Library Name="libVHTausResonances" />
+  <Cycle Name="VHTausAnalysis" OutputDirectory="./" PostFix="" ProofServer="lite" ProofWorkDir="" RunMode="LOCAL" TargetLumi="1.0">
+
+
+    <!-- <InputData Lumi="0.0" NEventsMax="10000" Type="unskimmed" Version="signal_2TeV"> -->
+    <!-- <InputData Lumi="0.0" NEventsMax="30000" Type="unskimmed" Version="signal_2TeV"> -->
+    <InputData Lumi="0.0" NEventsMax="10" Type="unskimmed" Version="signal_2TeV">
+    <!-- <InputData Lumi="0.0" NEventsMax="-1" Type="unskimmed" Version="signal_2TeV"> -->
+
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_10.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_11.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_12.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_13.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_14.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_15.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_16.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_17.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_18.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_19.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_1.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_20.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_21.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_22.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_23.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_24.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_25.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_26.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_27.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_28.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_29.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_2.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_30.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_31.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_3.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_4.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_5.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_6.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_7.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_8.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/Run2_74_14/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_9.root" Lumi="1.0" />
+
+<!-- Total number of events processed: 100000 -->
+
+
+
+<InputTree Name="ntuplizer/tree" />
+<OutputTree Name="analysis" />
+    </InputData>
+    <UserConfig>
+      <Item Name="RecoTreeName" Value="tree"/>
+      <Item Name="JetPtCut" Value="200."/>
+      <Item Name="IsData" Value="false"/>
+      <Item Name="IsSignal" Value="true"/>
+    </UserConfig>
+  </Cycle>
+</JobConfiguration>

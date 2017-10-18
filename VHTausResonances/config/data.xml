@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd">
+<JobConfiguration JobName="VHTausAnalysisJob" OutputLevel="INFO">
+
+  <Library Name="libNtupleVariables" />
+  <Library Name="libGoodRunsLists" />
+  <Library Name="libPileupReweightingTool" />
+  <!-- <Library Name="libBTaggingTools" /> -->
+  <Library Name="libVHTausResonances" />
+  <Cycle Name="VHTausAnalysis" OutputDirectory="./" PostFix="" ProofServer="lite" ProofWorkDir="" RunMode="LOCAL" TargetLumi="1.0">
+
+    <InputData Lumi="0.0" NEventsMax="-1" Type="tryData" Version="0">
+
+
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_103.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_15.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_33.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_48.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_4.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_51.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_73.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_88.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_91.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_23.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_43.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_63.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_78.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_83.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_98.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/newSkimmed/Run2015C_25ns-05Oct2015-v1_JetHT/flatTuple_9.root" Lumi="1.0" />
+
+
+
+<InputTree Name="ntuplizer/tree" />
+<OutputTree Name="analysis" />
+    </InputData>
+    <UserConfig>
+      <Item Name="RecoTreeName" Value="tree"/>
+      <!-- <Item Name="JetPtCut" Value="200."/> -->
+      <Item Name="IsData" Value="true"/>
+    </UserConfig>
+  </Cycle>
+</JobConfiguration>

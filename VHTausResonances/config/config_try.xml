@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd">
+<JobConfiguration JobName="VHTausAnalysisJob" OutputLevel="INFO">
+
+  <Library Name="libNtupleVariables" />
+  <Library Name="libGoodRunsLists" />
+  <Library Name="libPileupReweightingTool" />
+  <!-- <Library Name="libBTaggingTools" /> -->
+  <Library Name="libVHTausResonances" />
+  <Cycle Name="VHTausAnalysis" OutputDirectory="./" PostFix="" ProofServer="lite" ProofWorkDir="" RunMode="LOCAL" TargetLumi="1.0">
+
+    <!-- <InputData Lumi="0.0" NEventsMax="10000" Type="trySkimmer" Version="0"> -->
+    <InputData Lumi="0.0" NEventsMax="-1" Type="trySkimmer" Version="0">
+
+<In FileName="/scratch/mdefranc/skimmedNtuples/RadionTohhTohtatahbb_M-1200/flatTuple_1.root" Lumi="1.0" />
+
+<InputTree Name="ntuplizer/tree" />
+<OutputTree Name="analysis" />
+    </InputData>
+    <UserConfig>
+      <Item Name="RecoTreeName" Value="tree"/>
+      <!-- <Item Name="JetPtCut" Value="200."/> -->
+    </UserConfig>
+  </Cycle>
+</JobConfiguration>
