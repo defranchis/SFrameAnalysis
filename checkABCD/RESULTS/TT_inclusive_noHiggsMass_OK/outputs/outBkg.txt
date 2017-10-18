@@ -1,0 +1,55 @@
+
+	found key: HT
+	found key: jet_mass
+	found key: jet_pT
+	found key: jet_eta
+	found key: jet_tau21
+	found key: jet_Hbbtag
+	found key: tau1_pT
+	found key: tau1_eta
+	found key: tau2_pT
+	found key: tau2_eta
+	found key: tau1_iso
+	found key: tau2_iso
+	found key: sum_iso
+	found key: MET_ET
+	found key: MET_px
+	found key: MET_py
+	found key: tautaujet_DP
+	found key: jetmet_DP
+	found key: tautaumet_DP
+	found key: tautau_mass
+	found key: tautau_pT
+	found key: tautau_eta
+	found key: tautau_DR
+	found key: taujet_DR
+	found key: resonance_mass
+	found key: resonance_mass_bin
+
+0_SR
+
+                           sample name		  events		   weight	total
+
+    TT_TuneCUETP8M1_13TeV-powheg-pythia8	       288	      0.0202671		5.83692
+
+
+1_bveto
+
+                           sample name		  events		   weight	total
+
+    TT_TuneCUETP8M1_13TeV-powheg-pythia8	      1016	      0.0202671		20.5914
+
+
+2_tauveto
+
+                           sample name		  events		   weight	total
+
+    TT_TuneCUETP8M1_13TeV-powheg-pythia8	     10132	      0.0202671		205.346
+
+
+3_allveto
+
+                           sample name		  events		   weight	total
+
+    TT_TuneCUETP8M1_13TeV-powheg-pythia8	     41686	      0.0202671		844.854
+
