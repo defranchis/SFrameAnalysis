@@ -1,0 +1,57 @@
+
+	found key: HT
+	found key: jet_mass
+	found key: jet_pT
+	found key: jet_eta
+	found key: jet_Hbbtag
+	found key: tau1_pT
+	found key: tau1_eta
+	found key: tau2_pT
+	found key: tau2_eta
+	found key: tau1_iso
+	found key: tau2_iso
+	found key: sum_iso
+	found key: MET_ET
+	found key: MET_px
+	found key: MET_py
+	found key: tautaujet_DP
+	found key: jetmet_DP
+	found key: tautaumet_DP
+	found key: tautau_mass
+	found key: tautau_pT
+	found key: tautau_eta
+	found key: tautau_DR
+	found key: taujet_DR
+	found key: resonance_mass
+	found key: resonance_mass_bin
+
+                           sample name		  events		   weight	total
+
+DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        21	      0.0151615		0.318391
+DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       134	     0.00627363		0.840667
+DYJetsToLL_M-5to50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         8	     0.00831114		0.0664891
+DYJetsToLL_M-5to50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        46	     0.00256116		0.117813
+                        QCD_HT1000to1500	        12	       0.563635		6.76362
+                        QCD_HT1500to2000	        17	      0.0718368		1.22122
+                         QCD_HT2000toInf	         9	      0.0298232		0.268409
+                         QCD_HT700to1000	        20	        1.03166		20.6332
+RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph	       229	        0.04636		10.6164
+ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1	         4	     0.00791191		0.0316476
+ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1	         2	      0.0360675		0.072135
+ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1	         5	      0.0311404		0.155702
+ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1	         7	      0.0825208		0.577646
+ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1	         2	      0.0828855		0.165771
+    TT_TuneCUETP8M1_13TeV-powheg-pythia8	        71	      0.0202671		1.43896
+WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         6	      0.0145814		0.0874886
+WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         4	    0.000356478		0.00142591
+WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         1	      0.0724128		0.0724128
+WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        81	     0.00836161		0.67729
+WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        78	     0.00979853		0.764286
+WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	       0.218777		0
+     ZJetsToQQ_HT600toInf_13TeV-madgraph	         5	      0.0133609		0.0668045
+           WW_TuneCUETP8M1_13TeV-pythia8	         0	       0.277236		0
+           WZ_TuneCUETP8M1_13TeV-pythia8	         0	       0.109538		0
+           ZZ_TuneCUETP8M1_13TeV-pythia8	         2	      0.0384177		0.0768354
+
+   MC integral = 20.2
+

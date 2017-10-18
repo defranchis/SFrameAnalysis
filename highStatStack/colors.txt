@@ -1,0 +1,45 @@
+        histos_Diboson.at(iHisto)->Reset();
+        histos_Diboson.at(iHisto)->Merge(lists_Diboson.at(iHisto));
+        histos_Diboson.at(iHisto)->SetFillColor(kRed-7);
+        histos_Diboson.at(iHisto)->SetLineColor(kRed-7);
+        tempStack->Add(histos_Diboson.at(iHisto));
+
+        histos_TT.at(iHisto)->Reset();
+        histos_TT.at(iHisto)->Merge(lists_TT.at(iHisto));
+        histos_TT.at(iHisto)->SetFillColor(kGreen+3);
+        histos_TT.at(iHisto)->SetLineColor(kGreen+3);
+        tempStack->Add(histos_TT.at(iHisto));
+
+        histos_WJets.at(iHisto)->Reset();
+        histos_WJets.at(iHisto)->Merge(lists_WJets.at(iHisto));
+        histos_WJets.at(iHisto)->SetFillColor(kBlue-9);
+        histos_WJets.at(iHisto)->SetLineColor(kBlue-9);
+        tempStack->Add(histos_WJets.at(iHisto));
+
+        histos_DY.at(iHisto)->Reset();
+        histos_DY.at(iHisto)->Merge(lists_DY.at(iHisto));
+        histos_DY.at(iHisto)->SetFillColor(92);
+        histos_DY.at(iHisto)->SetLineColor(92);
+        tempStack->Add(histos_DY.at(iHisto));
+
+        histos_ST.at(iHisto)->Reset();
+        histos_ST.at(iHisto)->Merge(lists_ST.at(iHisto));
+        histos_ST.at(iHisto)->SetFillColor(kGreen-5);
+        histos_ST.at(iHisto)->SetLineColor(kGreen-5);
+        tempStack->Add(histos_ST.at(iHisto));
+
+        histos_QCD.at(iHisto)->Reset();
+        histos_QCD.at(iHisto)->Merge(lists_QCD.at(iHisto));
+        histos_QCD.at(iHisto)->SetFillColor(606);
+        histos_QCD.at(iHisto)->SetLineColor(606);
+        tempStack->Add(histos_QCD.at(iHisto));
+
+        histos_Radion.at(iHisto)->Reset();
+        histos_Radion.at(iHisto)->Merge(lists_Radion.at(iHisto));
+        histos_Radion.at(iHisto)->SetLineColor(kBlack);
+
+        histos_Data.at(iHisto)->Reset();
+        histos_Data.at(iHisto)->Merge(lists_Data.at(iHisto));
+        histos_Data.at(iHisto)->SetMarkerColor(kBlack);
+        histos_Data.at(iHisto)->SetLineColor(kBlack);
+        histos_Data.at(iHisto)->SetMarkerStyle(7);
