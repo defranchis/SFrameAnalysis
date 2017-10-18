@@ -1,0 +1,2 @@
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/TT_TuneCUETP8M1_13TeV-powheg-pythia8
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/RadionTohhTohtatahbb_narrow_M-1200_13TeV-madgraph

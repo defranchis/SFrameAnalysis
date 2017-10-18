@@ -1,0 +1,2 @@
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph

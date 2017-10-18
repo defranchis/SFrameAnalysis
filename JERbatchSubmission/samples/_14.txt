@@ -1,0 +1,2 @@
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/ZJetsToQQ_HT600toInf_13TeV-madgraph

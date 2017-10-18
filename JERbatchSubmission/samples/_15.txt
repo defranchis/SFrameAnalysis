@@ -1,0 +1,4 @@
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/WW_TuneCUETP8M1_13TeV-pythia8
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/WZ_TuneCUETP8M1_13TeV-pythia8
+/pnfs/psi.ch/cms/trivcat/store/user/mdefranc/JER_Ntuples/ZZ_TuneCUETP8M1_13TeV-pythia8
+

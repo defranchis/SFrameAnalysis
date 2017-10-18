@@ -1,0 +1,8 @@
+
+#!/bin/bash
+
+for i in $( ls *.xml ); do
+
+    echo $i
+
+done
