@@ -1,0 +1,8 @@
+#!bin/bash
+
+for $SAMPLE in $( ls /pnfs/psi.ch/cms/trivcat/store/user/clange/Ntuple_8020_20170112/JetHT/ ); do
+
+    echo $SAMPLE
+
+done
+

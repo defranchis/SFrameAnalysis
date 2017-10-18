@@ -1,0 +1,5 @@
+python combineCards.py bin1=datacards/radion_M1000_1.txt bin10=datacards/radion_M1000_10.txt bin11=datacards/radion_M1000_11.txt bin12=datacards/radion_M1000_12.txt bin2=datacards/radion_M1000_2.txt bin3=datacards/radion_M1000_3.txt bin4=datacards/radion_M1000_4.txt bin5=datacards/radion_M1000_5.txt bin6=datacards/radion_M1000_6.txt bin7=datacards/radion_M1000_7.txt bin8=datacards/radion_M1000_8.txt bin9=datacards/radion_M1000_9.txt  > combinedDatacards/radion_M1000.txt & 
+
+python combineCards.py bin1=datacards/radion_M1200_1.txt bin10=datacards/radion_M1200_10.txt bin11=datacards/radion_M1200_11.txt bin12=datacards/radion_M1200_12.txt bin2=datacards/radion_M1200_2.txt bin3=datacards/radion_M1200_3.txt bin4=datacards/radion_M1200_4.txt bin5=datacards/radion_M1200_5.txt bin6=datacards/radion_M1200_6.txt bin7=datacards/radion_M1200_7.txt bin8=datacards/radion_M1200_8.txt bin9=datacards/radion_M1200_9.txt  > combinedDatacards/radion_M1200.txt & 
+
+python combineCards.py bin1=datacards/radion_M1400_1.txt 

@@ -1,0 +1,167 @@
+
+	found key: HT
+	found key: lheHT
+	found key: n_PV
+	found key: jet_mass
+	found key: jet_pT
+	found key: jet_eta
+	found key: jet_Hbbtag
+	found key: tau1_pT
+	found key: tau1_eta
+	found key: tau2_pT
+	found key: tau2_eta
+	found key: tau1_iso
+	found key: tau2_iso
+	found key: sum_iso
+	found key: MET_ET
+	found key: MET_px
+	found key: MET_py
+	found key: tautaujet_DP
+	found key: jetmet_DP
+	found key: tautaumet_DP
+	found key: tautau_mass
+	found key: tautau_pT
+	found key: tautau_eta
+	found key: tautau_DR
+	found key: taujet_DR
+	found key: resonance_mass
+	found key: resonance_mass_bin
+
+HT800_0_SR
+
+                           sample name		  events		   weight	total
+
+DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        81	      0.0197834		1.60246
+DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       177	     0.00607876		1.07594
+DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        74	     0.00796262		0.589234
+DYJetsToLL_M-50_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        20	     0.00822214		0.164443
+DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         2	    0.000317498		0.000634996
+DYJetsToLL_M-5to50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	      0.0479275		0
+DYJetsToLL_M-5to50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	      0.0100697		0
+QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	         4.0908		0
+QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	         2.1452		0
+QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         1	       0.280189		0.280189
+QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	       0.114416		0
+RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph	      8639	    0.000272233		2.35182
+TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        37	     0.00316674		0.117169
+TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        20	     0.00171751		0.0343503
+TTJets_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         8	     0.00112098		0.00896784
+TTJets_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	    7.42934e-05		0
+WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        17	      0.0218873		0.372084
+WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         5	      0.0230678		0.115339
+WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        10	     0.00335102		0.0335102
+WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         1	    0.000422756		0.000422756
+WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	        2.52662		0
+
+
+HT800_1_bveto
+
+                           sample name		  events		   weight	total
+
+DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      2845	      0.0197834		56.2838
+DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      5862	     0.00607876		35.6337
+DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      2288	     0.00796262		18.2185
+DYJetsToLL_M-50_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       388	     0.00822214		3.19019
+DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       140	    0.000317498		0.0444497
+DYJetsToLL_M-5to50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         5	      0.0479275		0.239638
+DYJetsToLL_M-5to50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        29	      0.0100697		0.292021
+                                   JetHT	       129	              1		129
+QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         9	         4.0908		36.8172
+QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         6	         2.1452		12.8712
+QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         4	       0.280189		1.12076
+QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         4	       0.114416		0.457665
+RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph	      5532	    0.000272233		1.50599
+TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       649	     0.00316674		2.05521
+TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       419	     0.00171751		0.719638
+TTJets_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        55	     0.00112098		0.0616539
+TTJets_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         4	    7.42934e-05		0.000297173
+WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       357	      0.0218873		7.81377
+WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       203	      0.0230678		4.68275
+WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       182	     0.00335102		0.609886
+WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         8	    0.000422756		0.00338205
+WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         0	        2.52662		0
+
+
+HT800_2_tauveto
+
+                           sample name		  events		   weight	total
+
+DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        15	      0.0197834		0.296751
+DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       117	     0.00607876		0.711215
+DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       112	     0.00796262		0.891813
+DYJetsToLL_M-50_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        67	     0.00822214		0.550883
+DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        56	    0.000317498		0.0177799
+DYJetsToLL_M-5to50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         2	      0.0479275		0.095855
+DYJetsToLL_M-5to50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	        49	      0.0100697		0.493415
+                                   JetHT	      1811	              1		1811
+QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       105	         4.0908		429.534
+QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       396	         2.1452		849.498
+QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       950	       0.280189		266.18
+QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       884	       0.114416		101.144
+RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph	      1161	    0.000272233		0.316062
+TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      2264	     0.00316674		7.16949
+TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      2406	     0.00171751		4.13234
+TTJets_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       756	     0.00112098		0.847461
+TTJets_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       108	    7.42934e-05		0.00802368
+WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       319	      0.0218873		6.98206
+WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       454	      0.0230678		10.4728
+WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      1509	     0.00335102		5.05669
+WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       401	    0.000422756		0.169525
+WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         9	        2.52662		22.7396
+
+
+HT800_3_allveto
+
+                           sample name		  events		   weight	total
+
+DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       487	      0.0197834		9.63452
+DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      3428	     0.00607876		20.838
+DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      3710	     0.00796262		29.5413
+DYJetsToLL_M-50_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      1714	     0.00822214		14.0927
+DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      1312	    0.000317498		0.416558
+DYJetsToLL_M-5to50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         7	      0.0479275		0.335493
+DYJetsToLL_M-5to50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      1066	      0.0100697		10.7343
+                                   JetHT	     40108	              1		40108
+QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      3119	         4.0908		12759.2
+QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     11267	         2.1452		24169.9
+QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     26465	       0.280189		7415.21
+QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     21372	       0.114416		2445.31
+RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph	      1066	    0.000272233		0.2902
+TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     30496	     0.00316674		96.5728
+TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     36016	     0.00171751		61.8579
+TTJets_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     12520	     0.00112098		14.0347
+TTJets_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      1926	    7.42934e-05		0.143089
+WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     10034	      0.0218873		219.617
+WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     13791	      0.0230678		318.127
+WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     41505	     0.00335102		139.084
+WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      8875	    0.000422756		3.75196
+WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       289	        2.52662		730.193
+
+
+HT800_4_checkBtag
+
+                           sample name		  events		   weight	total
+
+DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       502	      0.0197834		9.93127
+DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      3545	     0.00607876		21.5492
+DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      3822	     0.00796262		30.4331
+DYJetsToLL_M-50_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      1781	     0.00822214		14.6436
+DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      1368	    0.000317498		0.434337
+DYJetsToLL_M-5to50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	         9	      0.0479275		0.431348
+DYJetsToLL_M-5to50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      1115	      0.0100697		11.2277
+                                   JetHT	     41919	              1		41919
+QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      3224	         4.0908		13188.7
+QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     11663	         2.1452		25019.4
+QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     27415	       0.280189		7681.39
+QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     22256	       0.114416		2546.45
+RadionTohhTohtatahbb_narrow_M-2000_13TeV-madgraph	      2227	    0.000272233		0.606262
+TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     32760	     0.00316674		103.742
+TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     38422	     0.00171751		65.9903
+TTJets_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     13276	     0.00112098		14.8821
+TTJets_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      2034	    7.42934e-05		0.151113
+WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     10353	      0.0218873		226.599
+WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     14245	      0.0230678		328.6
+WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	     43014	     0.00335102		144.141
+WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	      9276	    0.000422756		3.92148
+WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8	       298	        2.52662		752.932
+

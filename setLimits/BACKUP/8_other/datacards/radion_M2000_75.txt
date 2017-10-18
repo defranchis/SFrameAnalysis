@@ -1,0 +1,19 @@
+# Simple counting experiment, with one signal and a few background processes 
+imax 1  number of channels
+jmax 4  number of backgrounds
+kmax 5  number of nuisance parameters (sources of systematical uncertainties)
+------------
+# we have just one channel, in which we observe 0 events
+bin 1
+observation 0
+------------
+bin	1	1	1	1	1
+process	signal	QCD	TT	DYJets	WJets
+process	0	1	2	3	4
+rate	0.999548	0.00863013	0.00251462	0.010739	1.40665e-05
+------------
+sig_75	lnN	1.02723	-	-	-	-
+QCD_75	lnN	-	2.55665	-	-	-
+TT_75	lnN	-	-	1.6966	-	-
+DY_75	lnN	-	-	-	1.71756	-
+WJets_75	lnN	-	-	-	-	9.12704

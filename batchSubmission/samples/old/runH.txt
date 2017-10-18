@@ -1,0 +1,2 @@
+/pnfs/psi.ch/cms/trivcat/store/t3groups/uniz-higgs/Spring16/Ntuple_80_190916/JetHT/JetHT_Run2016H-PromptReco-v2_27p22fb_36p22/
+/pnfs/psi.ch/cms/trivcat/store/t3groups/uniz-higgs/Spring16/Ntuple_80_190916/JetHT/JetHT_Run2016H-PromptReco-v3_27p22fb_36p22/
