@@ -1,0 +1,1095 @@
+// $Id: CycleCreators.py 344 2012-12-13 13:10:53Z krasznaa $
+
+// Local include(s):
+#include "../include/VHTausAnalysis.h"
+
+// External include(s):
+#include "../GoodRunsLists/include/TGoodRunsListReader.h"
+
+#include <TMath.h>
+
+ClassImp( VHTausAnalysis );
+
+// define cut names
+
+//MD: apparently there are counters to keep track of events passing selections
+//cuts are progressively applied
+
+const std::string VHTausAnalysis::kCutName[ VHTausAnalysis::kNumCuts ] = {
+    "BeforeCuts",            // C0
+    "JSON",                  // C1
+    "Trigger",               // C2
+    "MetFilters",            // C3
+    "Met",                   // C4
+    "Jet",                   // C5
+    "Tau",                   // C6
+    //"kTauIsolation",          // C8
+    "MassWindow",               // C9
+    // "HiggsWindow",           // C10
+    //"Tau21",                 // C11
+};
+
+//MD class constructor
+//initializes variables and cuts
+
+VHTausAnalysis::VHTausAnalysis()
+    : SCycleBase()
+    , m_jetAK4( this )
+    , m_jetAK8( this )
+    , m_eventInfo( this )
+//    , m_electron( this )
+//    , m_muon( this )
+    , m_tau( this )
+    , m_missingEt( this )
+    , m_genParticle( this )
+    , m_pileupReweightingTool( this )
+      //, m_bTaggingScaleTool( this )
+{
+
+    m_logger << INFO << "Hello!" << SLogger::endmsg;
+    SetLogName( GetName() );
+   
+    // read configuration details from XML file
+    // (defaults agree with July 2010 acceptance challenge)
+    DeclareProperty( "RecoTreeName",             m_recoTreeName             = "physics" );
+    DeclareProperty( "OutputTreeName",           m_outputTreeName           = "analysis" );
+    DeclareProperty( "NtupleLevel",              m_ntupleLevel              = kTau );
+    DeclareProperty( "JetAK4Name",               m_jetAK4Name               = "jetAK4" );
+    DeclareProperty( "JetAK8Name",               m_jetAK8Name               = "jetAK8" );
+//    DeclareProperty( "ElectronName",             m_electronName             = "el" );
+//    DeclareProperty( "MuonName",                 m_muonName                 = "mu" );
+    DeclareProperty( "TauName",                  m_tauName                  = "tau" );
+    DeclareProperty( "MissingEtName",            m_missingEtName            = "MET" );
+//    DeclareProperty( "GenParticleName",          m_genParticleName          = "genParticle" );
+   
+    DeclareProperty( "IsData",                   m_isData                   = false );
+    DeclareProperty( "IsSignal",                 m_isSignal                 = true );
+    DeclareProperty( "ApplyMETFilters",          m_applyMETFilters          = true );
+   
+//    DeclareProperty( "JetPtCut",                 m_jetPtCut           = 250. );
+    DeclareProperty( "JetPtCut",                 m_jetPtCut           = 500. );
+    DeclareProperty( "JetEtaCut",                m_jetEtaCut          = 2.4  );
+    DeclareProperty( "MjjCut",                   m_mjjCut             = 600  );
+    DeclareProperty( "JetDeltaEtaCut",           m_jetDeltaEtaCut     = 2.  );
+    DeclareProperty( "JetDeltaRMin",             m_jetDeltaRMin       = 1.  );
+
+
+    DeclareProperty( "Tau21HPCut",                m_tau21HPCut             = 0.45 );
+    DeclareProperty( "Tau21LPCut",                m_tau21LPCut             = 0.75 );
+    DeclareProperty( "MVLowSidebandCut",          m_mVLowSidebandCut       = 40 );
+    DeclareProperty( "MWLowerCut",                m_mWLowerCut             = 65 );
+    DeclareProperty( "MWUpperCut",                m_mWUpperCut             = 85 );
+    DeclareProperty( "MZLowerCut",                m_mZLowerCut             = 85 );
+    DeclareProperty( "MZUpperCut",                m_mZUpperCut             = 105 );
+
+    
+    DeclareProperty( "MHLowSidebandCut",          m_mHLowSidebandCut       = 40 );
+    DeclareProperty( "MHHighSidebandCut",          m_mHHighSidebandCut       = 180 );
+
+    //editedMD
+    DeclareProperty( "MHLowCut",                 m_mHLowerCut             = 90 ); //105
+    DeclareProperty( "MHUpperCut",                m_mHUpperCut             = 140 ); //135
+
+    DeclareProperty( "HbbtagMin",                m_HbbtagMin             = 0.3 ); //editedMD
+    DeclareProperty( "mufMax",                   m_mufMax                = 0.8 );
+
+    DeclareProperty( "TauPtCut",                 m_tauPtCut           = 20 );
+    DeclareProperty( "TauEtaCut",                m_tauEtaCut          = 2.4  );
+    DeclareProperty( "TauIsoCut",                m_tauIsoCut          = true ); 
+    DeclareProperty( "TauDRmax",                 m_tauDRmax           = 1. ); 
+
+
+    DeclareProperty( "METCut",                m_metCut             = 25 );
+   
+//    DeclareProperty( "JSONName",                 m_jsonName             = std::string (std::getenv("SFRAME_DIR")) + "/../GoodRunsLists/JSON/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_Silver_v2.txt" );
+    DeclareProperty( "JSONName",                 m_jsonName             = std::string (std::getenv("SFRAME_DIR")) + "/../GoodRunsLists/JSON/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON.txt" );
+   
+}
+
+//MD class distructor
+
+VHTausAnalysis::~VHTausAnalysis() {
+
+    m_logger << INFO << "Tschoe!" << SLogger::endmsg;
+
+}
+
+
+//MD invoked at the beginning of each Cycle (loop over files)
+//loads Good Run List (GRL) if the events are data
+//select triggers
+//define categories (mass windows etc)
+
+void VHTausAnalysis::BeginCycle() throw( SError ) {
+
+    m_logger << INFO << "Hello to you!" << SLogger::endmsg;
+  
+    //
+
+    // Load the GRL:
+    //
+    if (m_isData) {
+        m_logger << INFO << "Loading GoodRunsList from file: " << m_jsonName << SLogger::endmsg;
+        Root::TGoodRunsListReader reader( TString( m_jsonName.c_str() ) );
+        if( ! reader.Interpret() ) {
+            m_logger << FATAL << "Couldn't read in the GRL!" << SLogger::endmsg;
+            throw SError( ( "Couldn't read in file: " + m_jsonName ).c_str(), SError::SkipCycle );
+        }
+        m_grl = reader.GetMergedGoodRunsList();
+        m_grl.Summary();
+        m_grl.SetName( "MyGoodRunsList" );
+  
+        //
+        // Add it as a configuration object, so that the worker nodes will receive it:
+        //
+        AddConfigObject( &m_grl );
+		
+        // m_logger << INFO << "Loading RunEventFilter from file: " << m_runEventFilterName << SLogger::endmsg;
+        // m_runEventFilterReader.SetTextFile( TString( m_runEventFilterName.c_str() ) );
+        // if( ! m_runEventFilterReader.Interpret() ) {
+        //   m_logger << FATAL << "Couldn't read in the RunEventFilter file!" << SLogger::endmsg;
+        //   throw SError( ( "Couldn't read in file: " + m_runEventFilterName ).c_str(), SError::SkipCycle );
+        // }
+		
+    }
+  
+    m_triggerNames.clear();
+	
+    //Dijet triggers
+    m_triggerNames.push_back("AK8PFJet360_TrimMass30") ;
+    m_triggerNames.push_back("AK8PFHT700_TrimR0p1PT0p03Mass50") ;
+    // trignames.push_back("AK8DiPFJet280_200_TrimMass30_BTagCSV0p45") ;
+    m_triggerNames.push_back("PFHT650_WideJetMJJ950DEtaJJ1p5") ;
+    m_triggerNames.push_back("PFHT650_WideJetMJJ900DEtaJJ1p5") ;
+    m_triggerNames.push_back("PFHT800_v") ;
+    m_triggerNames.push_back("PFHT900_v") ;
+  
+    // set names for various selections
+    m_catNames.clear();
+
+ 
+    // mutau channel
+  
+    //m_catNames.push_back("my_tautau");
+    m_catNames.push_back("tautau_NoWindow");
+    m_catNames.push_back("tautau_HiggsWindow");
+    m_catNames.push_back("tautau_LowHiggsSB");
+    m_catNames.push_back("tautau_HighHiggsSB");
+
+    
+
+    return;
+
+}
+
+//MD invoked at the end of cyle
+// does nothing
+
+void VHTausAnalysis::EndCycle() throw( SError ) {
+
+    return;
+
+}
+
+
+//MD called at the beginning of data input
+// first prints some options
+// if events are data, call PU reweighting tool and load GRL
+// declares branches for the output tree
+// creates selections bits for each cathegory
+// creates output histograms
+// calls bookhistograms, for each cathegory
+
+
+void VHTausAnalysis::BeginInputData( const SInputData& id ) throw( SError ) {
+
+    m_logger << INFO << "RecoTreeName:         " <<             m_recoTreeName << SLogger::endmsg;
+    m_logger << INFO << "OutputTreeName:       " <<             m_outputTreeName << SLogger::endmsg;
+    m_logger << INFO << "NtupleLevel:          " <<             m_ntupleLevel << SLogger::endmsg;
+    m_logger << INFO << "JetAK4Name:           " <<             m_jetAK4Name << SLogger::endmsg;
+    m_logger << INFO << "JetAK8Name:           " <<             m_jetAK8Name << SLogger::endmsg;
+//    m_logger << INFO << "ElectronName:         " <<             m_electronName << SLogger::endmsg;
+//    m_logger << INFO << "MuonName:             " <<             m_muonName << SLogger::endmsg;
+    m_logger << INFO << "TauName:             " <<             m_tauName << SLogger::endmsg;
+    m_logger << INFO << "GenParticleName:      " <<             m_genParticleName << SLogger::endmsg;
+  
+    m_logger << INFO << "IsData:           " <<                   (m_isData ? "TRUE" : "FALSE") << SLogger::endmsg;
+    m_logger << INFO << "IsSignal:           " <<                 (m_isSignal ? "TRUE" : "FALSE") << SLogger::endmsg;
+    m_logger << INFO << "ApplyMETFilters:           " <<          (m_applyMETFilters ? "TRUE" : "FALSE") << SLogger::endmsg;
+  
+    m_logger << INFO << "JetPtCut:           " <<                 m_jetPtCut << SLogger::endmsg;
+    m_logger << INFO << "JetEtaCut:           " <<                m_jetEtaCut << SLogger::endmsg;
+    m_logger << INFO << "MjjCut:           " <<                m_mjjCut << SLogger::endmsg;
+    m_logger << INFO << "JetDeltaEtaCut:           " <<                m_jetDeltaEtaCut << SLogger::endmsg;
+
+    m_logger << INFO << "Tau21HPCut:           " <<                m_tau21HPCut << SLogger::endmsg;
+    m_logger << INFO << "Tau21LPCut:           " <<                m_tau21LPCut << SLogger::endmsg;
+  
+    m_logger << INFO << "MVLowSidebandCut:     " <<                m_mVLowSidebandCut << SLogger::endmsg;
+    m_logger << INFO << "MWLowerCut:           " <<                m_mWLowerCut << SLogger::endmsg;
+    m_logger << INFO << "MWUpperCut:           " <<                m_mWUpperCut << SLogger::endmsg;
+    m_logger << INFO << "MZLowerCut:           " <<                m_mZLowerCut << SLogger::endmsg;
+    m_logger << INFO << "MZUpperCut:           " <<                m_mZUpperCut << SLogger::endmsg;
+    m_logger << INFO << "MHLowCut:             " <<                 m_mHLowerCut << SLogger::endmsg;
+    m_logger << INFO << "MHUpperCut:           " <<                m_mHUpperCut << SLogger::endmsg;
+  
+//    m_logger << INFO << "CSVMin:           " <<                m_csvMin << SLogger::endmsg;
+    m_logger << INFO << "HbbtagMin:           " <<                m_HbbtagMin << SLogger::endmsg;
+  
+//    m_logger << INFO << "ElectronPtCut:           " <<                 m_electronPtCut << SLogger::endmsg;
+//    m_logger << INFO << "ElectronEtaCut:           " <<                m_electronEtaCut << SLogger::endmsg;
+  
+//    m_logger << INFO << "MuonPtCut:           " <<                 m_muonPtCut << SLogger::endmsg;
+//    m_logger << INFO << "MuonEtaCut:           " <<                m_muonEtaCut << SLogger::endmsg;
+  
+    m_logger << INFO << "TauPtCut:           " <<                 m_tauPtCut << SLogger::endmsg;
+    m_logger << INFO << "TauEtaCut:           " <<                m_tauEtaCut << SLogger::endmsg;
+    m_logger << INFO << "TauIsoCut:           " <<                m_tauIsoCut << SLogger::endmsg;
+  
+//    m_logger << INFO << "LeptonPtCut:           " <<                 m_leptonPtCut << SLogger::endmsg;
+//    m_logger << INFO << "LeptonEtaCut:           " <<                m_leptonEtaCut << SLogger::endmsg;
+  
+    m_logger << INFO << "METCut:           " <<                m_metCut << SLogger::endmsg;
+  
+    m_logger << INFO << "JSONName:           " <<                 m_jsonName << SLogger::endmsg;
+  
+    //MD if events are data, call PU reweighting tool
+    // also load GRL
+
+    if (!m_isData) m_pileupReweightingTool.BeginInputData( id );
+  
+    if (m_isData) {
+        TObject* grl;
+        if( ! ( grl = GetConfigObject( "MyGoodRunsList" ) ) ) {
+            m_logger << FATAL << "Can't access the GRL!" << SLogger::endmsg;
+            throw SError( "Can't access the GRL!", SError::SkipCycle );
+        }
+        m_grl = *( dynamic_cast< Root::TGoodRunsList* >( grl ) );
+    }
+  
+    //MD declares branches for the output tree
+
+    //
+    // output branches
+    //
+
+    //MD DeclareVariable(objectName, branchName)
+    // object to write into a ntuple branch
+
+    // DeclareVariable(b_weight              , "weight"                 );
+    // DeclareVariable(b_weightGen           , "weightGen"              );
+    // DeclareVariable(b_weightPU            , "weightPU"               );
+  
+    // DeclareVariable( b_runNumber,           "b_runNumber"            );
+    // DeclareVariable( b_eventNumber,         "b_eventNumber"          );
+    // DeclareVariable( b_lumiBlock,           "b_lumiBlock"            );
+
+    DeclareVariable( b_pass,"pass" );
+
+    // DeclareVariable( b_jet_m,"jet_m" );
+    // DeclareVariable( b_jet_e,"jet_e" );
+    // DeclareVariable( b_jet_pt,"jet_pt" );
+    // DeclareVariable( b_jet_eta,"jet_eta" );
+    // DeclareVariable( b_jet_tau21,"jet_tau21" );
+    // DeclareVariable( b_jet_Hbbtag,"jet_Hbbtag" );
+  
+    // DeclareVariable( b_tau1_e,"tau1_e" );
+    // DeclareVariable( b_tau1_pt,"tau1_pt" );
+    // DeclareVariable( b_tau1_eta,"tau1_eta" );
+    // DeclareVariable( b_tau1_phi,"tau1_phi" );
+
+    // DeclareVariable( b_tau2_e,"tau2_e" );
+    // DeclareVariable( b_tau2_pt,"tau2_pt" );
+    // DeclareVariable( b_tau2_eta,"tau2_eta" );
+    // DeclareVariable( b_tau2_phi,"tau2_phi" );
+
+    // DeclareVariable( b_met_et,"met_et" );
+    // DeclareVariable( b_dr_tautau,"dr_tautau" );
+    // DeclareVariable( b_m_tautau,"m_tautau" );
+    // DeclareVariable( b_dr_tautaujet,"dr_tautaujet" );
+    // DeclareVariable( b_deta_tautaujet,"deta_tautaujet" );
+    // DeclareVariable( b_m_tautaujet,"m_tautaujet" );
+
+
+
+    //MD TString::Form formats a string using printf style definition
+
+    b_selection_bits.resize( m_catNames.size() );
+    b_selection_lastcut.resize( m_catNames.size() );
+    // for (unsigned int s=0;s<m_catNames.size();++s) {
+    //     DeclareVariable(b_selection_bits[s]    , Form("selection_bits_%s", m_catNames[s].c_str())    );
+    //     DeclareVariable(b_selection_lastcut[s] , Form("selection_lastcut_%s", m_catNames[s].c_str()) );
+    // }
+  
+    //
+    // Declare the output histograms:
+    //
+    //MD Book(objectName, directory)
+
+    Book( TH1F( "Events", "Events;weight", 10, -.5, 9.5 ) );
+    Book( TH1F( "SumEvents", "SumEvents;weight", 10, -.5, 9.5 ) );
+    Book( TH1F( "METFilters", "METFilters", 20, 0.5, 20.5 ));
+
+
+    for (unsigned int s=0;s<m_catNames.size();++s) {
+        TString directory = m_catNames[s].c_str();
+        // cutflow
+        Book( TH1F( "cutflow", "cutflow", 20, 0.5, 20.5 ), directory );  
+        bookHistograms(directory);
+
+    }
+  
+    return;
+
+}
+
+
+//MD prints out some info at the end of input data
+
+void VHTausAnalysis::EndInputData( const SInputData& ) throw( SError ) {
+
+    //
+    // Final analysis of cut flow
+    //
+  
+    TString defaultCutflow = m_catNames[m_catNames.size()-1]; //"VWindow_Tau21HP_SubjetDoubleTag";
+    m_logger << INFO << "cut flow for " << defaultCutflow << SLogger::endmsg;
+    m_logger << INFO << Form( "Cut\t%25.25s\tEvents\tRelEff\tAbsEff", "Name" ) << SLogger::endmsg;
+  
+    //MD Hist(histoName,directory) returns a pointer to the histogram in the directory
+    // useful if there are many of them
+
+    Double_t ntot = Hist( "cutflow", defaultCutflow )->GetBinContent( 1 );
+    m_logger << INFO << Form( "\t%25.25s\t%6.0f", "start", ntot ) << SLogger::endmsg;
+    for( Int_t ibin = 2; ibin <= kNumCuts; ++ibin ) {
+        Int_t    icut    = ibin - 1;
+        Double_t nevents = Hist( "cutflow", defaultCutflow )->GetBinContent( ibin );
+        Double_t releff  = 100. * nevents / Hist( "cutflow", defaultCutflow )->GetBinContent( ibin-1 );
+        Double_t abseff  = 100. * nevents / ntot;
+        m_logger << INFO  << Form( "C%d\t%25.25s\t%6.0f\t%6.2f\t%6.2f", icut-1, kCutName[icut].c_str(), nevents, releff, abseff ) << SLogger::endmsg;
+    }
+   
+    return;
+
+}
+
+
+//MD called every time a new input file is processed
+// connects all variables to the ntuples
+// ConnectVariables(inputTreeName, inputBranchName, variable to connect)
+
+void VHTausAnalysis::BeginInputFile( const SInputData& ) throw( SError ) {
+
+    m_logger << INFO << "Connecting input variables" << SLogger::endmsg;
+    if (m_isData) {
+        // m_jetAK4.ConnectVariables(       m_recoTreeName.c_str(), Ntuple::JetBasic|Ntuple::JetAnalysis, (m_jetAK4Name + "_").c_str() );
+        m_jetAK8.ConnectVariables(       m_recoTreeName.c_str(), Ntuple::JetBasic|Ntuple::JetAnalysis|Ntuple::JetSubstructure/*|Ntuple::JetPrunedSubjets*/, (m_jetAK8Name + "_").c_str() );
+        m_eventInfo.ConnectVariables(    m_recoTreeName.c_str(), /*Ntuple::EventInfoBasic|*/Ntuple::EventInfoTrigger|Ntuple::EventInfoMETFilters, "" );
+    }
+    else {
+        // m_jetAK4.ConnectVariables(       m_recoTreeName.c_str(), Ntuple::JetBasic|Ntuple::JetAnalysis|Ntuple::JetTruth, (m_jetAK4Name + "_").c_str() );
+        m_jetAK8.ConnectVariables(       m_recoTreeName.c_str(), Ntuple::JetBasic|Ntuple::JetAnalysis|Ntuple::JetSubstructure/*|Ntuple::JetTruth|Ntuple::JetPrunedSubjets|Ntuple::JetPrunedSubjetsTruth*/, (m_jetAK8Name + "_").c_str() );
+        m_eventInfo.ConnectVariables(    m_recoTreeName.c_str(), Ntuple::EventInfoBasic|Ntuple::EventInfoTrigger|Ntuple::EventInfoMETFilters|Ntuple::EventInfoTruth, "" );
+        //m_genParticle.ConnectVariables(  m_recoTreeName.c_str(), Ntuple::GenParticleBasic, (m_genParticleName + "_").c_str() );
+    }
+//    m_electron.ConnectVariables(     m_recoTreeName.c_str(), Ntuple::ElectronBasic|Ntuple::ElectronID|Ntuple::ElectronBoostedID, (m_electronName + "_").c_str() );
+//    m_muon.ConnectVariables(         m_recoTreeName.c_str(), Ntuple::MuonBasic|Ntuple::MuonID|Ntuple::MuonIsolation, (m_muonName + "_").c_str() );
+    m_tau.ConnectVariables(         m_recoTreeName.c_str(), Ntuple::TauBasic|Ntuple::TauID|Ntuple::TauAdvancedID, (m_tauName + "_").c_str() );
+
+    m_missingEt.ConnectVariables(    m_recoTreeName.c_str(), Ntuple::MissingEtBasic, (m_missingEtName + "_").c_str() );
+  
+    m_logger << INFO << "Connecting input variables completed" << SLogger::endmsg;
+
+    return;
+
+}
+
+
+//MD: the main method, where the event is processed
+// comments in the code
+
+void VHTausAnalysis::ExecuteEvent( const SInputData&, Double_t ) throw( SError ) 
+{
+
+
+    m_logger << VERBOSE << "ExecuteEvent" << SLogger::endmsg;
+  
+    clearBranches();
+  
+    b_eventNumber = m_eventInfo.eventNumber;
+    b_runNumber = m_eventInfo.runNumber;
+    b_lumiBlock = m_eventInfo.lumiBlock;
+  
+    //MD vector of selection bits (a set for each cathegory)
+
+    std::vector<TBits> selectionBits(m_catNames.size(), TBits(kNumCuts));
+    for (unsigned int s=0;s<m_catNames.size();++s) 
+    {
+        selectionBits[s].SetBitNumber( kBeforeCuts );
+    }
+
+    //bool moveOn = true;
+  
+    // Cut 1: check for data if run/lumiblock in JSON
+    if (m_isData) 
+    {
+        if (isGoodEvent(m_eventInfo.runNumber, m_eventInfo.lumiBlock)) {
+            for (unsigned int s=0;s<m_catNames.size();++s) {
+                selectionBits[s].SetBitNumber( kJSON );
+            }
+        }
+    } // if is data -> JSON
+
+    else 
+    {
+        for (unsigned int s=0;s<m_catNames.size();++s) {
+            selectionBits[s].SetBitNumber( kJSON );
+        }
+    } //if is not data -> JSON = true
+  
+    // Cut 2: pass trigger
+ 
+
+
+
+
+    if (m_isData)
+    {
+        if (passTrigger()) 
+        {
+            m_logger << VERBOSE << "Trigger pass" << SLogger::endmsg;
+            for (unsigned int s=0;s<m_catNames.size();++s) {
+                selectionBits[s].SetBitNumber( kTrigger );
+            }
+            // m_logger << INFO << "pass: " << selectionBits[0].TestBitNumber( kTrigger ) << SLogger::endmsg;
+        } //if pass trigger
+
+        else
+        {
+            m_logger <<  VERBOSE  << "Trigger fail:" << selectionBits[0].TestBitNumber( kTrigger ) << SLogger::endmsg;
+
+            for (unsigned int s=0;s<m_catNames.size();++s) 
+                m_logger << VERBOSE  << selectionBits[s].TestBitNumber( kTrigger ) << SLogger::endmsg;
+
+        } 
+    }
+
+
+    else
+    {
+        m_logger << VERBOSE << "Trigger pass" << SLogger::endmsg;
+        for (unsigned int s=0;s<m_catNames.size();++s) {
+            selectionBits[s].SetBitNumber( kTrigger );
+        }
+        // m_logger << INFO << "pass: " << selectionBits[0].TestBitNumber( kTrigger ) << SLogger::endmsg;
+    } //if not data->pass trigger
+
+
+
+
+
+    // Cut 3: pass MET filters
+
+    if (passMETFilters()) 
+    {
+        m_logger << VERBOSE << "passMETFilters" << SLogger::endmsg;
+        for (unsigned int s=0;s<m_catNames.size();++s) 
+            selectionBits[s].SetBitNumber( kMetFilters );
+
+    } //if pass met filters
+  
+
+
+    bool foundTauPair = false;
+    std::vector<UZH::Tau> goodTaus;
+    for ( int i = 0; i<(m_tau.N); ++i )
+    {
+
+        UZH::Tau mytau( &m_tau, i );
+
+        bool passCuts = mytau.pt()>m_tauPtCut && fabs(mytau.eta())<m_tauEtaCut;
+        bool isTauDM = mytau.decayModeFindingNewDMs();
+        bool isTauIso = mytau.byVLooseIsolationMVA3newDMwLT();
+        bool isTauBoosted = mytau.TauType()==2;
+
+        if (passCuts && isTauDM && isTauIso && isTauBoosted)
+        {
+            goodTaus.push_back(mytau);
+            //std::cout<<" mytau.pt() " << mytau.pt() <<" mytau.eta() " << mytau.eta() <<" mytau.TauType() " <<  mytau.TauType() <<std::endl;
+        }
+
+    }//end loop on taus
+
+    if (goodTaus.size()>=2) foundTauPair=true;
+    //std::cout<<std::endl<<"found tau pair: "<<foundTauPair<<std::endl;
+    if (!foundTauPair) return;
+
+    for (unsigned int s=0;s<m_catNames.size();++s) 
+        if (m_catNames[s].find("tautau") != std::string::npos) 
+            selectionBits[s].SetBitNumber( kTau );
+
+
+    UZH::Tau selectedTau_1, selectedTau_2;
+    TLorentzVector sumTau_TLV;
+    
+    float sumPT_max = 0;
+    int iTau_max = -1;
+    int jTau_max = -1;
+    float selectedDR = -1;
+
+    for (unsigned int iTau=0; iTau<goodTaus.size(); ++iTau)
+    {
+        for (unsigned int jTau=iTau+1; jTau<goodTaus.size(); ++jTau)
+        {
+            TLorentzVector tau1_TLV, tau2_TLV, sum_TLV;
+
+            tau1_TLV.SetPtEtaPhiE(goodTaus.at(iTau).pt(),
+                                  goodTaus.at(iTau).eta(),
+                                  goodTaus.at(iTau).phi(),
+                                  goodTaus.at(iTau).e());
+
+            tau2_TLV.SetPtEtaPhiE(goodTaus.at(jTau).pt(),
+                                  goodTaus.at(jTau).eta(),
+                                  goodTaus.at(jTau).phi(),
+                                  goodTaus.at(jTau).e());
+
+            sum_TLV = tau1_TLV + tau2_TLV;
+            float sumPT = sum_TLV.Pt();
+    
+            if (sumPT >= sumPT_max) 
+            {
+                sumPT_max = sumPT;
+                iTau_max = iTau;
+                jTau_max = jTau;
+                sumTau_TLV = sum_TLV;
+                selectedDR = tau1_TLV.DeltaR(tau2_TLV);
+            }
+
+        } //end loop sumPT (j)
+    } //end loop sumPT (i)
+    
+    
+    // redundant but more readable
+    if (selectedDR > m_tauDRmax) foundTauPair = false;
+    if (!foundTauPair) return;
+
+    
+    if (goodTaus.at(iTau_max).pt()>goodTaus.at(jTau_max).pt())
+    {
+        selectedTau_1 = goodTaus.at(iTau_max);
+        selectedTau_2 = goodTaus.at(jTau_max);
+    }
+
+    else
+    {
+        selectedTau_1 = goodTaus.at(jTau_max);
+        selectedTau_2 = goodTaus.at(iTau_max);
+    }
+                
+
+
+
+    //std::cout<<"max = "<<selectedTau_1.pt()<<"\t min = "<<selectedTau_2.pt()<<"\t sum = "<<sumPT_max<<std::endl;
+
+
+
+
+    // Cut 4: select two fat jets
+    std::vector<UZH::Jet> goodFatJets;
+    for ( int i = 0; i < (m_jetAK8.N); ++i ) 
+    {
+        UZH::Jet myjet( &m_jetAK8, i );
+
+        TLorentzVector jetTLV;
+        jetTLV.SetPtEtaPhiE(myjet.pt(),
+                            myjet.eta(),
+                            myjet.phi(),
+                            myjet.e());
+
+        bool passCuts =  (myjet.pt() > m_jetPtCut) && (fabs(myjet.eta()) < m_jetEtaCut);
+        bool isJetID = (myjet.IDTight()) && (myjet.muf() < m_mufMax);
+        bool noOverlap = ( jetTLV.DeltaR(sumTau_TLV) > m_jetDeltaRMin );
+        bool isLooseHbbtag = (myjet.Hbbtag() > m_HbbtagMin);
+
+        if (passCuts && isJetID && noOverlap && isLooseHbbtag)
+        {
+            // std::cout<<" myjet.pt() " << myjet.pt() <<" myjet.eta() " << myjet.eta() << " myjet.IDTight() " << myjet.IDTight() << 
+            //   " myjet.pruned_massCorr() " << myjet.pruned_massCorr() <<std::endl;
+
+            goodFatJets.push_back(myjet); //editedMD
+        }
+    }//end loop on jets
+
+    
+
+
+    bool foundFatJet = (goodFatJets.size() > 0);
+    //std::cout<<"found jet: "<<foundFatJet<<std::endl;
+    if (!foundFatJet) return;
+
+    for (unsigned int s=0;s<m_catNames.size();++s)
+    {
+        selectionBits[s].SetBitNumber( kJet );
+        if (m_catNames[s].find("NoWindow") != std::string::npos) 
+            selectionBits[s].SetBitNumber( kMassWindow );
+    }
+    
+  
+    m_logger << VERBOSE << "kJet" << SLogger::endmsg;
+
+
+    int leadingFatJetIndex = -1;
+    UZH::Jet myLeadingJet;
+    float leadingPT = 0.;
+
+
+    for (unsigned int i = 0; i < goodFatJets.size(); ++i) 
+    {
+        if (goodFatJets.at(i).pt()>leadingPT)
+        {
+            leadingPT = goodFatJets.at(i).pt();
+            leadingFatJetIndex = i;
+        }
+    }
+
+    myLeadingJet = goodFatJets.at(leadingFatJetIndex);
+
+//std::cout<<leadingPT<<std::endl;
+
+    bool isJetHiggsWindow = (myLeadingJet.pruned_massCorr() > m_mHLowerCut) && (myLeadingJet.pruned_massCorr() <= m_mHUpperCut);
+    bool isJetHiggsLowSB = (myLeadingJet.pruned_massCorr() > m_mHLowSidebandCut) && (myLeadingJet.pruned_massCorr() <= m_mHLowerCut);
+    bool isJetHiggsHighSB = (myLeadingJet.pruned_massCorr() > m_mHUpperCut) && (myLeadingJet.pruned_massCorr() <= m_mHHighSidebandCut);
+/*
+    if (isJetHiggsLowSB || isJetHiggsHighSB)
+    {
+        std::cout<<"higgs : "<<isJetHiggsWindow<<std::endl;
+        std::cout<<"lowSB : "<<isJetHiggsLowSB<<std::endl;
+        std::cout<<"highSB: "<<isJetHiggsHighSB<<std::endl;
+        std::cout<<std::endl;
+    }
+*/  
+    if ( isJetHiggsWindow )
+        for (unsigned int s=0;s<m_catNames.size();++s) 
+            if (m_catNames[s].find("HiggsWindow") != std::string::npos)
+                selectionBits[s].SetBitNumber( kMassWindow );
+                
+    if ( isJetHiggsLowSB )
+        for (unsigned int s=0;s<m_catNames.size();++s) 
+            if (m_catNames[s].find("LowHiggsSB") != std::string::npos)
+                selectionBits[s].SetBitNumber( kMassWindow );
+
+                        
+    if  ( isJetHiggsHighSB )
+        for (unsigned int s=0;s<m_catNames.size();++s)
+            if (m_catNames[s].find("HighHiggsSB") != std::string::npos)
+                selectionBits[s].SetBitNumber( kMassWindow );
+
+
+
+// Cut : select met
+    bool foundMet = false;
+    UZH::MissingEt goodMet ( &m_missingEt, 0 );
+
+    if (goodMet.et() > m_metCut) 
+    {
+        // std::cout<<"MET " << goodMet.et() <<std::endl;
+        foundMet=true;
+    }
+
+    for (unsigned int s=0;s<m_catNames.size();++s) 
+        if (m_catNames[s].find("tautau") != std::string::npos) 
+            selectionBits[s].SetBitNumber( kMet );
+    //std::cout<<"found met: "<<foundMet<<std::endl;
+    if (!foundMet) return;
+
+    // std::cout<<"selections passed!"<<std::endl<<std::endl;
+// selection done
+    m_logger << VERBOSE << "selection done" << SLogger::endmsg;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    b_pass = true;
+    
+    TLorentzVector jet, tau1, tau2, sumTau, sumAll;
+    tau1.SetPtEtaPhiE(selectedTau_1.pt(), selectedTau_1.eta(), selectedTau_1.phi(), selectedTau_1.e());
+    tau2.SetPtEtaPhiE(selectedTau_2.pt(), selectedTau_2.eta(), selectedTau_2.phi(), selectedTau_2.e());
+    jet.SetPtEtaPhiE(myLeadingJet.pt(),myLeadingJet.eta(),myLeadingJet.phi(),myLeadingJet.e());
+    sumTau = tau1 + tau2 ;
+    sumAll = sumTau + jet ;
+
+    b_jet_m = myLeadingJet.pruned_massCorr();
+    b_jet_e = myLeadingJet.e(); 
+    b_jet_pt = myLeadingJet.pt(); 
+    b_jet_eta = myLeadingJet.eta(); 
+    b_jet_tau21 = myLeadingJet.tau2()/myLeadingJet.tau1(); 
+    b_jet_Hbbtag = myLeadingJet.Hbbtag(); 
+
+    b_tau1_e = selectedTau_1.e() ; 
+    b_tau1_pt = selectedTau_1.pt() ; 
+    b_tau1_eta = selectedTau_1.eta() ; 
+    b_tau1_phi = selectedTau_1.phi() ; 
+
+    b_tau2_e = selectedTau_2.e() ; 
+    b_tau2_pt = selectedTau_2.pt() ; 
+    b_tau2_eta = selectedTau_2.eta() ; 
+    b_tau2_phi = selectedTau_2.phi() ; 
+
+
+    b_met_et = goodMet.et() ; 
+    b_dr_tautau = tau1.DeltaR(tau2);
+    b_m_tautau = sumTau.M();
+    b_dr_tautaujet = sumTau.DeltaR(jet);
+    b_deta_tautaujet = fabs(sumTau.Eta()-jet.Eta());
+    b_m_tautaujet = sumAll.M();
+    
+
+    b_selection_bits.clear();
+    b_selection_lastcut.clear();
+  
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    if (!m_isData) 
+    {
+        b_weight = getEventWeight();
+
+
+        Hist( "Events" )->Fill( 0., b_weightGen        ); // event with MC weight
+        Hist( "Events" )->Fill( 1,  b_weight           ); // event total weight
+        Hist( "Events" )->Fill( 2,  b_weightPU         ); // event pileup weight
+        Hist( "Events" )->Fill( 9,  1                  ); // event without MC weight
+    
+        Hist( "SumEvents" )->Fill( 0., fabs(b_weightGen)       ); // event with MC weight
+        Hist( "SumEvents" )->Fill( 1,  fabs(b_weight)          ); // event total weight
+        Hist( "SumEvents" )->Fill( 2,  fabs(b_weightPU)       ); // event pileup weight
+        Hist( "SumEvents" )->Fill( 9,  1                       ); // event without MC weight
+
+        //Hist( "SumEvents" )->Fill( 6,  fabs(b_weight_jvfScale));  // event JVF SF weight
+
+    } // end if not data fill histos with weight
+  
+
+    for (unsigned int s=0;s<m_catNames.size();++s)
+    {
+        // m_logger << INFO << selectionBits[s].TestBitNumber( kTrigger ) << SLogger::endmsg;
+        fillCutflow("cutflow", m_catNames[s], selectionBits[s], b_weight);
+    }
+  
+    bool doHistograms = false;
+
+    for (unsigned int s=0;s<m_catNames.size();++s) 
+        if (selectionBits[s].TestBitNumber( kMassWindow )) 
+            doHistograms = true;
+    //prova
+    if (!doHistograms) b_pass = false;  
+
+    m_logger << VERBOSE << "before doHistograms" << SLogger::endmsg;
+    //std::cout<<"do histos: "<<doHistograms<<std::endl;
+    
+    if (doHistograms) 
+    {
+        std::vector<bool> passed_all(m_catNames.size(), true);
+
+        for (unsigned int s=0; s<m_catNames.size(); ++s) 
+        {
+            for( UInt_t icut = 0; icut < kNumCuts; ++icut )
+            {
+                if( selectionBits[s].TestBitNumber( icut ) != kTRUE )
+                    passed_all[s] = false;
+                
+                else
+                {
+                    if (icut) b_selection_bits[s]|=1<<icut; 
+                    if (icut-1==(unsigned)b_selection_lastcut[s])
+                        b_selection_lastcut[s]++;
+                }
+
+            }//cut loop
+            //std::cout<<"passed all "<<s<<": "<<passed_all[s]<<std::endl;
+
+        }//category loop
+
+
+
+        m_logger << VERBOSE << "category loopfillHistograms" << SLogger::endmsg;
+
+        for (unsigned int s=0;s<m_catNames.size();++s) 
+        {
+            if (passed_all[s]) 
+            {
+                m_logger << VERBOSE << m_catNames[s] << SLogger::endmsg;
+                fillHistograms(m_catNames[s], myLeadingJet, selectedTau_1, selectedTau_2, goodMet);
+            }
+        }//category loop
+
+    } //if do histograms
+
+
+    m_logger << VERBOSE << "return" << SLogger::endmsg;
+    return;
+
+
+} //end function
+
+
+//MD returns a boolean: is run_lumisection a good event
+// reads from GRL (if event is data, of course)
+
+bool VHTausAnalysis::isGoodEvent(int runNumber, int lumiSection) {
+  
+    bool isGood = true;
+    if (m_isData) {
+        isGood = m_grl.HasRunLumiBlock( runNumber, lumiSection );
+        if( !isGood ) {
+            m_logger << WARNING << "Bad event! Run: " << runNumber <<  " - Lumi Section: " << lumiSection << SLogger::endmsg;
+            // throw SError( SError::SkipEvent );
+        }
+        else m_logger << VERBOSE << "Good event! Run: " << runNumber <<  " - Lumi Section: " << lumiSection << SLogger::endmsg;
+    }
+    return isGood;
+  
+}
+
+
+//MD: check if the event passes the trigger selections
+// at least one trigger bit must be true
+
+bool VHTausAnalysis::passTrigger() {
+  
+    bool passTrigger = false;
+  
+    for (std::map<std::string,bool>::iterator it = (m_eventInfo.trigDecision)->begin(); it != (m_eventInfo.trigDecision)->end(); ++it){
+        for (unsigned int t = 0; t < m_triggerNames.size(); ++t ){
+            if ((it->first).find(m_triggerNames[t]) != std::string::npos) {
+                if (it->second == true) {
+                    m_logger << VERBOSE << "Trigger pass: " << (it->first) << SLogger::endmsg;
+                    passTrigger = true;
+                    return passTrigger;
+                }
+            }
+        }
+    }
+  
+    return passTrigger;
+  
+}
+
+
+//MD check if passes MET filter
+// it must pass all MET filters
+
+bool VHTausAnalysis::passMETFilters() {
+  
+    bool passMetFilters = true;
+  
+    // using only what's recommended in https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
+    
+    if( !(m_eventInfo.PV_filter) ) {
+        passMetFilters = false;
+        m_logger << VERBOSE << "PV_filter" << SLogger::endmsg;
+        Hist( "METFilters" )->Fill(1);
+    }
+    if( !(m_eventInfo.passFilter_CSCHalo) ) {
+        passMetFilters = false;
+        m_logger << VERBOSE << "passFilter_CSCHalo" << SLogger::endmsg;
+        Hist( "METFilters" )->Fill(2);
+    }
+    if( !(m_eventInfo.passFilter_HBHELoose) ) {
+        passMetFilters = false;
+        m_logger << VERBOSE << "passFilter_HBHELoose" << SLogger::endmsg;
+        Hist( "METFilters" )->Fill(3);
+    }
+    if( !(m_eventInfo.passFilter_HBHEIso) ) {
+        passMetFilters = false;
+        m_logger << VERBOSE << "passFilter_HBHEIso" << SLogger::endmsg;
+        Hist( "METFilters" )->Fill(4);
+    }
+    if( !(m_eventInfo.passFilter_EEBadSc) ) {
+        passMetFilters = false;
+        m_logger << VERBOSE << "passFilter_EEBadSc" << SLogger::endmsg;
+        Hist( "METFilters" )->Fill(5);
+    }
+  
+    return passMetFilters;
+  
+}
+
+//retreives the weight for the event
+// PU and generator weights considered
+
+double VHTausAnalysis::getEventWeight() {
+  
+    double weight = 1.;
+    for( unsigned int v = 0; v < (m_eventInfo.actualIntPerXing)->size(); ++v ){
+    
+        if ( (*m_eventInfo.bunchCrossing)[v] == 0 ) {
+            b_weightPU = m_pileupReweightingTool.getPileUpweight( (*m_eventInfo.actualIntPerXing)[v] );
+            m_logger << VERBOSE << "Weight: " << b_weightPU << " for true: " << (*m_eventInfo.actualIntPerXing)[v] << SLogger::endmsg;
+     
+            break;
+        }
+    }
+    b_weightGen = (m_eventInfo.genEventWeight < 0) ? -1 : 1; 
+    //b_weightGen = m_eventInfo.genEventWeight;
+    weight *= b_weightPU*b_weightGen;
+  
+    return weight;
+  
+}
+
+//MD resets all branches to default values
+
+void VHTausAnalysis::clearBranches() {
+  
+    b_weight = 1.;
+    b_weightGen = 1.;
+    b_weightPU = 1.;
+  
+    b_runNumber = -99;;
+    b_eventNumber = -99;
+    b_lumiBlock = -99;
+
+    b_pass = false;
+
+    b_jet_m = -5. ;
+    b_jet_e = -5. ; 
+    b_jet_pt = -5. ; 
+    b_jet_eta = -5. ; 
+    b_jet_tau21 = -5. ; 
+    b_jet_Hbbtag = -5. ; 
+
+    b_tau1_e = -5. ; 
+    b_tau1_pt = -5. ; 
+    b_tau1_eta = -5. ; 
+    b_tau1_phi = -5. ; 
+
+    b_tau2_e = -5. ; 
+    b_tau2_pt = -5. ; 
+    b_tau2_eta = -5. ; 
+    b_tau2_phi = -5. ; 
+
+    b_met_et = -5. ; 
+    b_dr_tautau = -5. ; 
+    b_m_tautau = -5. ; 
+    b_dr_tautaujet = -5. ; 
+    b_deta_tautaujet = -5. ; 
+    b_m_tautaujet = -5. ; 
+    
+
+    b_selection_bits.clear();
+    b_selection_lastcut.clear();
+  
+}
+
+void VHTausAnalysis::fillCutflow( const std::string histName, const std::string dirName, const TBits& cutmap, const Double_t weight ) {
+
+    // bool writeNtuple = false;
+    // sequential cut flow -> stop at first failed cut
+    // m_logger << INFO << histName << "\t" << dirName << SLogger::endmsg;
+    for( UInt_t i = 0; i < cutmap.GetNbits(); ++i ) {
+        // m_logger << INFO << i << ":\t" << cutmap.TestBitNumber( i ) << SLogger::endmsg;
+        if( cutmap.TestBitNumber( i ) ) {
+            Hist( histName.c_str(), dirName.c_str() )->Fill( i+1, weight );
+            // if (i == (unsigned int) m_ntupleLevel) {
+            //   writeNtuple = true;
+            // }
+        } else {
+            break;
+        }
+    }
+    // if (!writeNtuple) {
+    // // this does something really bad...
+    //   throw SError( SError::SkipEvent );
+    // }
+}
+
+//MD creates all the histograms
+
+void VHTausAnalysis::bookHistograms( const TString& directory ) {
+
+    Book ( TH1F("Hjet_Mass","Hbb jet pruned mass (JEC);jetMass (GeV)",50,0,200), directory);
+    Book ( TH1F("Hjet_PT","Hbb jet pT;pT (GeV)",50,0,3000), directory);
+    Book ( TH1F("Hjet_Eta","Hbb jet pseudorapidity ;#eta",50,-3,3), directory);
+    Book ( TH1F("Hjet_Phi","Hbb jet azimuthal angle;#phi",20,-4,4), directory);
+    Book ( TH1F("Hjet_Tau21","Hbb jet subjettiness ratio tau21; #tau21",50,0,1.5), directory);
+    Book ( TH1F("Hjet_Hbbtag","Hbb jet pruned mass (JEC);jetMass (GeV)",60,-1.2,1.2), directory);
+
+
+    Book ( TH1F("Tau1_PT","leading tau pT;pT (GeV)",50,0,2000), directory);
+    Book ( TH1F("Tau1_Eta","leading tau pseudorapidity ;#eta",50,-3,3), directory);
+    Book ( TH1F("Tau1_Phi","leading tau azimuthal angle;#phi",20,-4,4), directory);
+
+    Book ( TH1F("Tau2_PT","trailing tau pT;pT (GeV)",50,0,700), directory);
+    Book ( TH1F("Tau2_Eta","trailing tau pseudorapidity ;#eta",50,-3,3), directory);
+    Book ( TH1F("Tau2_Phi","trailing tau azimuthal angle;#phi",20,-4,4), directory);
+
+    Book ( TH1F("MET_ET","missing energy ET;ET (GeV)",40,0,2000), directory);
+
+    Book ( TH1F("TauTauMass","tau pair invariant mass;m(#tau#tau) (GeV)",30,0,150), directory);
+    Book ( TH1F("TauTauDR","tau pair distance;#DeltaR(#tau#tau)",50,0,1), directory);
+    Book ( TH1F("TauJetDR","tautau-jet distance;#DeltaR(#tau#tau,jet) ",40,0,5), directory);
+    Book ( TH1F("TauJetDEta","tautau-jet #Delta#eta;#Delta#eta(#tau#tau,jet) ",30,0,2.5), directory);
+    Book ( TH1F("TauJetMass","tautau-jet invariant mass;m(#tau#tau,jet) (GeV)",50,0,5000), directory);
+
+
+}
+
+
+//MD this function fills all histograms in all directories, according to decision bits
+
+
+void VHTausAnalysis::fillHistograms(const TString& directory, const UZH::Jet& Jet, const UZH::Tau Tau1, const UZH::Tau Tau2, const UZH::MissingEt MET)
+{
+
+  
+    Hist( "Hjet_Mass", directory )->Fill( Jet.pruned_massCorr() , b_weight);
+    Hist( "Hjet_PT", directory )->Fill( Jet.pt() , b_weight);
+    Hist( "Hjet_Eta", directory )->Fill( Jet.eta() , b_weight);
+    Hist( "Hjet_Phi", directory )->Fill( Jet.phi() , b_weight);
+    Hist( "Hjet_Tau21", directory )->Fill( Jet.tau2()/Jet.tau1() , b_weight);
+    Hist( "Hjet_Hbbtag", directory )->Fill( Jet.Hbbtag() , b_weight);
+
+    Hist( "Tau1_PT", directory )->Fill( Tau1.pt() , b_weight);
+    Hist( "Tau1_Eta", directory )->Fill( Tau1.eta() , b_weight);
+    Hist( "Tau1_Phi", directory )->Fill( Tau1.phi() , b_weight);
+
+    Hist( "Tau2_PT", directory )->Fill( Tau2.pt() , b_weight);
+    Hist( "Tau2_Eta", directory )->Fill( Tau2.eta() , b_weight);
+    Hist( "Tau2_Phi", directory )->Fill( Tau2.phi() , b_weight);
+
+    Hist( "MET_ET", directory )->Fill( MET.et() , b_weight);
+
+
+    TLorentzVector tau1, tau2, sumTau, jet, sumAll;
+    tau1.SetPtEtaPhiE(Tau1.pt(), Tau1.eta(), Tau1.phi(), Tau1.e());
+    tau2.SetPtEtaPhiE(Tau2.pt(), Tau2.eta(), Tau2.phi(), Tau2.e());
+    jet.SetPtEtaPhiE(Jet.pt(),Jet.eta(),Jet.phi(),Jet.e());
+    sumTau = tau1 + tau2 ;
+    sumAll = sumTau + jet ;
+
+    float tautauMass = sumTau.M();
+    float tautauDR = tau1.DeltaR(tau2);
+    float tauJetDR = sumTau.DeltaR(jet);
+    float tauJetDEta = fabs(sumTau.Eta()-jet.Eta());
+    float tauJetMass = sumAll.M();
+
+
+    Hist( "TauTauMass", directory )->Fill(tautauMass, b_weight);
+    Hist( "TauTauDR", directory )->Fill(tautauDR, b_weight);
+    Hist( "TauJetDR", directory )->Fill(tauJetDR, b_weight);
+    Hist( "TauJetDEta", directory )->Fill(tauJetDEta, b_weight);
+    Hist( "TauJetMass", directory )->Fill(tauJetMass, b_weight);
+
+  
+}
+
+
+
