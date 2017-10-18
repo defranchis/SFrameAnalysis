@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd">
+<JobConfiguration JobName="VHTausAnalysisJob" OutputLevel="INFO">
+
+  <Library Name="libNtupleVariables" />
+  <Library Name="libGoodRunsLists" />
+  <Library Name="libPileupReweightingTool" />
+  <!-- <Library Name="libBTaggingTools" /> -->
+  <Library Name="libVHTausResonances" />
+  <Cycle Name="VHTausAnalysis" OutputDirectory="./" PostFix="" ProofServer="lite" ProofWorkDir="" RunMode="LOCAL" TargetLumi="1.0">
+
+    <InputData Lumi="0.0" NEventsMax="100000" Type="QCD_HT500to700" Version="0">
+
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_9.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_889.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_912.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_131.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_138.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_272.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_463.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_685.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_875.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_365.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_337.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_375.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_341.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_504.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_594.root" Lumi="1.0" />
+<In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/mdefranc/checked/QCD_HT500to700/flatTuple_842.root" Lumi="1.0" />
+
+
+<!--    <InputData Lumi="0.0" NEventsMax="1000" Type="HHtautauqq" Version="1000">
+      <In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cgalloni/Run2_74_14/RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_1.root" Lumi="1.0"/>
+      <In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cgalloni/Run2_74_14/RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_2.root" Lumi="1.0"/>
+      <In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cgalloni/Run2_74_14/RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_3.root" Lumi="1.0"/>
+      <In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cgalloni/Run2_74_14/RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_4.root" Lumi="1.0"/>
+      <In FileName="dcap://t3se01.psi.ch:22125//pnfs/psi.ch/cms/trivcat/store/user/cgalloni/Run2_74_14/RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph/EXOVVTree_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_cgalloni_BoostedTaus_RadionTohhTohtatahbb_narrow_M-1000_13TeV-madgraph_v0-30eef57b3e151b442a562a16aa212998_5.root" Lumi="1.0"/>
+-->
+
+
+<InputTree Name="ntuplizer/tree" />
+<OutputTree Name="analysis" />
+    </InputData>
+    <UserConfig>
+      <Item Name="RecoTreeName" Value="tree"/>
+      <Item Name="JetPtCut" Value="200."/>
+    </UserConfig>
+  </Cycle>
+</JobConfiguration>
